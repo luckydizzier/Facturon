@@ -1,10 +1,9 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Facturon.Data;
+using Facturon.Data.Initialization;
 using Facturon.Repositories;
 using Facturon.Services;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,21 +53,15 @@ namespace Facturon.App
             return builder.Build();
         }
 
-        public static void Start(IHost host)
+        public static async Task StartAsync(IHost host)
         {
             var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
             logger.LogInformation("Application starting");
 
-            var context = host.Services.GetRequiredService<FacturonDbContext>();
-            var dbPath = new SqliteConnectionStringBuilder(context.Database.GetConnectionString()).DataSource;
-            logger.LogInformation("Database path: {DbPath}", dbPath);
-            if (!File.Exists(dbPath))
-            {
-                logger.LogInformation("Creating database at {DbPath}", dbPath);
-                context.Database.EnsureCreated();
-            }
+            using var scope = host.Services.CreateScope();
+            await DbInitializer.InitializeAsync(scope.ServiceProvider, logger);
 
-            host.Start();
+            await host.StartAsync();
         }
 
         public static async Task StopAsync(IHost host)

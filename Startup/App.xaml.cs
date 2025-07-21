@@ -17,7 +17,7 @@ namespace Facturon.App
             base.OnStartup(e);
 
             Host = StartupOrchestrator.BuildHost(e.Args);
-            StartupOrchestrator.Start(Host);
+            StartupOrchestrator.StartAsync(Host).GetAwaiter().GetResult();
 
             var invoiceService = Host.Services.GetRequiredService<IInvoiceService>();
             var vm = new MainViewModel(invoiceService);

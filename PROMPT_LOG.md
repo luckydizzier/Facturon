@@ -50,3 +50,5 @@ Added System.Threading.Tasks using statements to InvoiceListViewModel and MainVi
 
 ## [ui_agent] Set default Supplier and PaymentMethod when creating new invoices
 Initialized required navigation properties in MainViewModel to satisfy C# "required" members.
+## [migration_agent] Implement database initialization and schema validation
+Added DbInitializer with schema checks, startup invocation, and optional seed data using Bogus.
