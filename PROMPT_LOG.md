@@ -29,3 +29,8 @@ Fluent API extensions like `ToTable` and `HasDefaultValueSql`.
 ## [startup_agent] Reference SQLite provider
 Added `Microsoft.EntityFrameworkCore.Sqlite` package to the startup project to
 enable `UseSqlite` configuration.
+
+## [db_agent] Fix missing builder using
+Added metadata builder using statement to FacturonDbContext to resolve extension methods.
+## [orchestrator_agent] Add root solution
+Created Facturon.sln including all projects for easier IDE use.
