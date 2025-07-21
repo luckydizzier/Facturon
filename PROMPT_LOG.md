@@ -15,3 +15,4 @@ Added Result class and service interfaces/implementations under `Services/` for 
 ## [service_agent] Extend service layer for invoice items and validation
 Implemented InvoiceItemService and validation helpers. Updated InvoiceService totals and creation logic.
 ## [startup_agent] Configure program startup with DI and Serilog logging
+## [startup_agent] Fix missing host project and build infrastructure for Facturon
