@@ -34,3 +34,6 @@ enable `UseSqlite` configuration.
 Added metadata builder using statement to FacturonDbContext to resolve extension methods.
 ## [orchestrator_agent] Add root solution
 Created Facturon.sln including all projects for easier IDE use.
+
+## [service_agent] Fix missing System.Linq using
+Added missing using directive in ProductService for LINQ extension methods.
