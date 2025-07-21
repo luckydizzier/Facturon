@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Facturon.Domain.Entities;
 using Facturon.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Facturon.Services
 {
@@ -39,19 +40,66 @@ namespace Facturon.Services
             return await _invoiceRepository.GetAllAsync();
         }
 
-        public async Task<Result> CreateAsync(Invoice invoice)
+        private async Task<ValidationResult> ValidateInvoiceAsync(Invoice invoice)
         {
+            var result = new ValidationResult();
+
+            if (string.IsNullOrWhiteSpace(invoice.Number))
+                result.AddError(nameof(invoice.Number), "Number is required");
+
+            if (string.IsNullOrWhiteSpace(invoice.Issuer))
+                result.AddError(nameof(invoice.Issuer), "Issuer is required");
+
+            if (invoice.Date == default)
+                result.AddError(nameof(invoice.Date), "Date is required");
+
             var supplier = await _supplierRepository.GetByIdAsync(invoice.SupplierId);
             if (supplier == null || !supplier.Active)
-                return Result.Fail("Invalid supplier");
+                result.AddError(nameof(invoice.SupplierId), "Invalid supplier");
 
             var paymentMethod = await _paymentMethodRepository.GetByIdAsync(invoice.PaymentMethodId);
             if (paymentMethod == null || !paymentMethod.Active)
-                return Result.Fail("Invalid payment method");
+                result.AddError(nameof(invoice.PaymentMethodId), "Invalid payment method");
+
+            if (invoice.Items == null || invoice.Items.Count == 0)
+            {
+                result.AddError(nameof(invoice.Items), "At least one item is required");
+            }
+            else
+            {
+                for (int i = 0; i < invoice.Items.Count; i++)
+                {
+                    var item = invoice.Items[i];
+                    if (item.Quantity <= 0)
+                        result.AddError($"Items[{i}].Quantity", "Quantity must be greater than zero");
+                    if (item.UnitPrice < 0)
+                        result.AddError($"Items[{i}].UnitPrice", "Unit price must be non-negative");
+
+                    var product = item.Product ?? await _productRepository.GetByIdAsync(item.ProductId);
+                    if (product == null || !product.Active)
+                        result.AddError($"Items[{i}].ProductId", "Invalid product");
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<Result> CreateAsync(Invoice invoice)
+        {
+            var validation = await ValidateInvoiceAsync(invoice);
+            if (!validation.IsValid)
+                return Result.Fail("Validation failed");
 
             invoice.DateCreated = DateTime.UtcNow;
             invoice.DateUpdated = DateTime.UtcNow;
             invoice.Active = true;
+
+            foreach (var item in invoice.Items)
+            {
+                item.DateCreated = DateTime.UtcNow;
+                item.DateUpdated = DateTime.UtcNow;
+                item.Active = true;
+            }
 
             await _invoiceRepository.AddAsync(invoice);
             return Result.Ok();
@@ -102,7 +150,8 @@ namespace Facturon.Services
                 if (taxRate == null) continue;
 
                 var net = item.Quantity * item.UnitPrice;
-                var gross = net * (1 + taxRate.Value / 100);
+                var vat = net * taxRate.Value / 100m;
+                var gross = net + vat;
 
                 if (!groups.TryGetValue(taxRate.Id, out var tg))
                 {
@@ -112,8 +161,10 @@ namespace Facturon.Services
                 }
 
                 tg.Net += net;
+                tg.Vat += vat;
                 tg.Gross += gross;
                 totals.TotalNet += net;
+                totals.TotalVat += vat;
                 totals.TotalGross += gross;
             }
 
