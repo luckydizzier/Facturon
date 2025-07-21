@@ -37,3 +37,5 @@ Created Facturon.sln including all projects for easier IDE use.
 
 ## [service_agent] Fix missing System.Linq using
 Added missing using directive in ProductService for LINQ extension methods.
+## [startup_agent] Resolve missing host and logging references
+Added Microsoft.Extensions.Hosting and Serilog packages to the startup project and updated App.xaml.cs null checks.
