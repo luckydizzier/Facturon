@@ -47,3 +47,6 @@ Added views, view models, and startup wiring for keyboard-first invoice UI.
 
 ## [ui_agent] Fix missing Task using directives
 Added System.Threading.Tasks using statements to InvoiceListViewModel and MainViewModel.
+
+## [ui_agent] Set default Supplier and PaymentMethod when creating new invoices
+Initialized required navigation properties in MainViewModel to satisfy C# "required" members.

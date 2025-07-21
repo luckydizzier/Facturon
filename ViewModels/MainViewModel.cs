@@ -72,7 +72,17 @@ namespace Facturon.App.ViewModels
             {
                 Date = System.DateTime.Today,
                 Issuer = string.Empty,
-                Number = string.Empty
+                Number = string.Empty,
+                Supplier = new Facturon.Domain.Entities.Supplier
+                {
+                    Name = string.Empty,
+                    TaxNumber = string.Empty,
+                    Address = string.Empty
+                },
+                PaymentMethod = new Facturon.Domain.Entities.PaymentMethod
+                {
+                    Name = string.Empty
+                }
             };
             DetailVisible = true;
             CloseDetailCommand.RaiseCanExecuteChanged();
