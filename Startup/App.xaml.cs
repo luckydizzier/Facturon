@@ -1,6 +1,10 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Facturon.App.Views;
+using Facturon.App.ViewModels;
+using Facturon.Services;
 
 namespace Facturon.App
 {
@@ -14,6 +18,13 @@ namespace Facturon.App
 
             Host = StartupOrchestrator.BuildHost(e.Args);
             StartupOrchestrator.Start(Host);
+
+            var invoiceService = Host.Services.GetRequiredService<IInvoiceService>();
+            var vm = new MainViewModel(invoiceService);
+            vm.InitializeAsync().GetAwaiter().GetResult();
+            var window = new MainWindow { DataContext = vm };
+            MainWindow = window;
+            window.Show();
         }
 
         protected override void OnExit(ExitEventArgs e)
