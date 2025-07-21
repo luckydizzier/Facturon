@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Facturon.Data;
-using Facturon.Data.Initialization;
 using Facturon.Repositories;
 using Facturon.Services;
 using Microsoft.EntityFrameworkCore;

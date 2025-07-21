@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Bogus;
 using Facturon.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Facturon.Data.Initialization
 {
@@ -47,6 +48,12 @@ namespace Facturon.Data.Initialization
             await context.Suppliers.AddAsync(supplier);
 
             await context.SaveChangesAsync();
+        }
+
+        public static async Task SeedAsync(FacturonDbContext context, ILogger logger)
+        {
+            logger.LogInformation("Seeding initial data");
+            await InitializeAsync(context);
         }
     }
 }

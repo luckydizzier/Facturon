@@ -55,3 +55,5 @@ Added DbInitializer with schema checks, startup invocation, and optional seed da
 
 ## [db_agent] Resolve Product required properties in seed data
 Set Unit, ProductGroup, and TaxRate navigation properties when creating Product in SeedData to satisfy C# required members.
+## [db_agent] Implement robust DbInitializer
+Created new DbInitializer at Data/DbInitializer.cs with migration checks, schema validation, and optional seeding. Updated startup to use it.
