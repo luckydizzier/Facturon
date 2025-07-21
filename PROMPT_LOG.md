@@ -16,3 +16,7 @@ Added Result class and service interfaces/implementations under `Services/` for 
 Implemented InvoiceItemService and validation helpers. Updated InvoiceService totals and creation logic.
 ## [startup_agent] Configure program startup with DI and Serilog logging
 ## [startup_agent] Fix missing host project and build infrastructure for Facturon
+## [domain_agent] Add Facturon.Domain.csproj to build domain entities
+## [db_agent] Add Facturon.Data.csproj referencing Domain and EF Core
+## [repo_agent] Add Facturon.Repositories.csproj referencing Data and Domain
+## [service_agent] Add Facturon.Services.csproj referencing Repositories
