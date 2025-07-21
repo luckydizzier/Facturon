@@ -10,7 +10,7 @@ namespace Facturon.Domain.Entities
         public decimal UnitPrice { get; set; }
         public decimal Total { get; set; }
 
-        public virtual Invoice Invoice { get; set; }
-        public virtual Product Product { get; set; }
+        public required virtual Invoice Invoice { get; set; }
+        public required virtual Product Product { get; set; }
     }
 }

@@ -20,3 +20,12 @@ Implemented InvoiceItemService and validation helpers. Updated InvoiceService to
 ## [db_agent] Add Facturon.Data.csproj referencing Domain and EF Core
 ## [repo_agent] Add Facturon.Repositories.csproj referencing Data and Domain
 ## [service_agent] Add Facturon.Services.csproj referencing Repositories
+## [domain_agent] Mark non-nullable entity properties as required
+Adjusted domain model classes to use the `required` keyword for mandatory
+properties and navigation references, addressing compiler warnings.
+## [db_agent] Include relational EF Core package
+Added `Microsoft.EntityFrameworkCore.Relational` to the Data project to access
+Fluent API extensions like `ToTable` and `HasDefaultValueSql`.
+## [startup_agent] Reference SQLite provider
+Added `Microsoft.EntityFrameworkCore.Sqlite` package to the startup project to
+enable `UseSqlite` configuration.

@@ -10,5 +10,6 @@
     <ProjectReference Include="..\Data\Facturon.Data.csproj" />
     <ProjectReference Include="..\Repositories\Facturon.Repositories.csproj" />
     <ProjectReference Include="..\Services\Facturon.Services.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
   </ItemGroup>
 </Project>
