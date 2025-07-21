@@ -39,3 +39,6 @@ Created Facturon.sln including all projects for easier IDE use.
 Added missing using directive in ProductService for LINQ extension methods.
 ## [startup_agent] Resolve missing host and logging references
 Added Microsoft.Extensions.Hosting and Serilog packages to the startup project and updated App.xaml.cs null checks.
+
+## [startup_agent] Fix build entry point and Serilog warning
+Removed Program.cs to avoid duplicate entry points and moved host initialization to App.xaml.cs. Updated Serilog.Settings.Configuration to version 7.0.0.
