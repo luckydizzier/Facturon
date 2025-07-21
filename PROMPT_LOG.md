@@ -44,3 +44,6 @@ Added Microsoft.Extensions.Hosting and Serilog packages to the startup project a
 Removed Program.cs to avoid duplicate entry points and moved host initialization to App.xaml.cs. Updated Serilog.Settings.Configuration to version 7.0.0.
 ## [ui_agent] Implement initial WPF MVVM UI
 Added views, view models, and startup wiring for keyboard-first invoice UI.
+
+## [ui_agent] Fix missing Task using directives
+Added System.Threading.Tasks using statements to InvoiceListViewModel and MainViewModel.
