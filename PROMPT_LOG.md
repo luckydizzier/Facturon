@@ -14,3 +14,4 @@ Added AsQueryable, GetByConditionAsync, PatchAsync to base repository and interf
 Added Result class and service interfaces/implementations under `Services/` for Invoice, Product, Supplier, PaymentMethod, Unit, ProductGroup, and TaxRate. Includes validation and soft delete logic.
 ## [service_agent] Extend service layer for invoice items and validation
 Implemented InvoiceItemService and validation helpers. Updated InvoiceService totals and creation logic.
+## [startup_agent] Configure program startup with DI and Serilog logging
