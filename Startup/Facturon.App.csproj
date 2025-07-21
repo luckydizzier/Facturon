@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Facturon.Domain.csproj" />
+    <ProjectReference Include="..\Data\Facturon.Data.csproj" />
+    <ProjectReference Include="..\Repositories\Facturon.Repositories.csproj" />
+    <ProjectReference Include="..\Services\Facturon.Services.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,7 +1,7 @@
 using System.IO;
 using Serilog;
 
-namespace Facturon.Startup
+namespace Facturon.App
 {
     public static class LoggingConfiguration
     {
