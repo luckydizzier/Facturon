@@ -31,7 +31,10 @@ namespace Facturon.Data.Initialization
                 Name = faker.Commerce.Product(),
                 UnitId = unit.Id,
                 ProductGroupId = group.Id,
-                TaxRateId = taxRate.Id
+                TaxRateId = taxRate.Id,
+                Unit = unit,
+                ProductGroup = group,
+                TaxRate = taxRate
             };
             await context.Products.AddAsync(product);
 
