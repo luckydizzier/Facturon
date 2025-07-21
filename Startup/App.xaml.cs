@@ -11,17 +11,19 @@ namespace Facturon.App
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            if (Host != null)
+            var host = Host;
+            if (host != null)
             {
-                StartupOrchestrator.Start(Host);
+                StartupOrchestrator.Start(host);
             }
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            if (Host != null)
+            var host = Host;
+            if (host != null)
             {
-                StartupOrchestrator.StopAsync(Host).GetAwaiter().GetResult();
+                StartupOrchestrator.StopAsync(host).GetAwaiter().GetResult();
             }
             base.OnExit(e);
         }
