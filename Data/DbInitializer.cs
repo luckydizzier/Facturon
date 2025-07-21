@@ -18,10 +18,19 @@ namespace Facturon.Data
                 using var scope = services.CreateScope();
                 var db = scope.ServiceProvider.GetRequiredService<FacturonDbContext>();
 
-                logger.LogInformation("Running EF Core migrations...");
-                await db.Database.MigrateAsync();
+                logger.LogInformation("Checking for pending migrations...");
+                if (db.Database.GetMigrations().Any())
+                {
+                    logger.LogInformation("Running EF Core migrations...");
+                    await db.Database.MigrateAsync();
+                }
+                else
+                {
+                    logger.LogInformation("No migrations found. Ensuring database created...");
+                    await db.Database.EnsureCreatedAsync();
+                }
 
-                logger.LogInformation("Database migrated.");
+                logger.LogInformation("Database ready.");
 
                 if (!await db.Suppliers.AnyAsync())
                 {
