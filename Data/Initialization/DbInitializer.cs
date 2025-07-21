@@ -20,6 +20,15 @@ namespace Facturon.Data.Initialization
 
         public static async Task InitializeAsync(IServiceProvider services, ILogger logger)
         {
+            try
+            {
+                Directory.CreateDirectory("logs");
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Failed to ensure logs directory");
+            }
+
             await using var scope = services.CreateAsyncScope();
             var context = scope.ServiceProvider.GetRequiredService<FacturonDbContext>();
             var connectionString = context.Database.GetConnectionString();
@@ -31,36 +40,66 @@ namespace Facturon.Data.Initialization
 
             if (!dbExists)
             {
-                logger.LogInformation("Creating new database at {DbPath}", dbPath);
+                logger.LogInformation("Database file not found. Creating new database at {DbPath}", dbPath);
                 await context.Database.MigrateAsync();
-                await SeedData.InitializeAsync(context);
+                await SeedIfNeededAsync(context, logger);
                 return;
             }
 
             logger.LogInformation("Database found at {DbPath}. Validating schema...", dbPath);
 
-            await using var connection = new SqliteConnection(connectionString);
-            await connection.OpenAsync();
-            var command = connection.CreateCommand();
-            command.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
-            var existing = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            await using (var reader = await command.ExecuteReaderAsync())
-            {
-                while (await reader.ReadAsync())
-                {
-                    existing.Add(reader.GetString(0));
-                }
-            }
-            await connection.CloseAsync();
-
-            var missing = RequiredTables.Where(t => !existing.Contains(t)).ToList();
+            var missing = await GetMissingTablesAsync(connectionString);
             if (missing.Count > 0)
             {
-                logger.LogWarning("Database schema missing tables: {Tables}", string.Join(", ", missing));
-                throw new InvalidOperationException("Database exists but schema is invalid. Recreate or repair it.");
+                logger.LogWarning("Missing tables detected: {Tables}. Attempting migration...", string.Join(", ", missing));
+                await context.Database.MigrateAsync();
+
+                missing = await GetMissingTablesAsync(connectionString);
+                if (missing.Count > 0)
+                {
+                    logger.LogError("Database schema is invalid after migration. Missing tables: {Tables}. Consider deleting the database file to recreate it.", string.Join(", ", missing));
+                    return;
+                }
+
+                logger.LogInformation("Database schema repaired via migration");
             }
 
-            logger.LogInformation("Database schema OK.");
+            logger.LogInformation("Database schema validated");
+            await SeedIfNeededAsync(context, logger);
+        }
+
+        private static async Task<List<string>> GetMissingTablesAsync(string connectionString)
+        {
+            var missing = new List<string>();
+            await using var connection = new SqliteConnection(connectionString);
+            await connection.OpenAsync();
+            foreach (var table in RequiredTables)
+            {
+                await using var command = connection.CreateCommand();
+                command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name=$name";
+                command.Parameters.AddWithValue("$name", table);
+                var result = await command.ExecuteScalarAsync();
+                if (result == null)
+                    missing.Add(table);
+            }
+            await connection.CloseAsync();
+            return missing;
+        }
+
+        private static async Task SeedIfNeededAsync(FacturonDbContext context, ILogger logger)
+        {
+            try
+            {
+                if (!await context.Suppliers.AnyAsync())
+                {
+                    logger.LogInformation("Seeding initial data");
+                    await SeedData.InitializeAsync(context);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Failed to seed initial data");
+            }
         }
     }
 }
