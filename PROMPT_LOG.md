@@ -92,3 +92,5 @@ Introduced SelectedInvoice property in MainViewModel and updated
 InvoiceDetailViewModel to subscribe to selection changes, load full invoice
 details via IInvoiceService, and expose an ObservableCollection for binding.
 
+## [domain_agent] Add computed NetAmount and GrossAmount to InvoiceItem
+Implemented readonly properties in InvoiceItem.cs using Product.TaxRate for VAT calculation with null safety. Added NotMapped attributes.
