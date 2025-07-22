@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Facturon.Data.Initialization;
 using Microsoft.EntityFrameworkCore;
