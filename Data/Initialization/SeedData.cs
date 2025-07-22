@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bogus;
 using Facturon.Domain.Entities;
@@ -16,37 +17,107 @@ namespace Facturon.Data.Initialization
 
             var faker = new Faker("en");
 
-            var unit = new Unit { Name = "Piece", ShortName = "pcs" };
-            var group = new ProductGroup { Name = "General" };
-            var taxRate = new TaxRate { Code = "TAX20", Value = 20m, ValidFrom = DateTime.Today };
-            var paymentMethod = new PaymentMethod { Name = "Cash" };
+            var units = new[]
+            {
+                new Unit { Name = "Piece", ShortName = "pcs" },
+                new Unit { Name = "Kilogram", ShortName = "kg" }
+            };
+            var groups = new[]
+            {
+                new ProductGroup { Name = "General" },
+                new ProductGroup { Name = "Food" }
+            };
+            var taxRates = new[]
+            {
+                new TaxRate { Code = "TAX20", Value = 20m, ValidFrom = DateTime.Today },
+                new TaxRate { Code = "TAX10", Value = 10m, ValidFrom = DateTime.Today }
+            };
+            var paymentMethods = new[]
+            {
+                new PaymentMethod { Name = "Cash" },
+                new PaymentMethod { Name = "Card" }
+            };
 
-            await context.Units.AddAsync(unit);
-            await context.ProductGroups.AddAsync(group);
-            await context.TaxRates.AddAsync(taxRate);
-            await context.PaymentMethods.AddAsync(paymentMethod);
+            await context.Units.AddRangeAsync(units);
+            await context.ProductGroups.AddRangeAsync(groups);
+            await context.TaxRates.AddRangeAsync(taxRates);
+            await context.PaymentMethods.AddRangeAsync(paymentMethods);
             await context.SaveChangesAsync();
 
-            var product = new Product
+            var products = new List<Product>();
+            for (int i = 0; i < 3; i++)
             {
-                Name = faker.Commerce.Product(),
-                UnitId = unit.Id,
-                ProductGroupId = group.Id,
-                TaxRateId = taxRate.Id,
-                Unit = unit,
-                ProductGroup = group,
-                TaxRate = taxRate
-            };
-            await context.Products.AddAsync(product);
+                var unit = faker.PickRandom(units);
+                var group = faker.PickRandom(groups);
+                var rate = faker.PickRandom(taxRates);
 
-            var supplier = new Supplier
+                var product = new Product
+                {
+                    Name = faker.Commerce.Product(),
+                    UnitId = unit.Id,
+                    ProductGroupId = group.Id,
+                    TaxRateId = rate.Id,
+                    Unit = unit,
+                    ProductGroup = group,
+                    TaxRate = rate
+                };
+                products.Add(product);
+            }
+            await context.Products.AddRangeAsync(products);
+
+            var suppliers = new List<Supplier>();
+            for (int i = 0; i < 2; i++)
             {
-                Name = faker.Company.CompanyName(),
-                TaxNumber = faker.Random.Replace("##-#######"),
-                Address = faker.Address.FullAddress()
-            };
-            await context.Suppliers.AddAsync(supplier);
+                suppliers.Add(new Supplier
+                {
+                    Name = faker.Company.CompanyName(),
+                    TaxNumber = faker.Random.Replace("##-#######"),
+                    Address = faker.Address.FullAddress()
+                });
+            }
+            await context.Suppliers.AddRangeAsync(suppliers);
 
+            await context.SaveChangesAsync();
+
+            var invoices = new List<Invoice>();
+            for (int i = 0; i < 2; i++)
+            {
+                var supplier = faker.PickRandom(suppliers);
+                var method = faker.PickRandom(paymentMethods);
+
+                var invoice = new Invoice
+                {
+                    Date = DateTime.Today.AddDays(-i),
+                    Number = $"INV-{i + 1:0000}",
+                    Issuer = "FACTURON",
+                    SupplierId = supplier.Id,
+                    PaymentMethodId = method.Id,
+                    Supplier = supplier,
+                    PaymentMethod = method
+                };
+
+                for (int j = 0; j < 2; j++)
+                {
+                    var product = faker.PickRandom(products);
+                    var qty = faker.Random.Decimal(1, 5);
+                    var price = faker.Random.Decimal(10, 100);
+
+                    var item = new InvoiceItem
+                    {
+                        ProductId = product.Id,
+                        Product = product,
+                        Invoice = invoice,
+                        Quantity = qty,
+                        UnitPrice = price,
+                        Total = qty * price
+                    };
+                    invoice.Items.Add(item);
+                }
+
+                invoices.Add(invoice);
+            }
+
+            await context.Invoices.AddRangeAsync(invoices);
             await context.SaveChangesAsync();
         }
 
