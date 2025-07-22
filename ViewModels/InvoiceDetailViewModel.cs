@@ -34,6 +34,21 @@ namespace Facturon.App.ViewModels
                     _invoice = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(InvoiceItems));
+                    OnPropertyChanged(nameof(IsGrossBased));
+                }
+            }
+        }
+
+        public bool IsGrossBased
+        {
+            get => Invoice?.IsGrossBased ?? false;
+            set
+            {
+                if (Invoice != null && Invoice.IsGrossBased != value)
+                {
+                    Invoice.IsGrossBased = value;
+                    OnPropertyChanged();
+                    _ = RecalculateTotalsAsync();
                 }
             }
         }
@@ -99,10 +114,11 @@ namespace Facturon.App.ViewModels
             var full = await _invoiceService.GetByIdAsync(_mainViewModel.SelectedInvoice.Id);
             Invoice = full;
             InvoiceItems = new ObservableCollection<InvoiceItem>(full?.Items ?? new List<InvoiceItem>());
+            OnPropertyChanged(nameof(IsGrossBased));
 
             if (full != null)
             {
-                var totals = await _invoiceService.GetTotalsAsync(full.Id);
+                var totals = await _invoiceService.CalculateTotalsAsync(full);
                 InvoiceTotals = new InvoiceTotals
                 {
                     TotalNet = Math.Round(totals.TotalNet, 2),
@@ -114,6 +130,21 @@ namespace Facturon.App.ViewModels
             {
                 InvoiceTotals = new InvoiceTotals();
             }
+        }
+
+        private async Task RecalculateTotalsAsync()
+        {
+            if (Invoice == null)
+                return;
+
+            var totals = await _invoiceService.CalculateTotalsAsync(Invoice);
+            InvoiceTotals = new InvoiceTotals
+            {
+                TotalNet = Math.Round(totals.TotalNet, 2),
+                TotalVat = Math.Round(totals.TotalVat, 2),
+                TotalGross = Math.Round(totals.TotalGross, 2)
+            };
+            OnPropertyChanged(nameof(InvoiceItems));
         }
 
         // TODO: Toggle DetailVisible when invoice selection changes

@@ -18,7 +18,7 @@ namespace Facturon.Tests.Services
         private InvoiceItemService CreateService() => new(_invoiceRepo.Object, _productRepo.Object, _taxRepo.Object);
 
         [Fact]
-        public async Task CreateAsync_ConvertsGrossToNet_WhenInvoiceIsGrossBased()
+        public async Task CreateAsync_StoresGrossAndNetTotal_WhenInvoiceIsGrossBased()
         {
             var invoice = new Invoice { Id = 1, Active = true, IsGrossBased = true, Items = new List<InvoiceItem>() };
             var product = new Product { Id = 2, Active = true, TaxRateId = 3 };
@@ -34,12 +34,12 @@ namespace Facturon.Tests.Services
             await service.CreateAsync(item);
 
             var saved = Assert.Single(invoice.Items);
-            Assert.Equal(100m, saved.UnitPrice);
+            Assert.Equal(120m, saved.UnitPrice);
             Assert.Equal(100m, saved.Total);
         }
 
         [Fact]
-        public async Task CreateAsync_KeepsNet_WhenInvoiceIsNetBased()
+        public async Task CreateAsync_KeepsNetPrice_WhenInvoiceIsNetBased()
         {
             var invoice = new Invoice { Id = 1, Active = true, IsGrossBased = false, Items = new List<InvoiceItem>() };
             var product = new Product { Id = 2, Active = true, TaxRateId = 3 };
