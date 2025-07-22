@@ -5,9 +5,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid>
-        <ListBox ItemsSource="{Binding Invoices}"
+        <ListBox x:Name="InvoiceList"
+                 ItemsSource="{Binding Invoices}"
                  SelectedItem="{Binding SelectedInvoice}"
                  DisplayMemberPath="Number"
                  VerticalAlignment="Stretch"/>
+        <TextBlock Text="Nincs adat" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasInvoices}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
     </Grid>
 </UserControl>
