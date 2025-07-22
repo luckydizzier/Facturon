@@ -69,3 +69,6 @@ Ensured MainWindow.xaml is compiled as a resource by linking Views in the WPF cs
 
 ## [ui_agent] Implement two-pane layout in MainWindow
 Reorganized MainWindow.xaml to bind InvoiceListView and InvoiceDetailView with conditional visibility.
+
+## [ui_agent] Add DetailVisible property to InvoiceDetailViewModel
+Added visibility property with change notification for toggling the detail view.
