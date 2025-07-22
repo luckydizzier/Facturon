@@ -177,3 +177,6 @@ Moved the control and interface into a Controls namespace and updated InvoiceDet
 
 ## [ui_agent] Fix build-time errors
 Resolved missing service parameters and updated control namespace.
+
+## [ui_agent] Fix EditableComboWithAdd namespace
+Removed assembly qualifier from InvoiceDetailView control namespace to resolve designer errors.
