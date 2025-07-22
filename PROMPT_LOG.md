@@ -171,6 +171,3 @@ Removed PlaceholderText attributes from InvoiceDetailView templates to fix build
 
 ## [ui_agent] Fix EditableComboWithAdd compile issues
 Renamed local ICommandSource interface to avoid clash with WPF and removed `new()` generic constraint by using Activator.CreateInstance.
-
-## [ui_agent] Namespace cleanup for EditableComboWithAdd
-Moved the control and interface into a Controls namespace and updated InvoiceDetailView and ViewModel references.
