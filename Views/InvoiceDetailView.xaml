@@ -3,7 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Facturon.App.Views"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="SupplierInlineCreate">
+            <StackPanel>
+                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
+                <TextBox Text="{Binding Address}" PlaceholderText="Address" />
+                <TextBox Text="{Binding TaxNumber}" PlaceholderText="Tax number" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ProductInlineCreate">
+            <StackPanel>
+                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="UnitInlineCreate">
+            <StackPanel>
+                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
+                <TextBox Text="{Binding ShortName}" PlaceholderText="Short" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TaxRateInlineCreate">
+            <StackPanel>
+                <TextBox Text="{Binding Code}" PlaceholderText="Code" />
+                <TextBox Text="{Binding Value}" PlaceholderText="Value" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ProductGroupInlineCreate">
+            <StackPanel>
+                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -28,6 +60,26 @@
                       Content="Prices include VAT"
                       IsChecked="{Binding IsGrossBased}"
                       Margin="0,10,0,0"/>
+            <TextBlock Text="Supplier:" Margin="0,10,0,0" />
+            <controls:EditableComboWithAdd x:Name="SupplierCombo"
+                                           DataContext="{Binding SupplierPickerVM}"
+                                           InlineCreateTemplate="{StaticResource SupplierInlineCreate}" />
+            <TextBlock Text="Product:" Margin="0,10,0,0" />
+            <controls:EditableComboWithAdd x:Name="ProductCombo"
+                                           DataContext="{Binding ProductPickerVM}"
+                                           InlineCreateTemplate="{StaticResource ProductInlineCreate}" />
+            <TextBlock Text="Unit:" Margin="0,10,0,0" />
+            <controls:EditableComboWithAdd x:Name="UnitCombo"
+                                           DataContext="{Binding UnitPickerVM}"
+                                           InlineCreateTemplate="{StaticResource UnitInlineCreate}" />
+            <TextBlock Text="Tax Rate:" Margin="0,10,0,0" />
+            <controls:EditableComboWithAdd x:Name="TaxRateCombo"
+                                           DataContext="{Binding TaxRatePickerVM}"
+                                           InlineCreateTemplate="{StaticResource TaxRateInlineCreate}" />
+            <TextBlock Text="Product Group:" Margin="0,10,0,0" />
+            <controls:EditableComboWithAdd x:Name="ProductGroupCombo"
+                                           DataContext="{Binding ProductGroupPickerVM}"
+                                           InlineCreateTemplate="{StaticResource ProductGroupInlineCreate}" />
         </StackPanel>
         <DataGrid x:Name="ItemsGrid"
                   AutomationProperties.Name="InvoiceItems"
