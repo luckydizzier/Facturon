@@ -3,11 +3,12 @@ using System.Windows;
 using System.Windows.Input;
 using Facturon.Services;
 using Facturon.App.Views;
+using System;
 
 namespace Facturon.App.ViewModels
 {
-    public class EditableComboWithAddViewModel<T> : BaseViewModel, ICommandSource
-        where T : class, new()
+    public class EditableComboWithAddViewModel<T> : BaseViewModel, INewItemCommandSource
+        where T : class
     {
         private readonly IEntityService<T> _service;
 
@@ -101,7 +102,7 @@ namespace Facturon.App.ViewModels
 
         private void StartCreate()
         {
-            NewItem = new T();
+            NewItem = Activator.CreateInstance<T>();
             IsCreatingNew = true;
         }
 
