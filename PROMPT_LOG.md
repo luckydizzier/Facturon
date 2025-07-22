@@ -118,3 +118,21 @@ InvoiceDetailViewModel loads rounded totals on selection change and InvoiceDetai
 
 ## [ui_agent] Display Tax Rate in Invoice Items Grid
 Added Tax % column to InvoiceDetailView bound to InvoiceItem.TaxRateValue with right-aligned formatting.
+
+## [domain_agent] Add IsGrossBased flag to Invoice
+Added boolean property to `Invoice` entity for toggling gross based pricing.
+
+## [db_agent] Map IsGrossBased in DbContext
+Configured default value for the new flag in `FacturonDbContext`.
+
+## [ui_agent] Add price mode toggle and formatting fixes
+Inserted checkbox bound to `Invoice.IsGrossBased` and applied `StringFormat=F2` to price related columns.
+
+## [service_agent] Handle gross based price calculations
+`InvoiceItemService` now converts prices based on invoice mode when creating or updating items.
+
+## [ui_agent] Improve MainWindow interactions
+Set focus to invoice list on load and added escape exit confirmation dialog.
+
+## [test_agent] Cover gross/net price logic
+New `InvoiceItemServiceTests` verify proper price conversion for gross and net modes.

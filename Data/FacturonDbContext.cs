@@ -45,6 +45,9 @@ namespace Facturon.Data
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
 
+                entity.Property(e => e.IsGrossBased)
+                    .HasDefaultValue(false);
+
                 entity.Property(e => e.DateCreated)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
                 entity.Property(e => e.DateUpdated)

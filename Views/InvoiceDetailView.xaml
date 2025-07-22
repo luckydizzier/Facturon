@@ -17,6 +17,9 @@
             <TextBox Text="{Binding Invoice.Issuer}"/>
             <TextBlock Text="Date:" Margin="0,10,0,0"/>
             <TextBox Text="{Binding Invoice.Date}"/>
+            <CheckBox Content="Prices include VAT"
+                      IsChecked="{Binding Invoice.IsGrossBased}"
+                      Margin="0,10,0,0"/>
         </StackPanel>
         <DataGrid Grid.Row="1"
                   ItemsSource="{Binding InvoiceItems}"
@@ -27,9 +30,9 @@
                 <DataGridTextColumn Header="Product"
                                     Binding="{Binding Product.Name}"/>
                 <DataGridTextColumn Header="Quantity"
-                                    Binding="{Binding Quantity}"/>
+                                    Binding="{Binding Quantity, StringFormat=F2}"/>
                 <DataGridTextColumn Header="Unit price"
-                                    Binding="{Binding UnitPrice}"/>
+                                    Binding="{Binding UnitPrice, StringFormat=F2}"/>
                 <DataGridTextColumn Header="Tax %"
                                     Binding="{Binding TaxRateValue, StringFormat=F0}">
                     <DataGridTextColumn.ElementStyle>
@@ -39,9 +42,9 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Net amount"
-                                    Binding="{Binding NetAmount}"/>
+                                    Binding="{Binding NetAmount, StringFormat=F2}"/>
                 <DataGridTextColumn Header="Gross amount"
-                                    Binding="{Binding GrossAmount}"/>
+                                    Binding="{Binding GrossAmount, StringFormat=F2}"/>
             </DataGrid.Columns>
         </DataGrid>
 

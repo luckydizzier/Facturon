@@ -60,6 +60,13 @@ namespace Facturon.Services
             item.TaxRateId = product.TaxRateId;
             item.TaxRate = rate!;
             item.TaxRateValue = rate?.Value ?? 0m;
+
+            var unit = item.UnitPrice;
+            if (invoice.IsGrossBased)
+                unit = unit / (1 + item.TaxRateValue / 100m);
+            item.UnitPrice = Math.Round(unit, 2);
+            item.Total = Math.Round(item.Quantity * item.UnitPrice, 2);
+
             item.DateCreated = DateTime.UtcNow;
             item.DateUpdated = DateTime.UtcNow;
             item.Active = true;
@@ -93,8 +100,11 @@ namespace Facturon.Services
 
             existing.ProductId = item.ProductId;
             existing.Quantity = item.Quantity;
-            existing.UnitPrice = item.UnitPrice;
-            existing.Total = item.Total;
+            var unit = item.UnitPrice;
+            if (invoice.IsGrossBased)
+                unit = unit / (1 + existing.TaxRateValue / 100m);
+            existing.UnitPrice = Math.Round(unit, 2);
+            existing.Total = Math.Round(item.Quantity * existing.UnitPrice, 2);
             existing.TaxRateId = product.TaxRateId;
             existing.TaxRate = rate!;
             existing.TaxRateValue = rate?.Value ?? 0m;
