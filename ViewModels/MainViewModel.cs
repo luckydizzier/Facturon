@@ -42,7 +42,7 @@ namespace Facturon.App.ViewModels
 
         public async Task InitializeAsync()
         {
-            await InvoiceList.LoadAsync();
+            await InvoiceList.InitializeAsync();
         }
 
         private bool CanOpenSelected() => InvoiceList.SelectedInvoice != null;

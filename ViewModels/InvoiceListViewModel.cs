@@ -9,7 +9,7 @@ namespace Facturon.App.ViewModels
     {
         private readonly IInvoiceService _invoiceService;
 
-        public ObservableCollection<Invoice> Invoices { get; } = new();
+        public ObservableCollection<Invoice> Invoices { get; private set; }
 
         private Invoice? _selectedInvoice;
         public Invoice? SelectedInvoice
@@ -28,16 +28,14 @@ namespace Facturon.App.ViewModels
         public InvoiceListViewModel(IInvoiceService invoiceService)
         {
             _invoiceService = invoiceService;
+            Invoices = new ObservableCollection<Invoice>();
         }
 
-        public async Task LoadAsync()
+        public async Task InitializeAsync()
         {
-            Invoices.Clear();
-            var list = await _invoiceService.GetAllAsync();
-            foreach (var invoice in list)
-            {
-                Invoices.Add(invoice);
-            }
+            var list = await _invoiceService.GetInvoicesAsync();
+            Invoices = new ObservableCollection<Invoice>(list);
+            OnPropertyChanged(nameof(Invoices));
         }
     }
 }

@@ -40,6 +40,11 @@ namespace Facturon.Services
             return await _invoiceRepository.GetAllAsync();
         }
 
+        public async Task<List<Invoice>> GetInvoicesAsync()
+        {
+            return await GetAllAsync();
+        }
+
         private async Task<ValidationResult> ValidateInvoiceAsync(Invoice invoice)
         {
             var result = new ValidationResult();
