@@ -50,7 +50,6 @@ namespace Facturon.Services
             if (product == null || !product.Active)
                 return Result.Fail("Invalid product");
             var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
-            var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
 
             if (item.Quantity <= 0)
                 return Result.Fail("Quantity must be greater than zero");

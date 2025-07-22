@@ -93,14 +93,14 @@ namespace Facturon.Tests.Services
         public async Task CalculateTotalsAsync_ComputesTotalsCorrectly()
         {
             var tax = new TaxRate { Id = 1, Code = "A", Value = 10 };
-            var product = new Product { Id = 1, Active = true, TaxRate = tax };
+            var product = new Product { Id = 1, Active = true, TaxRate = tax, TaxRateId = 1 };
 
             var invoice = new Invoice
             {
                 Items = new List<InvoiceItem>
                 {
-                    new InvoiceItem { Quantity = 2, UnitPrice = 10, Product = product, TaxRateValue = 10 },
-                    new InvoiceItem { Quantity = 1, UnitPrice = 20, Product = product, TaxRateValue = 10 }
+                    new InvoiceItem { Quantity = 2, UnitPrice = 10, Product = product, TaxRateId = 1, TaxRate = tax, TaxRateValue = 10 },
+                    new InvoiceItem { Quantity = 1, UnitPrice = 20, Product = product, TaxRateId = 1, TaxRate = tax, TaxRateValue = 10 }
                 }
             };
 
