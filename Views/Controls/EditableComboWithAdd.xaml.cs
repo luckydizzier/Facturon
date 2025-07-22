@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Facturon.App.Views
+namespace Facturon.App.Views.Controls
 {
     public partial class EditableComboWithAdd : UserControl
     {
