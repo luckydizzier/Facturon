@@ -29,11 +29,17 @@ namespace Facturon.Domain.Entities
         {
             get
             {
+                decimal net;
                 if (Invoice?.IsGrossBased == true)
                 {
-                    return Quantity * UnitPrice / (1 + TaxRateValue / 100m);
+                    net = Quantity * UnitPrice / (1 + TaxRateValue / 100m);
                 }
-                return Quantity * UnitPrice;
+                else
+                {
+                    net = Quantity * UnitPrice;
+                }
+
+                return Math.Round(net, 2);
             }
         }
 
@@ -42,12 +48,21 @@ namespace Facturon.Domain.Entities
         {
             get
             {
+                decimal gross;
                 if (Invoice?.IsGrossBased == true)
                 {
-                    return Quantity * UnitPrice;
+                    gross = Quantity * UnitPrice;
                 }
-                return Quantity * UnitPrice * (1 + TaxRateValue / 100m);
+                else
+                {
+                    gross = Quantity * UnitPrice * (1 + TaxRateValue / 100m);
+                }
+
+                return Math.Round(gross, 2);
             }
         }
+
+        [NotMapped]
+        public decimal TaxAmount => Math.Round(GrossAmount - NetAmount, 2);
     }
 }

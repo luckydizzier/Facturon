@@ -123,7 +123,16 @@ namespace Facturon.App.ViewModels
                 {
                     TotalNet = Math.Round(totals.TotalNet, 2),
                     TotalVat = Math.Round(totals.TotalVat, 2),
-                    TotalGross = Math.Round(totals.TotalGross, 2)
+                    TotalGross = Math.Round(totals.TotalGross, 2),
+                    ByTaxRate = totals.ByTaxRate
+                        .Select(tg => new TaxRateTotal
+                        {
+                            TaxCode = tg.TaxCode,
+                            Net = Math.Round(tg.Net, 2),
+                            Vat = Math.Round(tg.Vat, 2),
+                            Gross = Math.Round(tg.Gross, 2)
+                        })
+                        .ToList()
                 };
             }
             else
@@ -142,7 +151,16 @@ namespace Facturon.App.ViewModels
             {
                 TotalNet = Math.Round(totals.TotalNet, 2),
                 TotalVat = Math.Round(totals.TotalVat, 2),
-                TotalGross = Math.Round(totals.TotalGross, 2)
+                TotalGross = Math.Round(totals.TotalGross, 2),
+                ByTaxRate = totals.ByTaxRate
+                    .Select(tg => new TaxRateTotal
+                    {
+                        TaxCode = tg.TaxCode,
+                        Net = Math.Round(tg.Net, 2),
+                        Vat = Math.Round(tg.Vat, 2),
+                        Gross = Math.Round(tg.Gross, 2)
+                    })
+                    .ToList()
             };
             OnPropertyChanged(nameof(InvoiceItems));
         }

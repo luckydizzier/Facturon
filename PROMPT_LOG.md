@@ -148,3 +148,9 @@ Added `IsGrossBased` property in `InvoiceDetailViewModel` to trigger total recal
 
 ## [test_agent] Update tests for gross/net handling
 Adjusted invoice item service tests and added gross-based totals test.
+## [domain_agent] Round line and total amounts
+Implemented rounding for NetAmount, GrossAmount and new TaxAmount properties. Updated totals calculation and added rounding test.
+## [ui_agent] VAT breakdown view
+Added tax amount column and totals per VAT rate in invoice detail.
+## [ui_agent] Navigation tweaks
+Default focus on invoice list, arrow navigation for items, and new Esc exit dialog.
