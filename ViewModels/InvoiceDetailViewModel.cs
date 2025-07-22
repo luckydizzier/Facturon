@@ -14,11 +14,28 @@ namespace Facturon.App.ViewModels
     {
         private readonly IInvoiceService _invoiceService;
         private readonly MainViewModel _mainViewModel;
+        public EditableComboWithAddViewModel<Supplier> SupplierPickerVM { get; }
+        public EditableComboWithAddViewModel<Product> ProductPickerVM { get; }
+        public EditableComboWithAddViewModel<Unit> UnitPickerVM { get; }
+        public EditableComboWithAddViewModel<TaxRate> TaxRatePickerVM { get; }
+        public EditableComboWithAddViewModel<ProductGroup> ProductGroupPickerVM { get; }
 
-        public InvoiceDetailViewModel(IInvoiceService invoiceService, MainViewModel mainViewModel)
+        public InvoiceDetailViewModel(
+            IInvoiceService invoiceService,
+            MainViewModel mainViewModel,
+            IEntityService<Supplier> supplierService,
+            IEntityService<Product> productService,
+            IEntityService<Unit> unitService,
+            IEntityService<TaxRate> taxRateService,
+            IEntityService<ProductGroup> productGroupService)
         {
             _invoiceService = invoiceService;
             _mainViewModel = mainViewModel;
+            SupplierPickerVM = new EditableComboWithAddViewModel<Supplier>(supplierService);
+            ProductPickerVM = new EditableComboWithAddViewModel<Product>(productService);
+            UnitPickerVM = new EditableComboWithAddViewModel<Unit>(unitService);
+            TaxRatePickerVM = new EditableComboWithAddViewModel<TaxRate>(taxRateService);
+            ProductGroupPickerVM = new EditableComboWithAddViewModel<ProductGroup>(productGroupService);
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
             _mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
         }

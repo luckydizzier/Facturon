@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Facturon.Data;
 using Facturon.Repositories;
 using Facturon.Services;
+using Facturon.Domain.Entities;
 using Facturon.App.ViewModels;
 using Facturon.App.Views;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,12 @@ namespace Facturon.App
                     services.AddScoped<ISupplierService, SupplierService>();
                     services.AddScoped<ITaxRateService, TaxRateService>();
                     services.AddScoped<IUnitService, UnitService>();
+
+                    services.AddScoped<IEntityService<Supplier>, SupplierService>();
+                    services.AddScoped<IEntityService<Product>, ProductService>();
+                    services.AddScoped<IEntityService<Unit>, UnitService>();
+                    services.AddScoped<IEntityService<TaxRate>, TaxRateService>();
+                    services.AddScoped<IEntityService<ProductGroup>, ProductGroupService>();
 
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<InvoiceListViewModel>();
