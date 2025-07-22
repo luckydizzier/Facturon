@@ -32,7 +32,16 @@ namespace Facturon.Services
 
         public async Task<Invoice?> GetByIdAsync(int id)
         {
-            return await _invoiceRepository.GetByIdAsync(id);
+            return await _invoiceRepository.AsQueryable()
+                .Where(i => i.Id == id)
+                .Include(i => i.Items)
+                    .ThenInclude(it => it.Product)
+                        .ThenInclude(p => p.Unit)
+                .Include(i => i.Items)
+                    .ThenInclude(it => it.Product)
+                        .ThenInclude(p => p.TaxRate)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Invoice>> GetAllAsync()

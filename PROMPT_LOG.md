@@ -83,3 +83,12 @@ Created xUnit test project under `Tests` with Moq and initial tests for InvoiceS
 ## [ui_agent] Add missing view constructors
 Added constructors in InvoiceListView and InvoiceDetailView to call InitializeComponent so their XAML content renders.
 
+## [service_agent] Load invoice items in GetByIdAsync
+Enhanced InvoiceService.GetByIdAsync to eagerly load invoice items and related
+product data with Include/ThenInclude chains.
+
+## [ui_agent] Load selected invoice details
+Introduced SelectedInvoice property in MainViewModel and updated
+InvoiceDetailViewModel to subscribe to selection changes, load full invoice
+details via IInvoiceService, and expose an ObservableCollection for binding.
+
