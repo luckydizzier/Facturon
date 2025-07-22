@@ -4,11 +4,9 @@ using Facturon.Domain.Entities;
 
 namespace Facturon.Services
 {
-    public interface IUnitService
+    public interface IUnitService : IEntityService<Unit>
     {
         Task<Unit?> GetByIdAsync(int id);
-        Task<List<Unit>> GetAllAsync();
-        Task<Result> CreateAsync(Unit unit);
         Task<Result> UpdateAsync(Unit unit);
         Task<Result> DeleteAsync(int id);
     }

@@ -163,3 +163,9 @@ Added x:Name and AutomationProperties.Name on key controls for Appium tests.
 
 ## [test_agent] Add WinAppDriver UI test
 Created InvoiceUITests using MSTest and Appium WebDriver.
+## [editable-combo-agent] Add generic editable combo components and services
+- Introduced IEntityService for generic CRUD operations and updated entity service interfaces.
+- Added EditableComboWithAdd user control with accompanying view model.
+- Created basic EntityCreateDialog and related view model for inline creation.
+- Added interfaces for confirmation and navigation services.
+
