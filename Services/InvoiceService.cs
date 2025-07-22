@@ -181,9 +181,7 @@ namespace Facturon.Services
 
             foreach (var item in invoice.Items)
             {
-                var product = item.Product ?? await _productRepository.GetByIdAsync(item.ProductId);
-                if (product == null) continue;
-                var taxRate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
+                var taxRate = item.TaxRate ?? await _taxRateRepository.GetByIdAsync(item.TaxRateId);
                 var net = item.Quantity * item.UnitPrice;
                 var vat = net * item.TaxRateValue / 100m;
                 var gross = net + vat;
