@@ -115,3 +115,6 @@ Implemented new GetTotalsAsync method in InvoiceService and interface. InvoiceTo
 
 ## [ui_agent] Display rounded invoice totals in detail view
 InvoiceDetailViewModel loads rounded totals on selection change and InvoiceDetailView shows the values under the item grid.
+
+## [ui_agent] Display Tax Rate in Invoice Items Grid
+Added Tax % column to InvoiceDetailView bound to InvoiceItem.TaxRateValue with right-aligned formatting.

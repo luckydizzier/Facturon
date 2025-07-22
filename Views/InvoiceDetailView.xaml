@@ -30,6 +30,14 @@
                                     Binding="{Binding Quantity}"/>
                 <DataGridTextColumn Header="Unit price"
                                     Binding="{Binding UnitPrice}"/>
+                <DataGridTextColumn Header="Tax %"
+                                    Binding="{Binding TaxRateValue, StringFormat=F0}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="Net amount"
                                     Binding="{Binding NetAmount}"/>
                 <DataGridTextColumn Header="Gross amount"
