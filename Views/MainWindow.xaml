@@ -5,7 +5,9 @@
         xmlns:viewModels="clr-namespace:Facturon.App.ViewModels"
         Title="Facturon"
         Height="450"
-        Width="800">
+        Width="800"
+        Loaded="Window_Loaded"
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate DataType="{x:Type viewModels:InvoiceListViewModel}">
@@ -14,7 +16,6 @@
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding OpenInvoiceCommand}"/>
-        <KeyBinding Key="Escape" Command="{Binding CloseDetailCommand}"/>
         <KeyBinding Key="Insert" Command="{Binding NewInvoiceCommand}"/>
         <KeyBinding Key="Delete" Command="{Binding DeleteInvoiceCommand}"/>
     </Window.InputBindings>
@@ -23,7 +24,7 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <views:InvoiceListView DataContext="{Binding InvoiceList}" />
+        <views:InvoiceListView x:Name="InvoiceListHost" DataContext="{Binding InvoiceList}" />
         <views:InvoiceDetailView Grid.Column="1"
                                 DataContext="{Binding InvoiceDetail}"
                                 Visibility="{Binding DataContext.DetailVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />

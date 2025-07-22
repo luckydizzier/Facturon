@@ -11,6 +11,11 @@ namespace Facturon.Domain.Entities
         public int SupplierId { get; set; }
         public int PaymentMethodId { get; set; }
 
+        /// <summary>
+        /// Indicates whether invoice item prices are entered including VAT.
+        /// </summary>
+        public bool IsGrossBased { get; set; }
+
         public required virtual Supplier Supplier { get; set; }
         public required virtual PaymentMethod PaymentMethod { get; set; }
         public virtual List<InvoiceItem> Items { get; set; } = new();
