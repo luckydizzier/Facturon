@@ -24,7 +24,7 @@ namespace Facturon.App.Views
         {
             if (e.Key == Key.Enter)
             {
-                if (DataContext is INewItemCommandSource cmdSrc && cmdSrc.CheckIfNewItemCommand?.CanExecute(null) == true)
+                if (DataContext is ICommandSource cmdSrc && cmdSrc.CheckIfNewItemCommand?.CanExecute(null) == true)
                 {
                     cmdSrc.CheckIfNewItemCommand.Execute(null);
                     e.Handled = true;
@@ -34,14 +34,14 @@ namespace Facturon.App.Views
 
         private void ComboBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (DataContext is INewItemCommandSource cmdSrc && cmdSrc.CheckIfNewItemCommand?.CanExecute(null) == true)
+            if (DataContext is ICommandSource cmdSrc && cmdSrc.CheckIfNewItemCommand?.CanExecute(null) == true)
             {
                 cmdSrc.CheckIfNewItemCommand.Execute(null);
             }
         }
     }
 
-    public interface INewItemCommandSource
+    public interface ICommandSource
     {
         ICommand CheckIfNewItemCommand { get; }
     }
