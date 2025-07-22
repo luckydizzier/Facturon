@@ -157,3 +157,9 @@ Default focus on invoice list, arrow navigation for items, and new Esc exit dial
 
 ## [ui_agent] Dynamic item VAT recalculation
 Implemented InvoiceItemViewModel with recomputation logic. InvoiceDetailViewModel now updates item amounts when pricing mode toggles. Added unit tests for RecalculateAmounts.
+
+## [ui_agent] Add automation identifiers for InvoiceDetailView
+Added x:Name and AutomationProperties.Name on key controls for Appium tests.
+
+## [test_agent] Add WinAppDriver UI test
+Created InvoiceUITests using MSTest and Appium WebDriver.
