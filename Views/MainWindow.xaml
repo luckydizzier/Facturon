@@ -22,6 +22,6 @@
         <views:InvoiceListView DataContext="{Binding InvoiceList}" />
         <views:InvoiceDetailView Grid.Column="1"
                                 DataContext="{Binding InvoiceDetail}"
-                                Visibility="{Binding DetailVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                Visibility="{Binding DataContext.DetailVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
     </Grid>
 </Window>
