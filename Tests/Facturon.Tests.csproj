@@ -14,5 +14,6 @@
     <ProjectReference Include="..\Domain\Facturon.Domain.csproj" />
     <ProjectReference Include="..\Repositories\Facturon.Repositories.csproj" />
     <ProjectReference Include="..\Services\Facturon.Services.csproj" />
+    <ProjectReference Include="..\Startup\Facturon.App.csproj" />
   </ItemGroup>
 </Project>
