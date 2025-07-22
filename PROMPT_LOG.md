@@ -62,3 +62,5 @@ Added a check in DbInitializer to run EnsureCreated when the project has no migr
 ## [db_agent] Fix missing System.Linq using in DbInitializer
 ## [db_agent] Seed invoices and sample data
 Added invoice and invoice item seeding plus additional mock products, suppliers, units, groups, rates, and payment methods.
+## [orchestrator_agent] Wire up startup and UI display
+Injected MainWindow and MainViewModel via dependency injection, logged UI startup, and simplified MainWindow layout to host InvoiceListView only.
