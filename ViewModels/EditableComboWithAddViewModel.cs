@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Facturon.Services;
-using Facturon.App.Views;
+using Facturon.App.Views.Controls;
 using System;
 
 namespace Facturon.App.ViewModels
