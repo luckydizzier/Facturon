@@ -59,3 +59,4 @@ Set Unit, ProductGroup, and TaxRate navigation properties when creating Product 
 Created new DbInitializer at Data/DbInitializer.cs with migration checks, schema validation, and optional seeding. Updated startup to use it.
 ## [db_agent] Ensure database creation when no migrations present
 Added a check in DbInitializer to run EnsureCreated when the project has no migrations, preventing missing table errors on first run.
+## [db_agent] Fix missing System.Linq using in DbInitializer
