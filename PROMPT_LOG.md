@@ -154,3 +154,6 @@ Implemented rounding for NetAmount, GrossAmount and new TaxAmount properties. Up
 Added tax amount column and totals per VAT rate in invoice detail.
 ## [ui_agent] Navigation tweaks
 Default focus on invoice list, arrow navigation for items, and new Esc exit dialog.
+
+## [ui_agent] Dynamic item VAT recalculation
+Implemented InvoiceItemViewModel with recomputation logic. InvoiceDetailViewModel now updates item amounts when pricing mode toggles. Added unit tests for RecalculateAmounts.

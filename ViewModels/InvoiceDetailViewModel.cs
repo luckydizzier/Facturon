@@ -19,7 +19,7 @@ namespace Facturon.App.ViewModels
         {
             _invoiceService = invoiceService;
             _mainViewModel = mainViewModel;
-            InvoiceItems = new ObservableCollection<InvoiceItem>();
+            InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
             _mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
         }
 
@@ -48,6 +48,8 @@ namespace Facturon.App.ViewModels
                 {
                     Invoice.IsGrossBased = value;
                     OnPropertyChanged();
+                    foreach (var item in InvoiceItems)
+                        item.RecalculateAmounts(value);
                     _ = RecalculateTotalsAsync();
                 }
             }
@@ -67,8 +69,8 @@ namespace Facturon.App.ViewModels
             }
         }
 
-        private ObservableCollection<InvoiceItem> _invoiceItems;
-        public ObservableCollection<InvoiceItem> InvoiceItems
+        private ObservableCollection<InvoiceItemViewModel> _invoiceItems;
+        public ObservableCollection<InvoiceItemViewModel> InvoiceItems
         {
             get => _invoiceItems;
             private set
@@ -113,7 +115,10 @@ namespace Facturon.App.ViewModels
 
             var full = await _invoiceService.GetByIdAsync(_mainViewModel.SelectedInvoice.Id);
             Invoice = full;
-            InvoiceItems = new ObservableCollection<InvoiceItem>(full?.Items ?? new List<InvoiceItem>());
+            InvoiceItems = new ObservableCollection<InvoiceItemViewModel>(
+                full?.Items.Select(i => new InvoiceItemViewModel(i)) ?? new List<InvoiceItemViewModel>());
+            foreach (var item in InvoiceItems)
+                item.RecalculateAmounts(IsGrossBased);
             OnPropertyChanged(nameof(IsGrossBased));
 
             if (full != null)
