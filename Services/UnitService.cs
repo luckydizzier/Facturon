@@ -6,7 +6,7 @@ using Facturon.Repositories;
 
 namespace Facturon.Services
 {
-    public class UnitService : IUnitService, IEntityService<Unit>
+    public class UnitService : IUnitService
     {
         private readonly IUnitRepository _unitRepository;
         private readonly IProductRepository _productRepository;
@@ -63,17 +63,6 @@ namespace Facturon.Services
 
             await _unitRepository.DeleteAsync(id);
             return Result.Ok();
-        }
-
-        async Task<IEnumerable<Unit>> IEntityService<Unit>.GetAllAsync()
-        {
-            return await GetAllAsync();
-        }
-
-        async Task<Unit> IEntityService<Unit>.CreateAsync(Unit entity)
-        {
-            await _unitRepository.AddAsync(entity);
-            return entity;
         }
     }
 }

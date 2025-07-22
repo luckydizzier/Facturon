@@ -7,7 +7,7 @@ using Facturon.Repositories;
 
 namespace Facturon.Services
 {
-    public class ProductService : IProductService, IEntityService<Product>
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IUnitRepository _unitRepository;
@@ -95,17 +95,6 @@ namespace Facturon.Services
             if (taxRate == null || !taxRate.Active) return false;
 
             return true;
-        }
-
-        async Task<IEnumerable<Product>> IEntityService<Product>.GetAllAsync()
-        {
-            return await GetAllAsync();
-        }
-
-        async Task<Product> IEntityService<Product>.CreateAsync(Product entity)
-        {
-            await _productRepository.AddAsync(entity);
-            return entity;
         }
     }
 }

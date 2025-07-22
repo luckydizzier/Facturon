@@ -6,7 +6,7 @@ using Facturon.Repositories;
 
 namespace Facturon.Services
 {
-    public class SupplierService : ISupplierService, IEntityService<Supplier>
+    public class SupplierService : ISupplierService
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly IInvoiceRepository _invoiceRepository;
@@ -63,17 +63,6 @@ namespace Facturon.Services
 
             await _supplierRepository.DeleteAsync(id);
             return Result.Ok();
-        }
-
-        async Task<IEnumerable<Supplier>> IEntityService<Supplier>.GetAllAsync()
-        {
-            return await GetAllAsync();
-        }
-
-        async Task<Supplier> IEntityService<Supplier>.CreateAsync(Supplier entity)
-        {
-            await _supplierRepository.AddAsync(entity);
-            return entity;
         }
     }
 }
