@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Diagnostics;
 using Facturon.Services;
 
 namespace Facturon.App.ViewModels
@@ -31,6 +32,7 @@ namespace Facturon.App.ViewModels
 
         public MainViewModel(IInvoiceService invoiceService)
         {
+            Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
             InvoiceList = new InvoiceListViewModel(invoiceService);
 

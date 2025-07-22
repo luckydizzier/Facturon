@@ -77,3 +77,4 @@ Added visibility property with change notification for toggling the detail view.
 Updated binding in MainWindow.xaml to reference DetailVisible from window context via RelativeSource.
 ## [ui_agent] Fix DataContext binding for DetailVisible
 Referenced DataContext.DetailVisible when binding InvoiceDetailView visibility in MainWindow.xaml to resolve WPF error.
+## [ui_agent] Add debug logging and no-data view
