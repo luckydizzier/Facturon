@@ -60,3 +60,5 @@ Created new DbInitializer at Data/DbInitializer.cs with migration checks, schema
 ## [db_agent] Ensure database creation when no migrations present
 Added a check in DbInitializer to run EnsureCreated when the project has no migrations, preventing missing table errors on first run.
 ## [db_agent] Fix missing System.Linq using in DbInitializer
+## [db_agent] Seed invoices and sample data
+Added invoice and invoice item seeding plus additional mock products, suppliers, units, groups, rates, and payment methods.
