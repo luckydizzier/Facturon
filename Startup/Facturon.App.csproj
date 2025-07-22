@@ -17,7 +17,14 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <Compile Include="..\ViewModels\**\*.cs" />
-    <Page Include="..\Views\**\*.xaml" />
-    <Page Include="..\Themes\**\*.xaml" />
+    <Compile Include="..\Views\**\*.cs">
+      <Link>Views\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Page Include="..\Views\**\*.xaml">
+      <Link>Views\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Page>
+    <Page Include="..\Themes\**\*.xaml">
+      <Link>Themes\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Page>
 </ItemGroup>
 </Project>
