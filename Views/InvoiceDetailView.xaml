@@ -25,6 +25,7 @@
                   ItemsSource="{Binding InvoiceItems}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
+                  SelectionUnit="FullRow"
                   Margin="0,10,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product"
@@ -41,6 +42,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Tax amount"
+                                    Binding="{Binding TaxAmount, StringFormat=F2}"/>
                 <DataGridTextColumn Header="Net amount"
                                     Binding="{Binding NetAmount, StringFormat=F2}"/>
                 <DataGridTextColumn Header="Gross amount"
@@ -67,6 +70,18 @@
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Total:" Margin="0,5,0,0" />
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding InvoiceTotals.GrossTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
             </Grid>
+            <DataGrid ItemsSource="{Binding InvoiceTotals.ByTaxRate}"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      Margin="0,10,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Tax %" Binding="{Binding TaxCode}" />
+                    <DataGridTextColumn Header="Net" Binding="{Binding Net, StringFormat=F2}" />
+                    <DataGridTextColumn Header="VAT" Binding="{Binding Vat, StringFormat=F2}" />
+                    <DataGridTextColumn Header="Gross" Binding="{Binding Gross, StringFormat=F2}" />
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </UserControl>

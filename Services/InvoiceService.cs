@@ -199,6 +199,10 @@ namespace Facturon.Services
                     gross = net + vat;
                 }
 
+                net = Math.Round(net, 2);
+                vat = Math.Round(vat, 2);
+                gross = Math.Round(gross, 2);
+
                 var codeKey = taxRate?.Code ?? string.Empty;
                 if (!groups.TryGetValue(codeKey, out var tg))
                 {

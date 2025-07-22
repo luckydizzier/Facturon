@@ -21,13 +21,9 @@ namespace Facturon.App.Views
             if (e.Key == System.Windows.Input.Key.Escape)
             {
                 e.Handled = true;
-                var result = MessageBox.Show(
-                    "Are you sure you want to exit?",
-                    "Confirm Exit",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No);
-                if (result == MessageBoxResult.Yes)
+                var dlg = new ConfirmExitWindow { Owner = this };
+                var result = dlg.ShowDialog();
+                if (result == true)
                     Close();
             }
         }

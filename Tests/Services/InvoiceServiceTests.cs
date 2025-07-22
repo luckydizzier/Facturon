@@ -137,5 +137,27 @@ namespace Facturon.Tests.Services
             Assert.Equal(30m, totals.TotalVat);
             Assert.Equal(330m, totals.TotalGross);
         }
+
+        [Fact]
+        public async Task CalculateTotalsAsync_RoundsToTwoDecimals()
+        {
+            var tax = new TaxRate { Id = 1, Code = "A", Value = 17.5m };
+            var product = new Product { Id = 1, Active = true, TaxRate = tax, TaxRateId = 1 };
+
+            var invoice = new Invoice
+            {
+                Items = new List<InvoiceItem>
+                {
+                    new InvoiceItem { Quantity = 1, UnitPrice = 9.994m, Product = product, TaxRateId = 1, TaxRate = tax, TaxRateValue = 17.5m }
+                }
+            };
+
+            var service = CreateService();
+            var totals = await service.CalculateTotalsAsync(invoice);
+
+            Assert.Equal(9.99m, totals.TotalNet);
+            Assert.Equal(1.75m, totals.TotalVat);
+            Assert.Equal(11.74m, totals.TotalGross);
+        }
     }
 }
