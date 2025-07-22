@@ -12,16 +12,26 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <TextBlock Text="Invoice Number:"/>
-            <TextBox Text="{Binding Invoice.Number}"/>
+            <TextBox x:Name="InvoiceNumberBox"
+                     AutomationProperties.Name="InvoiceNumber"
+                     Text="{Binding Invoice.Number}"/>
             <TextBlock Text="Issuer:" Margin="0,10,0,0"/>
-            <TextBox Text="{Binding Invoice.Issuer}"/>
+            <TextBox x:Name="IssuerBox"
+                     AutomationProperties.Name="Issuer"
+                     Text="{Binding Invoice.Issuer}"/>
             <TextBlock Text="Date:" Margin="0,10,0,0"/>
-            <TextBox Text="{Binding Invoice.Date}"/>
-            <CheckBox Content="Prices include VAT"
+            <TextBox x:Name="InvoiceDatePicker"
+                     AutomationProperties.Name="InvoiceDate"
+                     Text="{Binding Invoice.Date}"/>
+            <CheckBox x:Name="IsGrossBasedCheckBox"
+                      AutomationProperties.Name="PricesIncludeVAT"
+                      Content="Prices include VAT"
                       IsChecked="{Binding IsGrossBased}"
                       Margin="0,10,0,0"/>
         </StackPanel>
-        <DataGrid Grid.Row="1"
+        <DataGrid x:Name="ItemsGrid"
+                  AutomationProperties.Name="InvoiceItems"
+                  Grid.Row="1"
                   ItemsSource="{Binding InvoiceItems}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
@@ -64,11 +74,11 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Net total:" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding InvoiceTotals.NetTotal, StringFormat=F2}" HorizontalAlignment="Right" />
+                <TextBlock x:Name="NetTotalText" AutomationProperties.Name="NetTotal" Grid.Row="0" Grid.Column="1" Text="{Binding InvoiceTotals.NetTotal, StringFormat=F2}" HorizontalAlignment="Right" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Tax:" Margin="0,5,0,0" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding InvoiceTotals.TaxTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
+                <TextBlock x:Name="TaxTotalText" AutomationProperties.Name="TaxTotal" Grid.Row="1" Grid.Column="1" Text="{Binding InvoiceTotals.TaxTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Total:" Margin="0,5,0,0" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding InvoiceTotals.GrossTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
+                <TextBlock x:Name="TotalText" AutomationProperties.Name="InvoiceTotal" Grid.Row="2" Grid.Column="1" Text="{Binding InvoiceTotals.GrossTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
             </Grid>
             <DataGrid ItemsSource="{Binding InvoiceTotals.ByTaxRate}"
                       AutoGenerateColumns="False"
