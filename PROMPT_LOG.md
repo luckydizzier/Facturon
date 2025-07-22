@@ -165,3 +165,6 @@ Added x:Name and AutomationProperties.Name on key controls for Appium tests.
 Created InvoiceUITests using MSTest and Appium WebDriver.
 ## [orchestrator_agent] Editable combo with inline creation
 Implemented generic `EditableComboWithAdd` control and view model. Added `IEntityService<T>` and explicit implementations in services with DI wiring. InvoiceDetailView now hosts supplier/product/unit/tax rate/product group pickers using the new control.
+
+## [ui_agent] Remove unsupported PlaceholderText properties
+Removed PlaceholderText attributes from InvoiceDetailView templates to fix build errors.
