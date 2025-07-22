@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Facturon.App.Views;
 using Facturon.App.ViewModels;
-using Facturon.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Facturon.App
 {
@@ -19,12 +19,17 @@ namespace Facturon.App
             Host = StartupOrchestrator.BuildHost(e.Args);
             StartupOrchestrator.StartAsync(Host).GetAwaiter().GetResult();
 
-            var invoiceService = Host.Services.GetRequiredService<IInvoiceService>();
-            var vm = new MainViewModel(invoiceService);
+            var logger = Host.Services.GetRequiredService<ILoggerFactory>().CreateLogger<App>();
+            logger.LogInformation("Starting UI");
+
+            var window = Host.Services.GetRequiredService<MainWindow>();
+            var vm = Host.Services.GetRequiredService<MainViewModel>();
             vm.InitializeAsync().GetAwaiter().GetResult();
-            var window = new MainWindow { DataContext = vm };
+
+            window.DataContext = vm;
             MainWindow = window;
             window.Show();
+            logger.LogInformation("MainWindow displayed");
         }
 
         protected override void OnExit(ExitEventArgs e)
