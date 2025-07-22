@@ -25,14 +25,28 @@ namespace Facturon.Domain.Entities
         public required virtual TaxRate TaxRate { get; set; }
 
         [NotMapped]
-        public decimal NetAmount => Quantity * UnitPrice;
+        public decimal NetAmount
+        {
+            get
+            {
+                if (Invoice?.IsGrossBased == true)
+                {
+                    return Quantity * UnitPrice / (1 + TaxRateValue / 100m);
+                }
+                return Quantity * UnitPrice;
+            }
+        }
 
         [NotMapped]
         public decimal GrossAmount
         {
             get
             {
-                return NetAmount * (1 + TaxRateValue / 100m);
+                if (Invoice?.IsGrossBased == true)
+                {
+                    return Quantity * UnitPrice;
+                }
+                return Quantity * UnitPrice * (1 + TaxRateValue / 100m);
             }
         }
     }

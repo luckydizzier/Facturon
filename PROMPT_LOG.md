@@ -136,3 +136,15 @@ Set focus to invoice list on load and added escape exit confirmation dialog.
 
 ## [test_agent] Cover gross/net price logic
 New `InvoiceItemServiceTests` verify proper price conversion for gross and net modes.
+
+## [domain_agent] Adjust invoice item amounts for gross/net mode
+`InvoiceItem.NetAmount` and `GrossAmount` now derive values based on `Invoice.IsGrossBased`.
+
+## [service_agent] Preserve entered unit price and compute totals
+`InvoiceItemService` no longer converts `UnitPrice` but sets `Total` depending on invoice mode. `InvoiceService.CalculateTotalsAsync` also respects `IsGrossBased`.
+
+## [ui_agent] Recalculate totals when price mode toggles
+Added `IsGrossBased` property in `InvoiceDetailViewModel` to trigger total recalculation and bound checkbox to it.
+
+## [test_agent] Update tests for gross/net handling
+Adjusted invoice item service tests and added gross-based totals test.

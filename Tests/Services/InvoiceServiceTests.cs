@@ -113,5 +113,29 @@ namespace Facturon.Tests.Services
             Assert.Single(totals.ByTaxRate);
             Assert.Equal("A", totals.ByTaxRate[0].TaxCode);
         }
+
+        [Fact]
+        public async Task CalculateTotalsAsync_ComputesTotals_ForGrossBased()
+        {
+            var tax = new TaxRate { Id = 1, Code = "A", Value = 10 };
+            var product = new Product { Id = 1, Active = true, TaxRate = tax, TaxRateId = 1 };
+
+            var invoice = new Invoice
+            {
+                IsGrossBased = true,
+                Items = new List<InvoiceItem>
+                {
+                    new InvoiceItem { Quantity = 1, UnitPrice = 110, Product = product, TaxRateId = 1, TaxRate = tax, TaxRateValue = 10 },
+                    new InvoiceItem { Quantity = 1, UnitPrice = 220, Product = product, TaxRateId = 1, TaxRate = tax, TaxRateValue = 10 }
+                }
+            };
+
+            var service = CreateService();
+            var totals = await service.CalculateTotalsAsync(invoice);
+
+            Assert.Equal(300m, totals.TotalNet);
+            Assert.Equal(30m, totals.TotalVat);
+            Assert.Equal(330m, totals.TotalGross);
+        }
     }
 }

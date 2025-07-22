@@ -182,9 +182,22 @@ namespace Facturon.Services
             foreach (var item in invoice.Items)
             {
                 var taxRate = item.TaxRate ?? await _taxRateRepository.GetByIdAsync(item.TaxRateId);
-                var net = item.Quantity * item.UnitPrice;
-                var vat = net * item.TaxRateValue / 100m;
-                var gross = net + vat;
+                decimal net;
+                decimal vat;
+                decimal gross;
+
+                if (invoice.IsGrossBased)
+                {
+                    gross = item.Quantity * item.UnitPrice;
+                    net = gross / (1 + item.TaxRateValue / 100m);
+                    vat = gross - net;
+                }
+                else
+                {
+                    net = item.Quantity * item.UnitPrice;
+                    vat = net * item.TaxRateValue / 100m;
+                    gross = net + vat;
+                }
 
                 var codeKey = taxRate?.Code ?? string.Empty;
                 if (!groups.TryGetValue(codeKey, out var tg))
