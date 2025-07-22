@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Collections.Generic;
+using System.Linq;
 using Facturon.Domain.Entities;
 
 namespace Facturon.App.ViewModels
@@ -15,6 +17,7 @@ namespace Facturon.App.ViewModels
                 {
                     _invoice = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(InvoiceItems));
                 }
             }
         }
@@ -32,6 +35,8 @@ namespace Facturon.App.ViewModels
                 }
             }
         }
+
+        public IEnumerable<InvoiceItem> InvoiceItems => Invoice?.Items ?? Enumerable.Empty<InvoiceItem>();
 
         // TODO: Toggle DetailVisible when invoice selection changes
     }

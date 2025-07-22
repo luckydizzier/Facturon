@@ -5,7 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid Margin="10">
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
             <TextBlock Text="Invoice Number:"/>
             <TextBox Text="{Binding Invoice.Number}"/>
             <TextBlock Text="Issuer:" Margin="0,10,0,0"/>
@@ -13,5 +17,23 @@
             <TextBlock Text="Date:" Margin="0,10,0,0"/>
             <TextBox Text="{Binding Invoice.Date}"/>
         </StackPanel>
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding InvoiceItems}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Margin="0,10,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product"
+                                    Binding="{Binding Product.Name}"/>
+                <DataGridTextColumn Header="Quantity"
+                                    Binding="{Binding Quantity}"/>
+                <DataGridTextColumn Header="Unit price"
+                                    Binding="{Binding UnitPrice}"/>
+                <DataGridTextColumn Header="Net amount"
+                                    Binding="{Binding NetAmount}"/>
+                <DataGridTextColumn Header="Gross amount"
+                                    Binding="{Binding GrossAmount}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
