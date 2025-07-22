@@ -15,6 +15,9 @@ namespace Facturon.Services
         public decimal TotalNet { get; set; }
         public decimal TotalVat { get; set; }
         public decimal TotalGross { get; set; }
+        public decimal NetTotal => TotalNet;
+        public decimal TaxTotal => TotalVat;
+        public decimal GrossTotal => TotalGross;
         public List<TaxRateTotal> ByTaxRate { get; set; } = new();
     }
 }

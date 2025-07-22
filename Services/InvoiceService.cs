@@ -161,6 +161,15 @@ namespace Facturon.Services
             return Result.Ok();
         }
 
+        public async Task<InvoiceTotals> GetTotalsAsync(int invoiceId)
+        {
+            var invoice = await GetByIdAsync(invoiceId);
+            if (invoice == null)
+                return new InvoiceTotals();
+
+            return await CalculateTotalsAsync(invoice);
+        }
+
         public async Task<InvoiceTotals> CalculateTotalsAsync(Invoice invoice)
         {
             var totals = new InvoiceTotals();
