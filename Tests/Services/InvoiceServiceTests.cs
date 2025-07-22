@@ -40,15 +40,26 @@ namespace Facturon.Tests.Services
                 }
             };
 
+            var tax = new TaxRate { Id = 5, Code = "T", Value = 15m };
             _supplierRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(new Supplier { Active = true });
             _paymentRepo.Setup(r => r.GetByIdAsync(2)).ReturnsAsync(new PaymentMethod { Active = true });
-            _productRepo.Setup(r => r.GetByIdAsync(3)).ReturnsAsync(new Product { Active = true });
+            _productRepo.Setup(r => r.GetByIdAsync(3)).ReturnsAsync(new Product { Active = true, TaxRateId = 5 });
+            _taxRepo.Setup(r => r.GetByIdAsync(5)).ReturnsAsync(tax);
+
+            Invoice? saved = null;
+            _invoiceRepo.Setup(r => r.AddAsync(It.IsAny<Invoice>()))
+                .Callback<Invoice>(i => saved = i)
+                .Returns(Task.CompletedTask);
 
             var service = CreateService();
             var result = await service.CreateAsync(invoice);
 
             Assert.True(result.Success);
             _invoiceRepo.Verify(r => r.AddAsync(It.IsAny<Invoice>()), Times.Once);
+            Assert.NotNull(saved);
+            var savedItem = Assert.Single(saved!.Items);
+            Assert.Equal(5, savedItem.TaxRateId);
+            Assert.Equal(15m, savedItem.TaxRateValue);
         }
 
         [Fact]

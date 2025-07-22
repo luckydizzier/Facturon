@@ -97,6 +97,8 @@ namespace Facturon.Services
                     else
                     {
                         var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
+                        item.TaxRateId = product.TaxRateId;
+                        item.TaxRate = rate!;
                         item.TaxRateValue = rate?.Value ?? 0m;
                     }
                 }
@@ -119,6 +121,8 @@ namespace Facturon.Services
             {
                 var product = item.Product ?? await _productRepository.GetByIdAsync(item.ProductId);
                 var rate = product?.TaxRate ?? await _taxRateRepository.GetByIdAsync(product?.TaxRateId ?? 0);
+                item.TaxRateId = product?.TaxRateId ?? 0;
+                item.TaxRate = rate!;
                 item.TaxRateValue = rate?.Value ?? 0m;
                 item.DateCreated = DateTime.UtcNow;
                 item.DateUpdated = DateTime.UtcNow;

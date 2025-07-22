@@ -110,6 +110,8 @@ namespace Facturon.Data.Initialization
                         Quantity = qty,
                         UnitPrice = price,
                         Total = qty * price,
+                        TaxRateId = product.TaxRateId,
+                        TaxRate = product.TaxRate,
                         TaxRateValue = product.TaxRate.Value
                     };
                     invoice.Items.Add(item);
