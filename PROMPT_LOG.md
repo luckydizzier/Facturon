@@ -174,6 +174,3 @@ Renamed local ICommandSource interface to avoid clash with WPF and removed `new(
 
 ## [ui_agent] Namespace cleanup for EditableComboWithAdd
 Moved the control and interface into a Controls namespace and updated InvoiceDetailView and ViewModel references.
-
-## [ui_agent] Fix build-time errors
-Resolved missing service parameters and updated control namespace.

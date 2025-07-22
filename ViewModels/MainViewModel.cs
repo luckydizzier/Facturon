@@ -44,13 +44,7 @@ namespace Facturon.App.ViewModels
         public RelayCommand NewInvoiceCommand { get; }
         public RelayCommand DeleteInvoiceCommand { get; }
 
-        public MainViewModel(
-            IInvoiceService invoiceService,
-            IEntityService<Supplier> supplierService,
-            IEntityService<Product> productService,
-            IEntityService<Unit> unitService,
-            IEntityService<TaxRate> taxRateService,
-            IEntityService<ProductGroup> productGroupService)
+        public MainViewModel(IInvoiceService invoiceService)
         {
             Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
@@ -61,14 +55,7 @@ namespace Facturon.App.ViewModels
                     OnPropertyChanged(nameof(SelectedInvoice));
             };
 
-            InvoiceDetail = new InvoiceDetailViewModel(
-                invoiceService,
-                this,
-                supplierService,
-                productService,
-                unitService,
-                taxRateService,
-                productGroupService);
+            InvoiceDetail = new InvoiceDetailViewModel(invoiceService, this);
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, CanOpenSelected);
             CloseDetailCommand = new RelayCommand(CloseDetail, () => DetailVisible);
