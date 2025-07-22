@@ -78,3 +78,5 @@ Updated binding in MainWindow.xaml to reference DetailVisible from window contex
 ## [ui_agent] Fix DataContext binding for DetailVisible
 Referenced DataContext.DetailVisible when binding InvoiceDetailView visibility in MainWindow.xaml to resolve WPF error.
 ## [ui_agent] Add debug logging and no-data view
+## [ui_agent] Add missing view constructors
+Added constructors in InvoiceListView and InvoiceDetailView to call InitializeComponent so their XAML content renders.
