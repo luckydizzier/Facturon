@@ -8,31 +8,31 @@
     <UserControl.Resources>
         <DataTemplate x:Key="SupplierInlineCreate">
             <StackPanel>
-                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
-                <TextBox Text="{Binding Address}" PlaceholderText="Address" />
-                <TextBox Text="{Binding TaxNumber}" PlaceholderText="Tax number" />
+                <TextBox Text="{Binding Name}" />
+                <TextBox Text="{Binding Address}" />
+                <TextBox Text="{Binding TaxNumber}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ProductInlineCreate">
             <StackPanel>
-                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
+                <TextBox Text="{Binding Name}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="UnitInlineCreate">
             <StackPanel>
-                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
-                <TextBox Text="{Binding ShortName}" PlaceholderText="Short" />
+                <TextBox Text="{Binding Name}" />
+                <TextBox Text="{Binding ShortName}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="TaxRateInlineCreate">
             <StackPanel>
-                <TextBox Text="{Binding Code}" PlaceholderText="Code" />
-                <TextBox Text="{Binding Value}" PlaceholderText="Value" />
+                <TextBox Text="{Binding Code}" />
+                <TextBox Text="{Binding Value}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="ProductGroupInlineCreate">
             <StackPanel>
-                <TextBox Text="{Binding Name}" PlaceholderText="Name" />
+                <TextBox Text="{Binding Name}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
