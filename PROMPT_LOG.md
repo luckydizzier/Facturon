@@ -109,3 +109,9 @@ are added or updated. Invoice totals calculation uses the stored value.
 
 ## [test_agent] Adapt tests for fixed tax rate
 Updated InvoiceServiceTests to set TaxRateValue on invoice items for totals.
+
+## [service_agent] Add GetTotalsAsync and totals rounding support
+Implemented new GetTotalsAsync method in InvoiceService and interface. InvoiceTotals now exposes NetTotal, TaxTotal and GrossTotal aliases.
+
+## [ui_agent] Display rounded invoice totals in detail view
+InvoiceDetailViewModel loads rounded totals on selection change and InvoiceDetailView shows the values under the item grid.

@@ -8,6 +8,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <TextBlock Text="Invoice Number:"/>
@@ -35,5 +36,26 @@
                                     Binding="{Binding GrossAmount}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Grid.Row="2" Margin="0,10,0,0">
+            <Separator />
+            <Grid Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Net total:" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding InvoiceTotals.NetTotal, StringFormat=F2}" HorizontalAlignment="Right" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Tax:" Margin="0,5,0,0" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding InvoiceTotals.TaxTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Total:" Margin="0,5,0,0" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding InvoiceTotals.GrossTotal, StringFormat=F2}" HorizontalAlignment="Right" Margin="0,5,0,0" />
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>

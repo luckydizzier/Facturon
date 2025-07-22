@@ -12,6 +12,7 @@ namespace Facturon.Services
         Task<Result> CreateAsync(Invoice invoice);
         Task<Result> UpdateAsync(Invoice invoice);
         Task<Result> DeleteAsync(int id);
+        Task<InvoiceTotals> GetTotalsAsync(int invoiceId);
         Task<InvoiceTotals> CalculateTotalsAsync(Invoice invoice);
     }
 }

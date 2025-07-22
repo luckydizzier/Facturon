@@ -1,4 +1,5 @@
 using System.Windows;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,6 +66,20 @@ namespace Facturon.App.ViewModels
             }
         }
 
+        private InvoiceTotals _invoiceTotals = new InvoiceTotals();
+        public InvoiceTotals InvoiceTotals
+        {
+            get => _invoiceTotals;
+            private set
+            {
+                if (_invoiceTotals != value)
+                {
+                    _invoiceTotals = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private async void MainViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainViewModel.SelectedInvoice))
@@ -77,12 +92,28 @@ namespace Facturon.App.ViewModels
             {
                 Invoice = null;
                 InvoiceItems.Clear();
+                InvoiceTotals = new InvoiceTotals();
                 return;
             }
 
             var full = await _invoiceService.GetByIdAsync(_mainViewModel.SelectedInvoice.Id);
             Invoice = full;
             InvoiceItems = new ObservableCollection<InvoiceItem>(full?.Items ?? new List<InvoiceItem>());
+
+            if (full != null)
+            {
+                var totals = await _invoiceService.GetTotalsAsync(full.Id);
+                InvoiceTotals = new InvoiceTotals
+                {
+                    TotalNet = Math.Round(totals.TotalNet, 2),
+                    TotalVat = Math.Round(totals.TotalVat, 2),
+                    TotalGross = Math.Round(totals.TotalGross, 2)
+                };
+            }
+            else
+            {
+                InvoiceTotals = new InvoiceTotals();
+            }
         }
 
         // TODO: Toggle DetailVisible when invoice selection changes
