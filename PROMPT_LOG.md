@@ -77,3 +77,5 @@ Added visibility property with change notification for toggling the detail view.
 Updated binding in MainWindow.xaml to reference DetailVisible from window context via RelativeSource.
 ## [ui_agent] Fix DataContext binding for DetailVisible
 Referenced DataContext.DetailVisible when binding InvoiceDetailView visibility in MainWindow.xaml to resolve WPF error.
+## [test_agent] Add InvoiceService unit tests
+Created xUnit test project under `Tests` with Moq and initial tests for InvoiceService.
