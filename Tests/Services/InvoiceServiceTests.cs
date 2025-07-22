@@ -88,8 +88,8 @@ namespace Facturon.Tests.Services
             {
                 Items = new List<InvoiceItem>
                 {
-                    new InvoiceItem { Quantity = 2, UnitPrice = 10, Product = product },
-                    new InvoiceItem { Quantity = 1, UnitPrice = 20, Product = product }
+                    new InvoiceItem { Quantity = 2, UnitPrice = 10, Product = product, TaxRateValue = 10 },
+                    new InvoiceItem { Quantity = 1, UnitPrice = 20, Product = product, TaxRateValue = 10 }
                 }
             };
 

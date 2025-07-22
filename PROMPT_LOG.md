@@ -94,3 +94,18 @@ details via IInvoiceService, and expose an ObservableCollection for binding.
 
 ## [domain_agent] Add computed NetAmount and GrossAmount to InvoiceItem
 Implemented readonly properties in InvoiceItem.cs using Product.TaxRate for VAT calculation with null safety. Added NotMapped attributes.
+
+## [domain_agent] Persist tax rate value on InvoiceItem
+Added `TaxRateValue` property to InvoiceItem for storing VAT percentage and updated
+NetAmount and GrossAmount calculations to use it.
+
+## [db_agent] Configure InvoiceItem.TaxRateValue
+Mapped new field in FacturonDbContext with decimal column type and default value
+of 0.
+
+## [service_agent] Populate TaxRateValue on creation
+Invoice and InvoiceItem services now copy the product's TaxRate value when items
+are added or updated. Invoice totals calculation uses the stored value.
+
+## [test_agent] Adapt tests for fixed tax rate
+Updated InvoiceServiceTests to set TaxRateValue on invoice items for totals.

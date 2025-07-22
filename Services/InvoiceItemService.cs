@@ -53,6 +53,7 @@ namespace Facturon.Services
             if (item.UnitPrice < 0)
                 return Result.Fail("Unit price must be non-negative");
 
+            item.TaxRateValue = product.TaxRate?.Value ?? 0m;
             item.DateCreated = DateTime.UtcNow;
             item.DateUpdated = DateTime.UtcNow;
             item.Active = true;
@@ -87,6 +88,7 @@ namespace Facturon.Services
             existing.Quantity = item.Quantity;
             existing.UnitPrice = item.UnitPrice;
             existing.Total = item.Total;
+            existing.TaxRateValue = product.TaxRate?.Value ?? 0m;
             existing.DateUpdated = DateTime.UtcNow;
 
             await _invoiceRepository.UpdateAsync(invoice);

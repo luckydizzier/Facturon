@@ -91,7 +91,14 @@ namespace Facturon.Services
 
                     var product = item.Product ?? await _productRepository.GetByIdAsync(item.ProductId);
                     if (product == null || !product.Active)
+                    {
                         result.AddError($"Items[{i}].ProductId", "Invalid product");
+                    }
+                    else
+                    {
+                        var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
+                        item.TaxRateValue = rate?.Value ?? 0m;
+                    }
                 }
             }
 
@@ -110,6 +117,9 @@ namespace Facturon.Services
 
             foreach (var item in invoice.Items)
             {
+                var product = item.Product ?? await _productRepository.GetByIdAsync(item.ProductId);
+                var rate = product?.TaxRate ?? await _taxRateRepository.GetByIdAsync(product?.TaxRateId ?? 0);
+                item.TaxRateValue = rate?.Value ?? 0m;
                 item.DateCreated = DateTime.UtcNow;
                 item.DateUpdated = DateTime.UtcNow;
                 item.Active = true;
@@ -154,23 +164,22 @@ namespace Facturon.Services
         public async Task<InvoiceTotals> CalculateTotalsAsync(Invoice invoice)
         {
             var totals = new InvoiceTotals();
-            var groups = new Dictionary<int, TaxRateTotal>();
+            var groups = new Dictionary<string, TaxRateTotal>();
 
             foreach (var item in invoice.Items)
             {
                 var product = item.Product ?? await _productRepository.GetByIdAsync(item.ProductId);
                 if (product == null) continue;
                 var taxRate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
-                if (taxRate == null) continue;
-
                 var net = item.Quantity * item.UnitPrice;
-                var vat = net * taxRate.Value / 100m;
+                var vat = net * item.TaxRateValue / 100m;
                 var gross = net + vat;
 
-                if (!groups.TryGetValue(taxRate.Id, out var tg))
+                var codeKey = taxRate?.Code ?? string.Empty;
+                if (!groups.TryGetValue(codeKey, out var tg))
                 {
-                    tg = new TaxRateTotal { TaxCode = taxRate.Code };
-                    groups[taxRate.Id] = tg;
+                    tg = new TaxRateTotal { TaxCode = codeKey };
+                    groups[codeKey] = tg;
                     totals.ByTaxRate.Add(tg);
                 }
 

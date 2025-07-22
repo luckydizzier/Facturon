@@ -80,6 +80,11 @@ namespace Facturon.Data
                 entity.Property(e => e.Active)
                     .HasDefaultValue(true);
 
+                entity.Property(e => e.TaxRateValue)
+                    .HasColumnType("decimal(18,2)")
+                    .HasDefaultValue(0m)
+                    .IsRequired();
+
                 entity.HasIndex(e => e.InvoiceId);
                 entity.HasIndex(e => e.ProductId);
             });
