@@ -91,7 +91,7 @@ namespace Facturon.App.ViewModels
             if (string.IsNullOrWhiteSpace(TypedText))
                 return;
 
-            if (AllItems.Contains(SelectedItem))
+            if (SelectedItem != null && AllItems.Contains(SelectedItem))
                 return;
 
             var result = MessageBox.Show($"\"{TypedText}\" nem létezik. Új elem?",
