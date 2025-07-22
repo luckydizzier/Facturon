@@ -11,6 +11,8 @@ namespace Facturon.Domain.Entities
         public decimal UnitPrice { get; set; }
         public decimal Total { get; set; }
 
+        public int TaxRateId { get; set; }
+
         /// <summary>
         /// VAT percentage captured at the moment of invoicing.
         /// Stored explicitly to keep historical tax values.
@@ -20,6 +22,7 @@ namespace Facturon.Domain.Entities
 
         public required virtual Invoice Invoice { get; set; }
         public required virtual Product Product { get; set; }
+        public required virtual TaxRate TaxRate { get; set; }
 
         [NotMapped]
         public decimal NetAmount => Quantity * UnitPrice;

@@ -12,11 +12,13 @@ namespace Facturon.Services
     {
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ITaxRateRepository _taxRateRepository;
 
-        public InvoiceItemService(IInvoiceRepository invoiceRepository, IProductRepository productRepository)
+        public InvoiceItemService(IInvoiceRepository invoiceRepository, IProductRepository productRepository, ITaxRateRepository taxRateRepository)
         {
             _invoiceRepository = invoiceRepository;
             _productRepository = productRepository;
+            _taxRateRepository = taxRateRepository;
         }
 
         public async Task<InvoiceItem?> GetByIdAsync(int id)
@@ -47,13 +49,17 @@ namespace Facturon.Services
             var product = await _productRepository.GetByIdAsync(item.ProductId);
             if (product == null || !product.Active)
                 return Result.Fail("Invalid product");
+            var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
+            var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
 
             if (item.Quantity <= 0)
                 return Result.Fail("Quantity must be greater than zero");
             if (item.UnitPrice < 0)
                 return Result.Fail("Unit price must be non-negative");
 
-            item.TaxRateValue = product.TaxRate?.Value ?? 0m;
+            item.TaxRateId = product.TaxRateId;
+            item.TaxRate = rate!;
+            item.TaxRateValue = rate?.Value ?? 0m;
             item.DateCreated = DateTime.UtcNow;
             item.DateUpdated = DateTime.UtcNow;
             item.Active = true;
@@ -78,6 +84,7 @@ namespace Facturon.Services
             var product = await _productRepository.GetByIdAsync(item.ProductId);
             if (product == null || !product.Active)
                 return Result.Fail("Invalid product");
+            var rate = product.TaxRate ?? await _taxRateRepository.GetByIdAsync(product.TaxRateId);
 
             if (item.Quantity <= 0)
                 return Result.Fail("Quantity must be greater than zero");
@@ -88,7 +95,9 @@ namespace Facturon.Services
             existing.Quantity = item.Quantity;
             existing.UnitPrice = item.UnitPrice;
             existing.Total = item.Total;
-            existing.TaxRateValue = product.TaxRate?.Value ?? 0m;
+            existing.TaxRateId = product.TaxRateId;
+            existing.TaxRate = rate!;
+            existing.TaxRateValue = rate?.Value ?? 0m;
             existing.DateUpdated = DateTime.UtcNow;
 
             await _invoiceRepository.UpdateAsync(invoice);

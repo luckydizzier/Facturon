@@ -73,6 +73,12 @@ namespace Facturon.Data
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
 
+                entity.HasOne(e => e.TaxRate)
+                    .WithMany()
+                    .HasForeignKey(e => e.TaxRateId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
                 entity.Property(e => e.DateCreated)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
                 entity.Property(e => e.DateUpdated)
@@ -87,6 +93,7 @@ namespace Facturon.Data
 
                 entity.HasIndex(e => e.InvoiceId);
                 entity.HasIndex(e => e.ProductId);
+                entity.HasIndex(e => e.TaxRateId);
             });
 
             modelBuilder.Entity<Product>(entity =>
