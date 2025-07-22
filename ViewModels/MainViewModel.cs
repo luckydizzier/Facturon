@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Facturon.Domain.Entities;
 using Facturon.Services;
 
 namespace Facturon.App.ViewModels
@@ -9,7 +10,20 @@ namespace Facturon.App.ViewModels
         private readonly IInvoiceService _invoiceService;
 
         public InvoiceListViewModel InvoiceList { get; }
-        public InvoiceDetailViewModel InvoiceDetail { get; } = new();
+        public InvoiceDetailViewModel InvoiceDetail { get; }
+
+        public Invoice? SelectedInvoice
+        {
+            get => InvoiceList.SelectedInvoice;
+            set
+            {
+                if (InvoiceList.SelectedInvoice != value)
+                {
+                    InvoiceList.SelectedInvoice = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private bool _detailVisible;
         public bool DetailVisible
@@ -35,6 +49,13 @@ namespace Facturon.App.ViewModels
             Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
             InvoiceList = new InvoiceListViewModel(invoiceService);
+            InvoiceList.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(InvoiceListViewModel.SelectedInvoice))
+                    OnPropertyChanged(nameof(SelectedInvoice));
+            };
+
+            InvoiceDetail = new InvoiceDetailViewModel(invoiceService, this);
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, CanOpenSelected);
             CloseDetailCommand = new RelayCommand(CloseDetail, () => DetailVisible);
