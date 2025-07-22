@@ -66,3 +66,6 @@ Added invoice and invoice item seeding plus additional mock products, suppliers,
 Injected MainWindow and MainViewModel via dependency injection, logged UI startup, and simplified MainWindow layout to host InvoiceListView only.
 ## [ui_agent] Fix MainWindow resource loading and layout
 Ensured MainWindow.xaml is compiled as a resource by linking Views in the WPF csproj, added missing code-behind, and restored the view layout with InvoiceListView and InvoiceDetailView bindings.
+
+## [ui_agent] Implement two-pane layout in MainWindow
+Reorganized MainWindow.xaml to bind InvoiceListView and InvoiceDetailView with conditional visibility.
