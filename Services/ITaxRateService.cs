@@ -7,6 +7,7 @@ namespace Facturon.Services
     public interface ITaxRateService : IEntityService<TaxRate>
     {
         Task<TaxRate?> GetByIdAsync(int id);
+        Task<List<TaxRate>> GetActiveForDateAsync(DateTime date);
         Task<Result> UpdateAsync(TaxRate rate);
         Task<Result> DeleteAsync(int id);
     }
