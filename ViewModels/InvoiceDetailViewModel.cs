@@ -14,23 +14,61 @@ namespace Facturon.App.ViewModels
     {
         private readonly IInvoiceService _invoiceService;
         private readonly IPaymentMethodService _paymentMethodService;
+        private readonly IProductService _productService;
+        private readonly IUnitService _unitService;
+        private readonly ITaxRateService _taxRateService;
         private readonly IConfirmationDialogService _confirmationService;
         private readonly INewEntityDialogService<PaymentMethod> _paymentMethodDialogService;
+        private readonly INewEntityDialogService<Product> _productDialogService;
+        private readonly INewEntityDialogService<Unit> _unitDialogService;
+        private readonly INewEntityDialogService<TaxRate> _taxDialogService;
+        private readonly IInvoiceItemService _invoiceItemService;
         private readonly MainViewModel _mainViewModel;
 
         public PaymentMethodSelectorViewModel PaymentMethodSelector { get; }
+        public InvoiceItemInputViewModel InputRow { get; }
+        public InvoiceItemViewModel? SelectedInvoiceItem
+        {
+            get => _selectedInvoiceItem;
+            set
+            {
+                if (_selectedInvoiceItem != value)
+                {
+                    _selectedInvoiceItem = value;
+                    OnPropertyChanged();
+                    DeleteSelectedItemCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        private InvoiceItemViewModel? _selectedInvoiceItem;
+        public RelayCommand DeleteSelectedItemCommand { get; }
 
         public InvoiceDetailViewModel(
             IInvoiceService invoiceService,
             IPaymentMethodService paymentMethodService,
+            IProductService productService,
+            IUnitService unitService,
+            ITaxRateService taxRateService,
+            IInvoiceItemService invoiceItemService,
             IConfirmationDialogService confirmationService,
             INewEntityDialogService<PaymentMethod> paymentMethodDialogService,
+            INewEntityDialogService<Product> productDialogService,
+            INewEntityDialogService<Unit> unitDialogService,
+            INewEntityDialogService<TaxRate> taxDialogService,
             MainViewModel mainViewModel)
         {
             _invoiceService = invoiceService;
             _paymentMethodService = paymentMethodService;
+            _productService = productService;
+            _unitService = unitService;
+            _taxRateService = taxRateService;
+            _invoiceItemService = invoiceItemService;
             _confirmationService = confirmationService;
             _paymentMethodDialogService = paymentMethodDialogService;
+            _productDialogService = productDialogService;
+            _unitDialogService = unitDialogService;
+            _taxDialogService = taxDialogService;
             _mainViewModel = mainViewModel;
 
             PaymentMethodSelector = new PaymentMethodSelectorViewModel(
@@ -39,6 +77,19 @@ namespace Facturon.App.ViewModels
                 _paymentMethodDialogService);
             PaymentMethodSelector.InitializeAsync().GetAwaiter().GetResult();
             PaymentMethodSelector.PropertyChanged += PaymentMethodSelectorOnPropertyChanged;
+
+            InputRow = new InvoiceItemInputViewModel(
+                _productService,
+                _unitService,
+                _taxRateService,
+                _confirmationService,
+                _productDialogService,
+                _unitDialogService,
+                _taxDialogService);
+            InputRow.Initialize();
+            InputRow.ItemReadyToAdd += InputRowOnItemReadyToAdd;
+
+            DeleteSelectedItemCommand = new RelayCommand(DeleteSelectedItem, CanDeleteSelectedItem);
 
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
             _mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
@@ -200,6 +251,38 @@ namespace Facturon.App.ViewModels
                 Invoice.PaymentMethod = PaymentMethodSelector.SelectedItem;
                 Invoice.PaymentMethodId = PaymentMethodSelector.SelectedItem.Id;
             }
+        }
+
+        private void InputRowOnItemReadyToAdd(InvoiceItem item)
+        {
+            if (Invoice == null)
+                return;
+
+            item.InvoiceId = Invoice.Id;
+            item.Invoice = Invoice;
+            Invoice.Items.Add(item);
+            var vm = new InvoiceItemViewModel(item);
+            vm.RecalculateAmounts(IsGrossBased);
+            InvoiceItems.Add(vm);
+            _ = RecalculateTotalsAsync();
+        }
+
+        private bool CanDeleteSelectedItem() => SelectedInvoiceItem != null;
+
+        private async void DeleteSelectedItem()
+        {
+            if (SelectedInvoiceItem == null || Invoice == null)
+                return;
+
+            var confirm = await _confirmationService.ConfirmAsync("Delete item", "Are you sure?");
+            if (!confirm)
+                return;
+
+            if (SelectedInvoiceItem.Item.Id != 0)
+                await _invoiceItemService.DeleteAsync(SelectedInvoiceItem.Item.Id);
+            Invoice.Items.Remove(SelectedInvoiceItem.Item);
+            InvoiceItems.Remove(SelectedInvoiceItem);
+            _ = RecalculateTotalsAsync();
         }
 
         // TODO: Toggle DetailVisible when invoice selection changes

@@ -11,6 +11,13 @@ namespace Facturon.App.ViewModels
         private readonly IPaymentMethodService _paymentMethodService;
         private readonly IConfirmationDialogService _confirmationService;
         private readonly INewEntityDialogService<PaymentMethod> _paymentMethodDialogService;
+        private readonly IProductService _productService;
+        private readonly IUnitService _unitService;
+        private readonly ITaxRateService _taxRateService;
+        private readonly INewEntityDialogService<Product> _productDialogService;
+        private readonly INewEntityDialogService<Unit> _unitDialogService;
+        private readonly INewEntityDialogService<TaxRate> _taxDialogService;
+        private readonly IInvoiceItemService _invoiceItemService;
 
         public InvoiceListViewModel InvoiceList { get; }
         public InvoiceDetailViewModel InvoiceDetail { get; }
@@ -50,14 +57,28 @@ namespace Facturon.App.ViewModels
         public MainViewModel(
             IInvoiceService invoiceService,
             IPaymentMethodService paymentMethodService,
+            IProductService productService,
+            IUnitService unitService,
+            ITaxRateService taxRateService,
+            IInvoiceItemService invoiceItemService,
             IConfirmationDialogService confirmationService,
-            INewEntityDialogService<PaymentMethod> paymentMethodDialogService)
+            INewEntityDialogService<PaymentMethod> paymentMethodDialogService,
+            INewEntityDialogService<Product> productDialogService,
+            INewEntityDialogService<Unit> unitDialogService,
+            INewEntityDialogService<TaxRate> taxDialogService)
         {
             Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
             _paymentMethodService = paymentMethodService;
+            _productService = productService;
+            _unitService = unitService;
+            _taxRateService = taxRateService;
+            _invoiceItemService = invoiceItemService;
             _confirmationService = confirmationService;
             _paymentMethodDialogService = paymentMethodDialogService;
+            _productDialogService = productDialogService;
+            _unitDialogService = unitDialogService;
+            _taxDialogService = taxDialogService;
             InvoiceList = new InvoiceListViewModel(invoiceService);
             InvoiceList.PropertyChanged += (s, e) =>
             {
@@ -68,8 +89,15 @@ namespace Facturon.App.ViewModels
             InvoiceDetail = new InvoiceDetailViewModel(
                 invoiceService,
                 _paymentMethodService,
+                _productService,
+                _unitService,
+                _taxRateService,
+                _invoiceItemService,
                 _confirmationService,
                 _paymentMethodDialogService,
+                _productDialogService,
+                _unitDialogService,
+                _taxDialogService,
                 this);
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, CanOpenSelected);
