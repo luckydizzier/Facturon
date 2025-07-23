@@ -250,3 +250,17 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [ui_agent] Add DisplayMemberPath support to EditableComboWithAdd
 - Introduced DisplayMemberPath dependency property and bound ComboBox.DisplayMemberPath.
 - Specified DisplayMemberPath on dialog views using EditableComboWithAdd.
+
+## [startup_agent] Ensure portable defaults
+- StartupOrchestrator now creates `appsettings.json` with an executable-relative
+  database connection when missing and loads configuration from that path.
+- LoggingConfiguration writes logs under `AppContext.BaseDirectory`.
+- Facturon.App.csproj copies the configuration file to the output directory.
+
+## [db_agent] Database path helper
+- Added `DbPathHelper.GetConnectionString` returning the SQLite path near the
+  executable. Startup uses this when no connection string is configured.
+
+## [doc_agent] Document portable usage
+- Added a README section describing automatic generation of configuration,
+  database, and logs beside the executable.

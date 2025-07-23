@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Facturon.Data;
 using Facturon.Repositories;
@@ -22,8 +23,18 @@ namespace Facturon.App
             var builder = Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    config.SetBasePath(AppContext.BaseDirectory);
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    var baseDir = AppContext.BaseDirectory;
+                    var configPath = Path.Combine(baseDir, "appsettings.json");
+
+                    if (!File.Exists(configPath))
+                    {
+                        var defaultJson = "{\n  \"ConnectionStrings\": { \"Default\": \"" +
+                                          $"Data Source={Path.Combine(baseDir, "facturon.db")}" +
+                                          "\" }\n}";
+                        File.WriteAllText(configPath, defaultJson);
+                    }
+
+                    config.AddJsonFile(configPath, optional: false, reloadOnChange: true);
                 })
                 .UseSerilog((context, services, configuration) =>
                 {
@@ -31,7 +42,7 @@ namespace Facturon.App
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    var connectionString = context.Configuration.GetConnectionString("Default");
+                    var connectionString = context.Configuration.GetConnectionString("Default") ?? DbPathHelper.GetConnectionString();
                     services.AddDbContext<FacturonDbContext>(options => options.UseSqlite(connectionString));
 
                     services.AddScoped<IInvoiceRepository, EfInvoiceRepository>();
