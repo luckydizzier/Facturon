@@ -1,0 +1,33 @@
+<Window x:Class="Facturon.App.Views.Dialogs.NewProductGroupDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New Product Group"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="ToolWindow"
+        FocusManager.FocusedElement="{Binding ElementName=NameBox}">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" />
+        <TextBox x:Name="NameBox" Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Group.Name, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Text="Description:" Grid.Row="1" Grid.Column="0" Margin="0,5,5,0" />
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
+                 Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
+            <Button Content="OK" Width="75" Margin="0,0,5,0" IsDefault="True" Command="{Binding SaveCommand}" />
+            <Button Content="Cancel" Width="75" IsCancel="True" Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>

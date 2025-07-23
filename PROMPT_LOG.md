@@ -196,3 +196,8 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 - Created NewTaxRateDialogService and registered it in Startup.
 - Updated NewProductDialog to use EditableComboWithAdd for tax rates.
 - Extended NewProductDialogService and ViewModel to use the new dialog.
+## [ui_agent] Implement product group creation dialog
+- Added NewProductGroupDialog view and view model for inline creation.
+- Created ProductGroupSelectorViewModel and dialog service.
+- Updated NewProductDialog to use editable combo with inline group creation.
+- Registered NewProductGroupDialogService in Startup.
