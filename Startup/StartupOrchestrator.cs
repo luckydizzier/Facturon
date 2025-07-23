@@ -56,6 +56,7 @@ namespace Facturon.App
                     services.AddSingleton<INewEntityDialogService<Product>, NewProductDialogService>();
                     services.AddSingleton<INewEntityDialogService<Unit>, NewUnitDialogService>();
                     services.AddSingleton<INewEntityDialogService<TaxRate>, NewTaxRateDialogService>();
+                    services.AddSingleton<INewEntityDialogService<ProductGroup>, NewProductGroupDialogService>();
 
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<InvoiceListViewModel>();
