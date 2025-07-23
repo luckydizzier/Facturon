@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel Orientation="Horizontal">
         <ComboBox x:Name="Combo"
-                  Width="150"
+                  Width="200"
                   IsEditable="True"
                   ItemsSource="{Binding Items}"
                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
