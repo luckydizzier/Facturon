@@ -169,3 +169,6 @@ Created InvoiceUITests using MSTest and Appium WebDriver.
 - Created basic EntityCreateDialog and related view model for inline creation.
 - Added interfaces for confirmation and navigation services.
 
+
+## [service_agent] Replace WPF FocusNavigationDirection
+Added local FocusNavigationDirection enum to Services and updated INavigationService to avoid WPF dependency.
