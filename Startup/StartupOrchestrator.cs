@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Facturon.Data;
 using Facturon.Repositories;
 using Facturon.Services;
+using Facturon.Domain.Entities;
 using Facturon.App.ViewModels;
 using Facturon.App.Views;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,9 @@ namespace Facturon.App
                     services.AddScoped<ISupplierService, SupplierService>();
                     services.AddScoped<ITaxRateService, TaxRateService>();
                     services.AddScoped<IUnitService, UnitService>();
+
+                    services.AddSingleton<IConfirmationDialogService, ConfirmationDialogService>();
+                    services.AddSingleton<INewEntityDialogService<Supplier>, NewSupplierDialogService>();
 
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<InvoiceListViewModel>();

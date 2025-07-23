@@ -2,6 +2,6 @@ namespace Facturon.Services
 {
     public interface IConfirmationDialogService
     {
-        bool Confirm(string message);
+        Task<bool> ConfirmAsync(string title, string message);
     }
 }

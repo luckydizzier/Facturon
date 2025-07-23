@@ -172,3 +172,10 @@ Created InvoiceUITests using MSTest and Appium WebDriver.
 
 ## [service_agent] Replace WPF FocusNavigationDirection
 Added local FocusNavigationDirection enum to Services and updated INavigationService to avoid WPF dependency.
+
+## [orchestrator_agent] Implement inline entity creation dialog system
+- Added async IConfirmationDialogService interface and WPF implementation.
+- Created INewEntityDialogService<T> abstraction and Supplier dialog service.
+- Added NewSupplierDialog view and view model with keyboard-friendly bindings.
+- Extended EditableComboWithAddViewModel to confirm missing items and create new ones via dialogs.
+- Registered new services in Startup.
