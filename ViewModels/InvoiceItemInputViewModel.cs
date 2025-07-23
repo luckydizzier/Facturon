@@ -54,6 +54,22 @@ namespace Facturon.App.ViewModels
 
         public event Action<InvoiceItem>? ItemReadyToAdd;
 
+        public InvoiceItemViewModel? EditingItem { get; private set; }
+        private bool _isEditing;
+        public bool IsEditing
+        {
+            get => _isEditing;
+            private set
+            {
+                if (_isEditing != value)
+                {
+                    _isEditing = value;
+                    OnPropertyChanged();
+                    AddCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public InvoiceItemInputViewModel(
             IProductService productService,
             IUnitService unitService,
@@ -108,6 +124,12 @@ namespace Facturon.App.ViewModels
             if (!IsValid())
                 return;
 
+            if (IsEditing)
+            {
+                CommitEdit();
+                return;
+            }
+
             var product = ProductSelector.SelectedItem!;
             var tax = TaxRateSelector.SelectedItem!;
             var item = new InvoiceItem
@@ -154,6 +176,50 @@ namespace Facturon.App.ViewModels
             if (product.TaxRate != null)
                 TaxRateSelector.SelectedItem = product.TaxRate;
             NetUnitPrice = product.NetUnitPrice;
+        }
+
+        public void BeginEdit(InvoiceItemViewModel item)
+        {
+            EditingItem = item;
+            IsEditing = true;
+
+            ProductSelector.SelectedItem = item.Product;
+            ProductSelector.Input = item.Product.Name;
+            if (item.Product.Unit != null)
+            {
+                UnitSelector.SelectedItem = item.Product.Unit;
+                UnitSelector.Input = item.Product.Unit.Name;
+            }
+            TaxRateSelector.SelectedItem = item.Item.TaxRate;
+            TaxRateSelector.Input = item.Item.TaxRate.Code;
+            Quantity = item.Quantity;
+            NetUnitPrice = item.UnitPrice;
+        }
+
+        public void CommitEdit()
+        {
+            if (EditingItem == null)
+                return;
+
+            var product = ProductSelector.SelectedItem;
+            var tax = TaxRateSelector.SelectedItem;
+            if (product == null || tax == null)
+                return;
+
+            var invoiceItem = EditingItem.Item;
+            invoiceItem.ProductId = product.Id;
+            invoiceItem.Product = product;
+            invoiceItem.Quantity = Quantity;
+            invoiceItem.UnitPrice = NetUnitPrice;
+            invoiceItem.TaxRateId = tax.Id;
+            invoiceItem.TaxRate = tax;
+            invoiceItem.TaxRateValue = tax.Value;
+
+            EditingItem.RecalculateAmounts(invoiceItem.Invoice?.IsGrossBased ?? false);
+
+            EditingItem = null;
+            IsEditing = false;
+            Clear();
         }
     }
 }

@@ -211,3 +211,5 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 
 ## [ui_agent] Sync detail visibility on selection change
 Implemented UpdateDetailVisibility in InvoiceDetailViewModel to set MainViewModel.DetailVisible based on SelectedInvoice and refresh CloseDetailCommand when hidden.
+## [ui_agent] Enable invoice item editing
+Implemented editing support in InvoiceItemInputViewModel with BeginEdit/CommitEdit. Added UI hooks for F2 or double-click to start editing. Added service UpdateAsync tests and UI test placeholder.
