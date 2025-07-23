@@ -33,7 +33,8 @@ namespace Facturon.Data
                     await db.Database.EnsureCreatedAsync();
                 }
 
-                if (!await ColumnExistsAsync(db, "InvoiceItems", "TaxRateValue"))
+                if (!await ColumnExistsAsync(db, "InvoiceItems", "TaxRateValue")
+                    || !await ColumnExistsAsync(db, "Products", "NetUnitPrice"))
                 {
                     logger.LogWarning("Database schema outdated. Recreating database...");
                     await db.Database.EnsureDeletedAsync();
