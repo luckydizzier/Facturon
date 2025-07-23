@@ -213,3 +213,7 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 Implemented UpdateDetailVisibility in InvoiceDetailViewModel to set MainViewModel.DetailVisible based on SelectedInvoice and refresh CloseDetailCommand when hidden.
 ## [ui_agent] Enable invoice item editing
 Implemented editing support in InvoiceItemInputViewModel with BeginEdit/CommitEdit. Added UI hooks for F2 or double-click to start editing. Added service UpdateAsync tests and UI test placeholder.
+## [orchestrator_agent] Implement Navigation Service
+- Added NavigationService with MoveFocus method using Keyboard and TraversalRequest.
+- Registered INavigationService in StartupOrchestrator.
+- Replaced direct Focus calls in views with NavigationService usage.

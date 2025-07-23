@@ -1,4 +1,7 @@
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using Facturon.Services;
+using Facturon.App;
 
 namespace Facturon.App.Views
 {
@@ -13,7 +16,8 @@ namespace Facturon.App.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            InvoiceListHost.InvoiceList.Focus();
+            var nav = ((App)Application.Current).Host?.Services.GetRequiredService<INavigationService>();
+            nav?.MoveFocus(FocusNavigationDirection.First);
         }
 
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
