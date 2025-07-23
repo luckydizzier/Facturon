@@ -27,6 +27,13 @@ namespace Facturon.Services
             return await _taxRateRepository.GetAllAsync();
         }
 
+        public async Task<List<TaxRate>> GetActiveForDateAsync(DateTime date)
+        {
+            return await _taxRateRepository.GetByConditionAsync(r =>
+                r.Active && r.ValidFrom <= date &&
+                (r.ValidTo >= date));
+        }
+
         public async Task<Result> CreateAsync(TaxRate rate)
         {
             rate.DateCreated = DateTime.UtcNow;

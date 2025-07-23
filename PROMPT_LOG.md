@@ -201,3 +201,7 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 - Created ProductGroupSelectorViewModel and dialog service.
 - Updated NewProductDialog to use editable combo with inline group creation.
 - Registered NewProductGroupDialogService in Startup.
+## [service_agent] Filter tax rates by date
+- Added GetActiveForDateAsync to ITaxRateService and implemented in TaxRateService.
+- Created TaxRateSelectorViewModel to load rates valid on a given date.
+- Updated NewProductDialogViewModel to initialize tax rate selector with today's date.

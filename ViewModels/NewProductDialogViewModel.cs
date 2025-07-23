@@ -18,7 +18,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<ProductGroup> _productGroupDialogService;
 
         public EditableComboWithAddViewModel<Unit> UnitSelector { get; }
-        public EditableComboWithAddViewModel<TaxRate> TaxRateSelector { get; }
+        public TaxRateSelectorViewModel TaxRateSelector { get; }
         public ProductGroupSelectorViewModel ProductGroupSelector { get; }
 
         public Product Product { get; } = new Product
@@ -73,7 +73,7 @@ namespace Facturon.App.ViewModels
 
             UnitSelector = new EditableComboWithAddViewModel<Unit>(_unitService, _confirmationService, _unitDialogService);
             UnitSelector.PropertyChanged += UnitSelectorOnPropertyChanged;
-            TaxRateSelector = new EditableComboWithAddViewModel<TaxRate>(_taxRateService, _confirmationService, _taxRateDialogService);
+            TaxRateSelector = new TaxRateSelectorViewModel(_taxRateService, _confirmationService, _taxRateDialogService);
             TaxRateSelector.PropertyChanged += TaxRateSelectorOnPropertyChanged;
             ProductGroupSelector = new ProductGroupSelectorViewModel(_productGroupService, _confirmationService, _productGroupDialogService);
             ProductGroupSelector.PropertyChanged += ProductGroupSelectorOnPropertyChanged;
@@ -117,7 +117,7 @@ namespace Facturon.App.ViewModels
         public void Initialize()
         {
             UnitSelector.InitializeAsync().GetAwaiter().GetResult();
-            TaxRateSelector.InitializeAsync().GetAwaiter().GetResult();
+            TaxRateSelector.InitializeAsync(DateTime.Today).GetAwaiter().GetResult();
             ProductGroupSelector.InitializeAsync().GetAwaiter().GetResult();
         }
 
