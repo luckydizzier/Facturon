@@ -46,5 +46,13 @@ namespace Facturon.Tests.Ui
             Assert.AreEqual(initialIssuer, issuerBox.Text);
             Assert.AreNotEqual(initialNet, newNet);
         }
+
+        [TestMethod]
+        public void BeginEdit_OnF2_DoesNotCrash()
+        {
+            Assert.IsNotNull(_session);
+            var grid = _session.FindElementByAccessibilityId("InvoiceItems");
+            grid.SendKeys(OpenQA.Selenium.Keys.F2);
+        }
     }
 }
