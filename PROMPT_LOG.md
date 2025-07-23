@@ -264,3 +264,6 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [doc_agent] Document portable usage
 - Added a README section describing automatic generation of configuration,
   database, and logs beside the executable.
+
+## [ui_agent] Add key bindings for item input
+- Bound Enter to AddCommand and Escape to ClearCommand in InvoiceItemInputView. Removed PreviewKeyDown handler.
