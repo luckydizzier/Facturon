@@ -14,10 +14,8 @@
         <views:EditableComboWithAdd Width="200"
                                     DataContext="{Binding UnitSelector}" />
         <TextBlock Text="Tax Rate:" Margin="0,5,0,0"/>
-        <ComboBox Width="200"
-                  ItemsSource="{Binding TaxRates}"
-                  DisplayMemberPath="Code"
-                  SelectedItem="{Binding SelectedTaxRate}" />
+        <views:EditableComboWithAdd Width="200"
+                                    DataContext="{Binding TaxRateSelector}" />
         <TextBlock Text="Product Group:" Margin="0,5,0,0"/>
         <ComboBox Width="200"
                   ItemsSource="{Binding ProductGroups}"
