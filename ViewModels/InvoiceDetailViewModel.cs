@@ -142,7 +142,7 @@ namespace Facturon.App.ViewModels
             }
         }
 
-        private ObservableCollection<InvoiceItemViewModel> _invoiceItems;
+        private ObservableCollection<InvoiceItemViewModel> _invoiceItems = new();
         public ObservableCollection<InvoiceItemViewModel> InvoiceItems
         {
             get => _invoiceItems;
