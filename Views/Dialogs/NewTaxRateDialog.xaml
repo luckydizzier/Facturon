@@ -21,16 +21,24 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Code:" Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" />
-        <TextBox x:Name="CodeBox" Grid.Row="0" Grid.Column="1" Text="{Binding Rate.Code, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="CodeBox" Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Rate.Code, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,2,0,0" Foreground="Red"
+                   Text="{Binding ElementName=CodeBox, Path=(Validation.Errors)[0].ErrorContent}" />
 
         <TextBlock Text="Value (%):" Grid.Row="1" Grid.Column="0" Margin="0,5,5,0" />
-        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" Text="{Binding Rate.Value, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="ValueBox" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
+                 Text="{Binding Rate.Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,2,0,0" Foreground="Red"
+                   Text="{Binding ElementName=ValueBox, Path=(Validation.Errors)[0].ErrorContent}" />
 
         <TextBlock Text="Valid From:" Grid.Row="2" Grid.Column="0" Margin="0,5,5,0" />
         <DatePicker Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" SelectedDate="{Binding Rate.ValidFrom}" />
 
         <TextBlock Text="Valid To:" Grid.Row="3" Grid.Column="0" Margin="0,5,5,0" />
-        <DatePicker Grid.Row="3" Grid.Column="1" Margin="0,5,0,0" SelectedDate="{Binding ValidTo}" />
+        <DatePicker x:Name="ValidToPicker" Grid.Row="3" Grid.Column="1" Margin="0,5,0,0" SelectedDate="{Binding ValidTo, ValidatesOnDataErrors=True}" />
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,2,0,0" Foreground="Red"
+                   Text="{Binding ElementName=ValidToPicker, Path=(Validation.Errors)[0].ErrorContent}" />
 
         <CheckBox Content="Active" Grid.Row="4" Grid.Column="1" Margin="0,5,0,0" IsChecked="{Binding IsActive}" />
 
