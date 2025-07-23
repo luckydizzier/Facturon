@@ -237,3 +237,6 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [startup_agent] Resolve FocusNavigationDirection ambiguity
 - Removed System.Windows.Input using and fully qualified references in NavigationService.
 
+
+## [startup_agent] Cast Keyboard.FocusedElement
+- Cast Keyboard.FocusedElement to UIElement before calling MoveFocus to satisfy .NET focus API.
