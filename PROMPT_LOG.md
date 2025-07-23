@@ -244,4 +244,6 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [db_agent] Add EF Core migrations support and restructure initializer
 - Added Microsoft.EntityFrameworkCore.Design to Data project and included Migrations folder.
 - Created initial migration defining tables in dependency order.
-- Updated DbInitializer to always apply migrations.
+
+## [db_agent] Restore EnsureCreated fallback
+- DbInitializer now checks for migrations and calls EnsureCreated when none exist, preventing missing table errors.
