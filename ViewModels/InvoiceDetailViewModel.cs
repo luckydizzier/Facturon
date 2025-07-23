@@ -37,12 +37,14 @@ namespace Facturon.App.ViewModels
                     _selectedInvoiceItem = value;
                     OnPropertyChanged();
                     DeleteSelectedItemCommand.RaiseCanExecuteChanged();
+                    BeginEditItemCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
         private InvoiceItemViewModel? _selectedInvoiceItem;
         public RelayCommand DeleteSelectedItemCommand { get; }
+        public RelayCommand BeginEditItemCommand { get; }
 
         public InvoiceDetailViewModel(
             IInvoiceService invoiceService,
@@ -90,6 +92,7 @@ namespace Facturon.App.ViewModels
             InputRow.ItemReadyToAdd += InputRowOnItemReadyToAdd;
 
             DeleteSelectedItemCommand = new RelayCommand(DeleteSelectedItem, CanDeleteSelectedItem);
+            BeginEditItemCommand = new RelayCommand(BeginEditItem, CanBeginEditItem);
 
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
             _mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
@@ -268,6 +271,16 @@ namespace Facturon.App.ViewModels
             vm.RecalculateAmounts(IsGrossBased);
             InvoiceItems.Add(vm);
             _ = RecalculateTotalsAsync();
+        }
+
+        private bool CanBeginEditItem() => SelectedInvoiceItem != null;
+
+        private void BeginEditItem()
+        {
+            if (SelectedInvoiceItem != null)
+            {
+                InputRow.BeginEdit(SelectedInvoiceItem);
+            }
         }
 
         private bool CanDeleteSelectedItem() => SelectedInvoiceItem != null;
