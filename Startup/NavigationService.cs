@@ -7,9 +7,12 @@ namespace Facturon.App
     {
         public void MoveFocus(FocusNavigationDirection direction)
         {
-            System.Windows.Input.Keyboard.FocusedElement?.MoveFocus(
-                new System.Windows.Input.TraversalRequest(
-                    (System.Windows.Input.FocusNavigationDirection)direction));
+            if (System.Windows.Input.Keyboard.FocusedElement is UIElement element)
+            {
+                element.MoveFocus(
+                    new System.Windows.Input.TraversalRequest(
+                        (System.Windows.Input.FocusNavigationDirection)direction));
+            }
         }
     }
 }
