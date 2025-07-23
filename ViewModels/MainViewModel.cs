@@ -53,6 +53,8 @@ namespace Facturon.App.ViewModels
         public RelayCommand CloseDetailCommand { get; }
         public RelayCommand NewInvoiceCommand { get; }
         public RelayCommand DeleteInvoiceCommand { get; }
+        public RelayCommand SaveInvoiceCommand { get; }
+        public RelayCommand CancelInvoiceCommand { get; }
 
         public MainViewModel(
             IInvoiceService invoiceService,
@@ -104,6 +106,8 @@ namespace Facturon.App.ViewModels
             CloseDetailCommand = new RelayCommand(CloseDetail, () => DetailVisible);
             NewInvoiceCommand = new RelayCommand(NewInvoice);
             DeleteInvoiceCommand = new RelayCommand(DeleteSelected, CanDeleteSelected);
+            SaveInvoiceCommand = new RelayCommand(SaveInvoice, () => DetailVisible);
+            CancelInvoiceCommand = new RelayCommand(CancelInvoice, () => DetailVisible);
         }
 
         public async Task InitializeAsync()
@@ -165,6 +169,36 @@ namespace Facturon.App.ViewModels
                 InvoiceList.Invoices.Remove(InvoiceList.SelectedInvoice);
                 CloseDetail();
             }
+        }
+
+        private async void SaveInvoice()
+        {
+            if (InvoiceDetail.Invoice == null)
+                return;
+
+            if (InvoiceDetail.Invoice.Id == 0)
+            {
+                var result = await _invoiceService.CreateAsync(InvoiceDetail.Invoice);
+                if (result.Success)
+                {
+                    InvoiceList.Invoices.Add(InvoiceDetail.Invoice);
+                    SelectedInvoice = InvoiceDetail.Invoice;
+                    CloseDetail();
+                }
+            }
+            else
+            {
+                var result = await _invoiceService.UpdateAsync(InvoiceDetail.Invoice);
+                if (result.Success)
+                {
+                    CloseDetail();
+                }
+            }
+        }
+
+        private void CancelInvoice()
+        {
+            CloseDetail();
         }
     }
 }
