@@ -217,3 +217,8 @@ Implemented editing support in InvoiceItemInputViewModel with BeginEdit/CommitEd
 - Added NavigationService with MoveFocus method using Keyboard and TraversalRequest.
 - Registered INavigationService in StartupOrchestrator.
 - Replaced direct Focus calls in views with NavigationService usage.
+## [ui_agent] Theme validation templates
+- Added default validation template and DataGrid row styling in LightTheme.xaml.
+- Updated all dialog views to bind Validation.Errors for inline messages.
+## [doc_agent] Document UX updates
+- Created docs/UX.md describing new validation visuals and row styles.
