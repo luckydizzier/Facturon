@@ -21,24 +21,15 @@ namespace Facturon.Data
                 var db = scope.ServiceProvider.GetRequiredService<FacturonDbContext>();
 
 
-                logger.LogInformation("Checking for pending migrations...");
-                if (db.Database.GetMigrations().Any())
-                {
-                    logger.LogInformation("Running EF Core migrations...");
-                    await db.Database.MigrateAsync();
-                }
-                else
-                {
-                    logger.LogInformation("No migrations found. Ensuring database created...");
-                    await db.Database.EnsureCreatedAsync();
-                }
+                logger.LogInformation("Applying EF Core migrations...");
+                await db.Database.MigrateAsync();
 
                 if (!await ColumnExistsAsync(db, "InvoiceItems", "TaxRateValue")
                     || !await ColumnExistsAsync(db, "Products", "NetUnitPrice"))
                 {
                     logger.LogWarning("Database schema outdated. Recreating database...");
                     await db.Database.EnsureDeletedAsync();
-                    await db.Database.EnsureCreatedAsync();
+                    await db.Database.MigrateAsync();
                 }
 
                 logger.LogInformation("Database ready.");

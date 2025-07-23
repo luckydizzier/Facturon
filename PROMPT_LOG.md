@@ -240,3 +240,8 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 
 ## [startup_agent] Cast Keyboard.FocusedElement
 - Cast Keyboard.FocusedElement to UIElement before calling MoveFocus to satisfy .NET focus API.
+
+## [db_agent] Add EF Core migrations support and restructure initializer
+- Added Microsoft.EntityFrameworkCore.Design to Data project and included Migrations folder.
+- Created initial migration defining tables in dependency order.
+- Updated DbInitializer to always apply migrations.
