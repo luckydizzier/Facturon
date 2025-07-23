@@ -8,6 +8,9 @@ namespace Facturon.App.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private readonly IInvoiceService _invoiceService;
+        private readonly IPaymentMethodService _paymentMethodService;
+        private readonly IConfirmationDialogService _confirmationService;
+        private readonly INewEntityDialogService<PaymentMethod> _paymentMethodDialogService;
 
         public InvoiceListViewModel InvoiceList { get; }
         public InvoiceDetailViewModel InvoiceDetail { get; }
@@ -44,10 +47,17 @@ namespace Facturon.App.ViewModels
         public RelayCommand NewInvoiceCommand { get; }
         public RelayCommand DeleteInvoiceCommand { get; }
 
-        public MainViewModel(IInvoiceService invoiceService)
+        public MainViewModel(
+            IInvoiceService invoiceService,
+            IPaymentMethodService paymentMethodService,
+            IConfirmationDialogService confirmationService,
+            INewEntityDialogService<PaymentMethod> paymentMethodDialogService)
         {
             Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
+            _paymentMethodService = paymentMethodService;
+            _confirmationService = confirmationService;
+            _paymentMethodDialogService = paymentMethodDialogService;
             InvoiceList = new InvoiceListViewModel(invoiceService);
             InvoiceList.PropertyChanged += (s, e) =>
             {
@@ -55,7 +65,12 @@ namespace Facturon.App.ViewModels
                     OnPropertyChanged(nameof(SelectedInvoice));
             };
 
-            InvoiceDetail = new InvoiceDetailViewModel(invoiceService, this);
+            InvoiceDetail = new InvoiceDetailViewModel(
+                invoiceService,
+                _paymentMethodService,
+                _confirmationService,
+                _paymentMethodDialogService,
+                this);
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, CanOpenSelected);
             CloseDetailCommand = new RelayCommand(CloseDetail, () => DetailVisible);
