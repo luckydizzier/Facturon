@@ -1,5 +1,4 @@
 using System.Windows;
-using System.Windows.Input;
 using Facturon.Services;
 
 namespace Facturon.App
@@ -8,8 +7,9 @@ namespace Facturon.App
     {
         public void MoveFocus(FocusNavigationDirection direction)
         {
-            Keyboard.FocusedElement?.MoveFocus(
-                new TraversalRequest((System.Windows.Input.FocusNavigationDirection)direction));
+            System.Windows.Input.Keyboard.FocusedElement?.MoveFocus(
+                new System.Windows.Input.TraversalRequest(
+                    (System.Windows.Input.FocusNavigationDirection)direction));
         }
     }
 }
