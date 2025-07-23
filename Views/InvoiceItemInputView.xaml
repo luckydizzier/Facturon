@@ -4,16 +4,19 @@
              xmlns:views="clr-namespace:Facturon.App.Views">
     <StackPanel Orientation="Horizontal">
         <views:EditableComboWithAdd Width="200"
-                                    DataContext="{Binding ProductSelector}" />
+                                    DataContext="{Binding ProductSelector}"
+                                    DisplayMemberPath="Name" />
         <TextBox Width="60"
                  Margin="5,0,0,0"
                  Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" />
         <views:EditableComboWithAdd Width="100"
                                     Margin="5,0,0,0"
-                                    DataContext="{Binding UnitSelector}" />
+                                    DataContext="{Binding UnitSelector}"
+                                    DisplayMemberPath="Name" />
         <views:EditableComboWithAdd Width="100"
                                     Margin="5,0,0,0"
-                                    DataContext="{Binding TaxRateSelector}" />
+                                    DataContext="{Binding TaxRateSelector}"
+                                    DisplayMemberPath="Code" />
         <TextBox Width="80"
                  Margin="5,0,0,0"
                  Text="{Binding NetUnitPrice, UpdateSourceTrigger=PropertyChanged}" />

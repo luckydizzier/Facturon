@@ -7,7 +7,8 @@
                   IsEditable="True"
                   ItemsSource="{Binding Items}"
                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding SelectedItem}" />
+                  SelectedItem="{Binding SelectedItem}"
+                  DisplayMemberPath="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=UserControl}}" />
         <Button Content="Add" Margin="5,0,0,0" />
     </StackPanel>
 </UserControl>
