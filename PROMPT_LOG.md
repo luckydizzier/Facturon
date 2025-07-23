@@ -231,3 +231,9 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 - Added System using to ITaxRateService.
 - Moved AlternationCount setter to DataGrid style in LightTheme.xaml.
 
+## [ui_agent] Clarify DataGrid style property
+- Set ItemsControl.AlternationCount in LightTheme.xaml to avoid row style warning.
+
+## [startup_agent] Resolve FocusNavigationDirection ambiguity
+- Removed System.Windows.Input using and fully qualified references in NavigationService.
+
