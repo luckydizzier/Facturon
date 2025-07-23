@@ -1,7 +1,8 @@
 using System.Windows;
 using System.Windows.Input;
+using Facturon.Services;
 
-namespace Facturon.Services
+namespace Facturon.App
 {
     public class NavigationService : INavigationService
     {

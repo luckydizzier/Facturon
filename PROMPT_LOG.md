@@ -222,3 +222,7 @@ Implemented editing support in InvoiceItemInputViewModel with BeginEdit/CommitEd
 - Updated all dialog views to bind Validation.Errors for inline messages.
 ## [doc_agent] Document UX updates
 - Created docs/UX.md describing new validation visuals and row styles.
+## [orchestrator_agent] Relocate NavigationService
+Moved WPF-based NavigationService implementation to Startup project and removed it from Services.
+## [ui_agent] Initialize invoice items field
+Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to satisfy nullability analysis.
