@@ -49,9 +49,13 @@
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       SelectionUnit="FullRow"
-                      Margin="0,5,0,0"
-                      PreviewKeyDown="ItemsGrid_PreviewKeyDown"
+                     Margin="0,5,0,0"
                       IsEnabled="{Binding DataContext.DetailVisible, RelativeSource={RelativeSource AncestorType=Window}}">
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteSelectedItemCommand}" />
+                    <KeyBinding Key="F2" Command="{Binding BeginEditItemCommand}" />
+                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding BeginEditItemCommand}" />
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Product"
                                         Binding="{Binding Product.Name}"/>

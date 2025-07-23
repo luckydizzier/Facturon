@@ -267,3 +267,7 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 
 ## [ui_agent] Add key bindings for item input
 - Bound Enter to AddCommand and Escape to ClearCommand in InvoiceItemInputView. Removed PreviewKeyDown handler.
+
+## [ui_agent] Bind item commands in InvoiceDetailView
+- Added BeginEditItemCommand and InputBindings for Delete, F2 and double-click.
+- Removed code-behind event handlers.
