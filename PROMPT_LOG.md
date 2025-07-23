@@ -179,3 +179,15 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 - Added NewSupplierDialog view and view model with keyboard-friendly bindings.
 - Extended EditableComboWithAddViewModel to confirm missing items and create new ones via dialogs.
 - Registered new services in Startup.
+## [ui_agent] Add unit creation dialog and integrate editable combo
+- Created NewUnitDialog view and NewUnitDialogViewModel with validation and keyboard shortcuts.
+- Updated EditableComboWithAdd control to trigger confirmation on Enter or focus loss.
+- Replaced unit ComboBox in NewProductDialog with EditableComboWithAdd bound to new view model.
+
+## [startup_agent] Register unit dialog service
+- Implemented NewUnitDialogService and added DI registration in StartupOrchestrator.
+- Extended NewProductDialogService to supply confirmation and new unit dialog dependencies.
+
+## [orchestrator_agent] Wire up inline unit creation
+- Modified NewProductDialogViewModel to use EditableComboWithAddViewModel for units.
+- New units are saved through dialog service and selected automatically.
