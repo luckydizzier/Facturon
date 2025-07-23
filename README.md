@@ -27,3 +27,10 @@
 ## Getting Started
 
 _TBD_: initial setup, architecture map, build instructions.
+
+## Portable Usage
+
+When run outside an installer, the application looks for `appsettings.json`,
+`facturon.db`, and a `logs` folder next to the executable. Missing files are
+automatically created on first launch, allowing the app to run from any
+location without setup.

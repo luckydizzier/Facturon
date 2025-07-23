@@ -26,5 +26,8 @@
     <Page Include="..\Themes\**\*.xaml">
       <Link>Themes\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Page>
-</ItemGroup>
+    <None Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
