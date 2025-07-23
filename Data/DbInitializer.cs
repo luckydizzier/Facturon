@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Facturon.Data.Initialization;
@@ -19,6 +20,7 @@ namespace Facturon.Data
                 using var scope = services.CreateScope();
                 var db = scope.ServiceProvider.GetRequiredService<FacturonDbContext>();
 
+
                 logger.LogInformation("Checking for pending migrations...");
                 if (db.Database.GetMigrations().Any())
                 {
@@ -28,6 +30,13 @@ namespace Facturon.Data
                 else
                 {
                     logger.LogInformation("No migrations found. Ensuring database created...");
+                    await db.Database.EnsureCreatedAsync();
+                }
+
+                if (!await ColumnExistsAsync(db, "InvoiceItems", "TaxRateValue"))
+                {
+                    logger.LogWarning("Database schema outdated. Recreating database...");
+                    await db.Database.EnsureDeletedAsync();
                     await db.Database.EnsureCreatedAsync();
                 }
 
@@ -45,6 +54,27 @@ namespace Facturon.Data
             {
                 logger.LogError(ex, "Database initialization failed.");
                 throw new InvalidOperationException("Database migration failed. Please check logs.");
+            }
+        }
+
+        private static async Task<bool> ColumnExistsAsync(FacturonDbContext db, string table, string column)
+        {
+            await db.Database.OpenConnectionAsync();
+            try
+            {
+                using var command = db.Database.GetDbConnection().CreateCommand();
+                command.CommandText = $"PRAGMA table_info('{table}')";
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    if (string.Equals(reader.GetString(1), column, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                return false;
+            }
+            finally
+            {
+                await db.Database.CloseConnectionAsync();
             }
         }
     }
