@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,10 @@ namespace Facturon.App.ViewModels
     public class EditableComboWithAddViewModel<T> : BaseViewModel
     {
         private readonly IEntityService<T> _service;
+        private readonly IConfirmationDialogService _confirmationService;
+        private readonly INewEntityDialogService<T> _dialogService;
+
+        public event Action? FocusRequested;
 
         public ObservableCollection<T> Items { get; } = new ObservableCollection<T>();
 
@@ -39,9 +44,14 @@ namespace Facturon.App.ViewModels
             }
         }
 
-        public EditableComboWithAddViewModel(IEntityService<T> service)
+        public EditableComboWithAddViewModel(
+            IEntityService<T> service,
+            IConfirmationDialogService confirmationService,
+            INewEntityDialogService<T> dialogService)
         {
             _service = service;
+            _confirmationService = confirmationService;
+            _dialogService = dialogService;
         }
 
         public async Task InitializeAsync()
@@ -64,7 +74,30 @@ namespace Facturon.App.ViewModels
                 return;
             }
 
-            // Confirmation and creation dialog logic to be implemented
+            var confirm = await _confirmationService.ConfirmAsync("Új elem?", $"A(z) '{Input}' nem található. Létrehozza?");
+            if (!confirm)
+            {
+                FocusRequested?.Invoke();
+                return;
+            }
+
+            var newEntity = _dialogService.ShowDialog();
+            if (newEntity == null)
+            {
+                FocusRequested?.Invoke();
+                return;
+            }
+
+            var result = await _service.CreateAsync(newEntity);
+            if (result.Success)
+            {
+                Items.Add(newEntity);
+                SelectedItem = newEntity;
+            }
+            else
+            {
+                FocusRequested?.Invoke();
+            }
         }
     }
 }

@@ -1,0 +1,21 @@
+<Window x:Class="Facturon.App.Views.NewSupplierDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New Supplier"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="ToolWindow"
+        FocusManager.FocusedElement="{Binding ElementName=NameBox}">
+    <StackPanel Margin="10">
+        <TextBlock Text="Name:"/>
+        <TextBox x:Name="NameBox" Width="200" Text="{Binding Supplier.Name, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock Text="Address:" Margin="0,5,0,0"/>
+        <TextBox Width="200" Text="{Binding Supplier.Address, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock Text="Tax Number:" Margin="0,5,0,0"/>
+        <TextBox Width="200" Text="{Binding Supplier.TaxNumber, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
+            <Button Content="Save" Width="75" Margin="0,0,5,0" IsDefault="True" Command="{Binding SaveCommand}" />
+            <Button Content="Cancel" Width="75" IsCancel="True" Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </StackPanel>
+</Window>
