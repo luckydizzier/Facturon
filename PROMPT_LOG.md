@@ -247,3 +247,6 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 
 ## [db_agent] Restore EnsureCreated fallback
 - DbInitializer now checks for migrations and calls EnsureCreated when none exist, preventing missing table errors.
+## [ui_agent] Add DisplayMemberPath support to EditableComboWithAdd
+- Introduced DisplayMemberPath dependency property and bound ComboBox.DisplayMemberPath.
+- Specified DisplayMemberPath on dialog views using EditableComboWithAdd.
