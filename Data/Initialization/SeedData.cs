@@ -57,6 +57,7 @@ namespace Facturon.Data.Initialization
                     UnitId = unit.Id,
                     ProductGroupId = group.Id,
                     TaxRateId = rate.Id,
+                    NetUnitPrice = faker.Random.Decimal(5, 50),
                     Unit = unit,
                     ProductGroup = group,
                     TaxRate = rate

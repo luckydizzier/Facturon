@@ -8,6 +8,7 @@ namespace Facturon.Domain.Entities
         public int UnitId { get; set; }
         public int ProductGroupId { get; set; }
         public int TaxRateId { get; set; }
+        public decimal NetUnitPrice { get; set; }
 
         public required virtual Unit Unit { get; set; }
         public required virtual ProductGroup ProductGroup { get; set; }

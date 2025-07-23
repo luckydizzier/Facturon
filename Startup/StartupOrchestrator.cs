@@ -53,6 +53,7 @@ namespace Facturon.App
 
                     services.AddSingleton<IConfirmationDialogService, ConfirmationDialogService>();
                     services.AddSingleton<INewEntityDialogService<Supplier>, NewSupplierDialogService>();
+                    services.AddSingleton<INewEntityDialogService<Product>, NewProductDialogService>();
 
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<InvoiceListViewModel>();
