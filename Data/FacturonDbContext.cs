@@ -126,6 +126,10 @@ namespace Facturon.Data
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
 
+                entity.Property(e => e.NetUnitPrice)
+                    .HasColumnType("decimal(18,2)")
+                    .HasDefaultValue(0m);
+
                 entity.Property(e => e.DateCreated)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
                 entity.Property(e => e.DateUpdated)
