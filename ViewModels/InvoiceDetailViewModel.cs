@@ -173,7 +173,10 @@ namespace Facturon.App.ViewModels
         private async void MainViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainViewModel.SelectedInvoice))
+            {
                 await LoadInvoiceAsync();
+                UpdateDetailVisibility();
+            }
         }
 
         private async Task LoadInvoiceAsync()
@@ -285,6 +288,17 @@ namespace Facturon.App.ViewModels
             _ = RecalculateTotalsAsync();
         }
 
-        // TODO: Toggle DetailVisible when invoice selection changes
+        private void UpdateDetailVisibility()
+        {
+            if (_mainViewModel.SelectedInvoice != null)
+            {
+                _mainViewModel.DetailVisible = true;
+            }
+            else
+            {
+                _mainViewModel.DetailVisible = false;
+                _mainViewModel.CloseDetailCommand.RaiseCanExecuteChanged();
+            }
+        }
     }
 }

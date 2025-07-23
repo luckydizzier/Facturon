@@ -208,3 +208,6 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 ## [ui_agent] Implement invoice item input row
 - Replaced item editing grid with input row + readonly list. Added InvoiceItemInputViewModel and view, integrated in detail screen.
 - Items can be added with Enter and cleared with Escape, Delete removes selected rows with confirmation.
+
+## [ui_agent] Sync detail visibility on selection change
+Implemented UpdateDetailVisibility in InvoiceDetailViewModel to set MainViewModel.DetailVisible based on SelectedInvoice and refresh CloseDetailCommand when hidden.
