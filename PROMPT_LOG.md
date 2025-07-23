@@ -205,3 +205,6 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 - Added GetActiveForDateAsync to ITaxRateService and implemented in TaxRateService.
 - Created TaxRateSelectorViewModel to load rates valid on a given date.
 - Updated NewProductDialogViewModel to initialize tax rate selector with today's date.
+## [ui_agent] Implement invoice item input row
+- Replaced item editing grid with input row + readonly list. Added InvoiceItemInputViewModel and view, integrated in detail screen.
+- Items can be added with Enter and cleared with Escape, Delete removes selected rows with confirmation.
