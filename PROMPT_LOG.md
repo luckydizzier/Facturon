@@ -191,3 +191,8 @@ Added local FocusNavigationDirection enum to Services and updated INavigationSer
 ## [orchestrator_agent] Wire up inline unit creation
 - Modified NewProductDialogViewModel to use EditableComboWithAddViewModel for units.
 - New units are saved through dialog service and selected automatically.
+## [ui_agent] Implement tax rate creation dialog
+- Added NewTaxRateDialog view and view model with validation and keyboard support.
+- Created NewTaxRateDialogService and registered it in Startup.
+- Updated NewProductDialog to use EditableComboWithAdd for tax rates.
+- Extended NewProductDialogService and ViewModel to use the new dialog.

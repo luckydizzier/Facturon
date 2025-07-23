@@ -14,9 +14,10 @@ namespace Facturon.App.ViewModels
         private readonly IProductService _productService;
         private readonly IConfirmationDialogService _confirmationService;
         private readonly INewEntityDialogService<Unit> _unitDialogService;
+        private readonly INewEntityDialogService<TaxRate> _taxRateDialogService;
 
         public EditableComboWithAddViewModel<Unit> UnitSelector { get; }
-        public ObservableCollection<TaxRate> TaxRates { get; } = new();
+        public EditableComboWithAddViewModel<TaxRate> TaxRateSelector { get; }
         public ObservableCollection<ProductGroup> ProductGroups { get; } = new();
 
         public Product Product { get; } = new Product
@@ -29,25 +30,6 @@ namespace Facturon.App.ViewModels
         };
 
 
-        private TaxRate? _selectedTaxRate;
-        public TaxRate? SelectedTaxRate
-        {
-            get => _selectedTaxRate;
-            set
-            {
-                if (_selectedTaxRate != value)
-                {
-                    _selectedTaxRate = value;
-                    OnPropertyChanged();
-                    if (value != null)
-                    {
-                        Product.TaxRate = value;
-                        Product.TaxRateId = value.Id;
-                    }
-                    SaveCommand.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         private ProductGroup? _selectedProductGroup;
         public ProductGroup? SelectedProductGroup
@@ -94,7 +76,8 @@ namespace Facturon.App.ViewModels
             IProductGroupService productGroupService,
             IProductService productService,
             IConfirmationDialogService confirmationService,
-            INewEntityDialogService<Unit> unitDialogService)
+            INewEntityDialogService<Unit> unitDialogService,
+            INewEntityDialogService<TaxRate> taxRateDialogService)
         {
             _unitService = unitService;
             _taxRateService = taxRateService;
@@ -102,9 +85,12 @@ namespace Facturon.App.ViewModels
             _productService = productService;
             _confirmationService = confirmationService;
             _unitDialogService = unitDialogService;
+            _taxRateDialogService = taxRateDialogService;
 
             UnitSelector = new EditableComboWithAddViewModel<Unit>(_unitService, _confirmationService, _unitDialogService);
             UnitSelector.PropertyChanged += UnitSelectorOnPropertyChanged;
+            TaxRateSelector = new EditableComboWithAddViewModel<TaxRate>(_taxRateService, _confirmationService, _taxRateDialogService);
+            TaxRateSelector.PropertyChanged += TaxRateSelectorOnPropertyChanged;
 
             SaveCommand = new RelayCommand(Save, CanSave);
             CancelCommand = new RelayCommand(() => CloseRequested?.Invoke(null));
@@ -116,13 +102,23 @@ namespace Facturon.App.ViewModels
                 SaveCommand.RaiseCanExecuteChanged();
         }
 
+        private void TaxRateSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(TaxRateSelector.SelectedItem))
+            {
+                if (TaxRateSelector.SelectedItem != null)
+                {
+                    Product.TaxRate = TaxRateSelector.SelectedItem;
+                    Product.TaxRateId = TaxRateSelector.SelectedItem.Id;
+                }
+                SaveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         public void Initialize()
         {
             UnitSelector.InitializeAsync().GetAwaiter().GetResult();
-
-            TaxRates.Clear();
-            foreach (var t in _taxRateService.GetAllAsync().GetAwaiter().GetResult())
-                TaxRates.Add(t);
+            TaxRateSelector.InitializeAsync().GetAwaiter().GetResult();
 
             ProductGroups.Clear();
             foreach (var g in _productGroupService.GetAllAsync().GetAwaiter().GetResult())
@@ -133,7 +129,7 @@ namespace Facturon.App.ViewModels
         {
             return !string.IsNullOrWhiteSpace(Product.Name)
                 && UnitSelector.SelectedItem != null
-                && SelectedTaxRate != null
+                && TaxRateSelector.SelectedItem != null
                 && SelectedProductGroup != null
                 && NetUnitPrice > 0m;
         }
@@ -143,6 +139,9 @@ namespace Facturon.App.ViewModels
             var unit = UnitSelector.SelectedItem!;
             Product.Unit = unit;
             Product.UnitId = unit.Id;
+            var rate = TaxRateSelector.SelectedItem!;
+            Product.TaxRate = rate;
+            Product.TaxRateId = rate.Id;
             var result = await _productService.CreateAsync(Product);
             if (result.Success)
             {
