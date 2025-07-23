@@ -13,12 +13,33 @@ namespace Facturon.App.ViewModels
     public class InvoiceDetailViewModel : BaseViewModel
     {
         private readonly IInvoiceService _invoiceService;
+        private readonly IPaymentMethodService _paymentMethodService;
+        private readonly IConfirmationDialogService _confirmationService;
+        private readonly INewEntityDialogService<PaymentMethod> _paymentMethodDialogService;
         private readonly MainViewModel _mainViewModel;
 
-        public InvoiceDetailViewModel(IInvoiceService invoiceService, MainViewModel mainViewModel)
+        public PaymentMethodSelectorViewModel PaymentMethodSelector { get; }
+
+        public InvoiceDetailViewModel(
+            IInvoiceService invoiceService,
+            IPaymentMethodService paymentMethodService,
+            IConfirmationDialogService confirmationService,
+            INewEntityDialogService<PaymentMethod> paymentMethodDialogService,
+            MainViewModel mainViewModel)
         {
             _invoiceService = invoiceService;
+            _paymentMethodService = paymentMethodService;
+            _confirmationService = confirmationService;
+            _paymentMethodDialogService = paymentMethodDialogService;
             _mainViewModel = mainViewModel;
+
+            PaymentMethodSelector = new PaymentMethodSelectorViewModel(
+                _paymentMethodService,
+                _confirmationService,
+                _paymentMethodDialogService);
+            PaymentMethodSelector.InitializeAsync().GetAwaiter().GetResult();
+            PaymentMethodSelector.PropertyChanged += PaymentMethodSelectorOnPropertyChanged;
+
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
             _mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
         }
@@ -35,6 +56,7 @@ namespace Facturon.App.ViewModels
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(InvoiceItems));
                     OnPropertyChanged(nameof(IsGrossBased));
+                    PaymentMethodSelector.SelectedItem = _invoice?.PaymentMethod;
                 }
             }
         }
@@ -115,6 +137,7 @@ namespace Facturon.App.ViewModels
 
             var full = await _invoiceService.GetByIdAsync(_mainViewModel.SelectedInvoice.Id);
             Invoice = full;
+            PaymentMethodSelector.SelectedItem = full?.PaymentMethod;
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>(
                 full?.Items.Select(i => new InvoiceItemViewModel(i)) ?? new List<InvoiceItemViewModel>());
             foreach (var item in InvoiceItems)
@@ -168,6 +191,15 @@ namespace Facturon.App.ViewModels
                     .ToList()
             };
             OnPropertyChanged(nameof(InvoiceItems));
+        }
+
+        private void PaymentMethodSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PaymentMethodSelector.SelectedItem) && Invoice != null && PaymentMethodSelector.SelectedItem != null)
+            {
+                Invoice.PaymentMethod = PaymentMethodSelector.SelectedItem;
+                Invoice.PaymentMethodId = PaymentMethodSelector.SelectedItem.Id;
+            }
         }
 
         // TODO: Toggle DetailVisible when invoice selection changes
