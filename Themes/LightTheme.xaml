@@ -29,8 +29,12 @@
 
     <!-- Default DataGrid row style with alternating row colors -->
     <SolidColorBrush x:Key="RowHighlight" Color="#FFE6F7FF" />
-    <Style TargetType="DataGridRow">
+    <!-- Apply alternating row colors -->
+    <Style TargetType="DataGrid">
         <Setter Property="AlternationCount" Value="2" />
+    </Style>
+
+    <Style TargetType="DataGridRow">
         <Setter Property="Background" Value="White" />
         <Style.Triggers>
             <Trigger Property="ItemsControl.AlternationIndex" Value="1">

@@ -226,3 +226,8 @@ Implemented editing support in InvoiceItemInputViewModel with BeginEdit/CommitEd
 Moved WPF-based NavigationService implementation to Startup project and removed it from Services.
 ## [ui_agent] Initialize invoice items field
 Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to satisfy nullability analysis.
+## [service_agent] Resolve missing namespaces and style error
+- Added System.Threading.Tasks using to IConfirmationDialogService.
+- Added System using to ITaxRateService.
+- Moved AlternationCount setter to DataGrid style in LightTheme.xaml.
+

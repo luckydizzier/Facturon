@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Facturon.Services
 {
     public interface IConfirmationDialogService
