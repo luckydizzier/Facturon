@@ -15,9 +15,11 @@ namespace Facturon.App.ViewModels
         private readonly IProductService _productService;
         private readonly IUnitService _unitService;
         private readonly ITaxRateService _taxRateService;
+        private readonly ISupplierService _supplierService;
         private readonly INewEntityDialogService<Product> _productDialogService;
         private readonly INewEntityDialogService<Unit> _unitDialogService;
         private readonly INewEntityDialogService<TaxRate> _taxDialogService;
+        private readonly INewEntityDialogService<Supplier> _supplierDialogService;
         private readonly IInvoiceItemService _invoiceItemService;
         private readonly INavigationService _navigationService;
 
@@ -66,13 +68,15 @@ namespace Facturon.App.ViewModels
             IProductService productService,
             IUnitService unitService,
             ITaxRateService taxRateService,
+            ISupplierService supplierService,
             IInvoiceItemService invoiceItemService,
             IConfirmationDialogService confirmationService,
             INavigationService navigationService,
             INewEntityDialogService<PaymentMethod> paymentMethodDialogService,
             INewEntityDialogService<Product> productDialogService,
             INewEntityDialogService<Unit> unitDialogService,
-            INewEntityDialogService<TaxRate> taxDialogService)
+            INewEntityDialogService<TaxRate> taxDialogService,
+            INewEntityDialogService<Supplier> supplierDialogService)
         {
             Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
@@ -80,6 +84,7 @@ namespace Facturon.App.ViewModels
             _productService = productService;
             _unitService = unitService;
             _taxRateService = taxRateService;
+            _supplierService = supplierService;
             _invoiceItemService = invoiceItemService;
             _confirmationService = confirmationService;
             _navigationService = navigationService;
@@ -87,6 +92,7 @@ namespace Facturon.App.ViewModels
             _productDialogService = productDialogService;
             _unitDialogService = unitDialogService;
             _taxDialogService = taxDialogService;
+            _supplierDialogService = supplierDialogService;
             InvoiceList = new InvoiceListViewModel(invoiceService, navigationService);
             InvoiceList.PropertyChanged += (s, e) =>
             {
@@ -100,12 +106,14 @@ namespace Facturon.App.ViewModels
                 _productService,
                 _unitService,
                 _taxRateService,
+                _supplierService,
                 _invoiceItemService,
                 _confirmationService,
                 _paymentMethodDialogService,
                 _productDialogService,
                 _unitDialogService,
                 _taxDialogService,
+                _supplierDialogService,
                 this);
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, CanOpenSelected);
@@ -162,6 +170,7 @@ namespace Facturon.App.ViewModels
                     Name = string.Empty
                 }
             };
+            InvoiceDetail.SupplierSelector.SelectedItem = InvoiceDetail.SupplierSelector.Items.FirstOrDefault();
             DetailVisible = true;
             CloseDetailCommand.RaiseCanExecuteChanged();
             DeleteInvoiceCommand.RaiseCanExecuteChanged();
