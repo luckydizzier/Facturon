@@ -15,6 +15,7 @@ namespace Facturon.App.ViewModels
         public event Action? FocusRequested;
 
         public RelayCommand ConfirmInputCommand { get; }
+        public RelayCommand AddNewCommand { get; }
 
         public ObservableCollection<T> Items { get; } = new ObservableCollection<T>();
 
@@ -55,6 +56,7 @@ namespace Facturon.App.ViewModels
             _confirmationService = confirmationService;
             _dialogService = dialogService;
             ConfirmInputCommand = new RelayCommand(ExecuteConfirmInputAsync);
+            AddNewCommand = new RelayCommand(ExecuteAddNewAsync);
         }
 
         private async void ExecuteConfirmInputAsync()
@@ -89,6 +91,27 @@ namespace Facturon.App.ViewModels
                 return;
             }
 
+            var newEntity = _dialogService.ShowDialog();
+            if (newEntity == null)
+            {
+                FocusRequested?.Invoke();
+                return;
+            }
+
+            var result = await _service.CreateAsync(newEntity);
+            if (result.Success)
+            {
+                Items.Add(newEntity);
+                SelectedItem = newEntity;
+            }
+            else
+            {
+                FocusRequested?.Invoke();
+            }
+        }
+
+        private async void ExecuteAddNewAsync()
+        {
             var newEntity = _dialogService.ShowDialog();
             if (newEntity == null)
             {

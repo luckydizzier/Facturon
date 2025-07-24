@@ -15,6 +15,6 @@
                 <KeyBinding Key="Enter" Command="{Binding ConfirmInputCommand}" />
             </ComboBox.InputBindings>
         </ComboBox>
-        <Button Content="Add" Margin="5,0,0,0" />
+        <Button Content="Add" Margin="5,0,0,0" Command="{Binding AddNewCommand}" />
     </StackPanel>
 </UserControl>
