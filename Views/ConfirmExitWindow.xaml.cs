@@ -1,5 +1,5 @@
 using System.Windows;
-using System.Windows.Input;
+using Facturon.App.ViewModels;
 
 namespace Facturon.App.Views
 {
@@ -8,24 +8,9 @@ namespace Facturon.App.Views
         public ConfirmExitWindow()
         {
             InitializeComponent();
-        }
-
-        private void YesButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void NoButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-        }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                DialogResult = true;
-            }
+            var vm = new ConfirmExitViewModel();
+            DataContext = vm;
+            vm.CloseRequested += result => DialogResult = result;
         }
     }
 }
