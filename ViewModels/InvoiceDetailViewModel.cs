@@ -330,12 +330,11 @@ namespace Facturon.App.ViewModels
         {
             if (_mainViewModel.SelectedInvoice != null)
             {
-                _mainViewModel.DetailVisible = true;
+                _mainViewModel.ScreenState = InvoiceScreenState.Editing;
             }
             else
             {
-                _mainViewModel.DetailVisible = false;
-                _mainViewModel.CloseDetailCommand.RaiseCanExecuteChanged();
+                _mainViewModel.ScreenState = InvoiceScreenState.Browsing;
             }
         }
     }
