@@ -9,6 +9,7 @@ namespace Facturon.App.ViewModels
     public class InvoiceListViewModel : BaseViewModel
     {
         private readonly IInvoiceService _invoiceService;
+        private readonly INavigationService _navigationService;
 
         public ObservableCollection<Invoice> Invoices { get; private set; }
 
@@ -28,12 +29,16 @@ namespace Facturon.App.ViewModels
             }
         }
 
-        public InvoiceListViewModel(IInvoiceService invoiceService)
+        public RelayCommand LoadedCommand { get; }
+
+        public InvoiceListViewModel(IInvoiceService invoiceService, INavigationService navigationService)
         {
             Debug.WriteLine("InvoiceListViewModel created");
             _invoiceService = invoiceService;
+            _navigationService = navigationService;
             Invoices = new ObservableCollection<Invoice>();
             Invoices.CollectionChanged += (_, __) => OnPropertyChanged(nameof(HasInvoices));
+            LoadedCommand = new RelayCommand(OnLoaded);
         }
 
         public async Task InitializeAsync()
@@ -43,6 +48,13 @@ namespace Facturon.App.ViewModels
             Invoices.CollectionChanged += (_, __) => OnPropertyChanged(nameof(HasInvoices));
             OnPropertyChanged(nameof(Invoices));
             OnPropertyChanged(nameof(HasInvoices));
+        }
+
+        private void OnLoaded()
+        {
+            if (Invoices.Count > 0 && SelectedInvoice == null)
+                SelectedInvoice = Invoices[0];
+            _navigationService.MoveFocus(FocusNavigationDirection.First);
         }
     }
 }

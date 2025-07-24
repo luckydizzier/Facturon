@@ -87,7 +87,7 @@ namespace Facturon.App.ViewModels
             _productDialogService = productDialogService;
             _unitDialogService = unitDialogService;
             _taxDialogService = taxDialogService;
-            InvoiceList = new InvoiceListViewModel(invoiceService);
+            InvoiceList = new InvoiceListViewModel(invoiceService, navigationService);
             InvoiceList.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(InvoiceListViewModel.SelectedInvoice))
