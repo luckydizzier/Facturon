@@ -291,3 +291,7 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [startup_agent] Inject supplier dependencies in invoice detail
 - Updated InvoiceDetailViewModel registration to supply supplier service and dialog.
 
+
+## [doc_agent] Document supplier selector and screen states
+- Added usage notes for the supplier selector component.
+- Described browsing and editing screen states in docs/UX.md.
