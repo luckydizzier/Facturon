@@ -276,3 +276,8 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 - Introduced LoadedCommand and ExitCommand in MainViewModel.
 - Bound LoadedCommand via attached behavior and Escape key via InputBinding in MainWindow.
 - Removed MainWindow code-behind logic.
+
+## [ui_agent] Move InvoiceListView loaded logic to ViewModel
+- Added LoadedCommand in InvoiceListViewModel to select the first invoice and set focus via INavigationService.
+- Bound InvoiceListView's Loaded event using LoadedBehavior.
+- Removed UserControl_Loaded method from code-behind.
