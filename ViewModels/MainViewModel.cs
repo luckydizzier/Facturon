@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows;
+using System.Linq;
 using Facturon.Domain.Entities;
 using Facturon.Services;
 
