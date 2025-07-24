@@ -74,7 +74,22 @@ namespace Facturon.App
 
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<InvoiceListViewModel>();
-                    services.AddTransient<InvoiceDetailViewModel>();
+                    services.AddTransient<InvoiceDetailViewModel>(sp =>
+                        new InvoiceDetailViewModel(
+                            sp.GetRequiredService<IInvoiceService>(),
+                            sp.GetRequiredService<IPaymentMethodService>(),
+                            sp.GetRequiredService<IProductService>(),
+                            sp.GetRequiredService<IUnitService>(),
+                            sp.GetRequiredService<ITaxRateService>(),
+                            sp.GetRequiredService<ISupplierService>(),
+                            sp.GetRequiredService<IInvoiceItemService>(),
+                            sp.GetRequiredService<IConfirmationDialogService>(),
+                            sp.GetRequiredService<INewEntityDialogService<PaymentMethod>>(),
+                            sp.GetRequiredService<INewEntityDialogService<Product>>(),
+                            sp.GetRequiredService<INewEntityDialogService<Unit>>(),
+                            sp.GetRequiredService<INewEntityDialogService<TaxRate>>(),
+                            sp.GetRequiredService<INewEntityDialogService<Supplier>>(),
+                            sp.GetRequiredService<MainViewModel>()));
                     services.AddTransient<MainViewModel>();
                 });
 
