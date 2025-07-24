@@ -295,3 +295,6 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [doc_agent] Document supplier selector and screen states
 - Added usage notes for the supplier selector component.
 - Described browsing and editing screen states in docs/UX.md.
+
+## [ui_agent] Fix missing Linq using
+- Added System.Linq import in MainViewModel for FirstOrDefault.
