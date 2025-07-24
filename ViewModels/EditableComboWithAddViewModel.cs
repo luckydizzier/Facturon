@@ -14,6 +14,8 @@ namespace Facturon.App.ViewModels
 
         public event Action? FocusRequested;
 
+        public RelayCommand ConfirmInputCommand { get; }
+
         public ObservableCollection<T> Items { get; } = new ObservableCollection<T>();
 
         private T? _selectedItem;
@@ -52,6 +54,12 @@ namespace Facturon.App.ViewModels
             _service = service;
             _confirmationService = confirmationService;
             _dialogService = dialogService;
+            ConfirmInputCommand = new RelayCommand(ExecuteConfirmInputAsync);
+        }
+
+        private async void ExecuteConfirmInputAsync()
+        {
+            await ConfirmInputAsync();
         }
 
         public async Task InitializeAsync()
