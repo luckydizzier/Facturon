@@ -271,3 +271,8 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [ui_agent] Bind item commands in InvoiceDetailView
 - Added BeginEditItemCommand and InputBindings for Delete, F2 and double-click.
 - Removed code-behind event handlers.
+
+## [ui_agent] Add window Loaded and Exit commands
+- Introduced LoadedCommand and ExitCommand in MainViewModel.
+- Bound LoadedCommand via attached behavior and Escape key via InputBinding in MainWindow.
+- Removed MainWindow code-behind logic.

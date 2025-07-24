@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Windows;
 using Facturon.Domain.Entities;
 using Facturon.Services;
 
@@ -18,6 +19,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<Unit> _unitDialogService;
         private readonly INewEntityDialogService<TaxRate> _taxDialogService;
         private readonly IInvoiceItemService _invoiceItemService;
+        private readonly INavigationService _navigationService;
 
         public InvoiceListViewModel InvoiceList { get; }
         public InvoiceDetailViewModel InvoiceDetail { get; }
@@ -55,6 +57,8 @@ namespace Facturon.App.ViewModels
         public RelayCommand DeleteInvoiceCommand { get; }
         public RelayCommand SaveInvoiceCommand { get; }
         public RelayCommand CancelInvoiceCommand { get; }
+        public RelayCommand LoadedCommand { get; }
+        public RelayCommand ExitCommand { get; }
 
         public MainViewModel(
             IInvoiceService invoiceService,
@@ -64,6 +68,7 @@ namespace Facturon.App.ViewModels
             ITaxRateService taxRateService,
             IInvoiceItemService invoiceItemService,
             IConfirmationDialogService confirmationService,
+            INavigationService navigationService,
             INewEntityDialogService<PaymentMethod> paymentMethodDialogService,
             INewEntityDialogService<Product> productDialogService,
             INewEntityDialogService<Unit> unitDialogService,
@@ -77,6 +82,7 @@ namespace Facturon.App.ViewModels
             _taxRateService = taxRateService;
             _invoiceItemService = invoiceItemService;
             _confirmationService = confirmationService;
+            _navigationService = navigationService;
             _paymentMethodDialogService = paymentMethodDialogService;
             _productDialogService = productDialogService;
             _unitDialogService = unitDialogService;
@@ -108,6 +114,8 @@ namespace Facturon.App.ViewModels
             DeleteInvoiceCommand = new RelayCommand(DeleteSelected, CanDeleteSelected);
             SaveInvoiceCommand = new RelayCommand(SaveInvoice, () => DetailVisible);
             CancelInvoiceCommand = new RelayCommand(CancelInvoice, () => DetailVisible);
+            LoadedCommand = new RelayCommand(() => _navigationService.MoveFocus(FocusNavigationDirection.First));
+            ExitCommand = new RelayCommand(ExecuteExitAsync);
         }
 
         public async Task InitializeAsync()
@@ -199,6 +207,13 @@ namespace Facturon.App.ViewModels
         private void CancelInvoice()
         {
             CloseDetail();
+        }
+
+        private async void ExecuteExitAsync()
+        {
+            var confirm = await _confirmationService.ConfirmAsync("Exit", "Do you really want to exit?");
+            if (confirm)
+                Application.Current?.MainWindow?.Close();
         }
     }
 }
