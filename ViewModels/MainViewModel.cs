@@ -197,23 +197,32 @@ namespace Facturon.App.ViewModels
             if (InvoiceDetail.Invoice == null)
                 return;
 
+            Result result;
+
             if (InvoiceDetail.Invoice.Id == 0)
             {
-                var result = await _invoiceService.CreateAsync(InvoiceDetail.Invoice);
+                result = await _invoiceService.CreateAsync(InvoiceDetail.Invoice);
                 if (result.Success)
                 {
                     InvoiceList.Invoices.Add(InvoiceDetail.Invoice);
                     SelectedInvoice = InvoiceDetail.Invoice;
-                    CloseDetail();
                 }
             }
             else
             {
-                var result = await _invoiceService.UpdateAsync(InvoiceDetail.Invoice);
-                if (result.Success)
-                {
-                    CloseDetail();
-                }
+                result = await _invoiceService.UpdateAsync(InvoiceDetail.Invoice);
+            }
+
+            if (result.Success)
+            {
+                CloseDetail();
+            }
+            else
+            {
+                await _confirmationService.ConfirmAsync(
+                    "Save failed",
+                    string.IsNullOrEmpty(result.Message) ? "Validation errors occurred." : result.Message);
+                ScreenState = InvoiceScreenState.Editing;
             }
         }
 
