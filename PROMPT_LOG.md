@@ -285,3 +285,6 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [ui_agent] Add AddNewCommand for editable combos
 - Introduced AddNewCommand in EditableComboWithAddViewModel to directly open the entity creation dialog.
 - Bound the Add button in EditableComboWithAdd.xaml to this command.
+## [ui_agent] Introduce invoice screen states
+- Added InvoiceScreenState enum and ScreenState property in MainViewModel.
+- Updated commands and methods to switch states and control detail visibility.

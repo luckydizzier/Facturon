@@ -39,19 +39,28 @@ namespace Facturon.App.ViewModels
             }
         }
 
-        private bool _detailVisible;
-        public bool DetailVisible
+        private InvoiceScreenState _screenState = InvoiceScreenState.Browsing;
+        public InvoiceScreenState ScreenState
         {
-            get => _detailVisible;
+            get => _screenState;
             set
             {
-                if (_detailVisible != value)
+                if (_screenState != value)
                 {
-                    _detailVisible = value;
+                    _screenState = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(DetailVisible));
+                    OpenInvoiceCommand.RaiseCanExecuteChanged();
+                    CloseDetailCommand.RaiseCanExecuteChanged();
+                    NewInvoiceCommand.RaiseCanExecuteChanged();
+                    DeleteInvoiceCommand.RaiseCanExecuteChanged();
+                    SaveInvoiceCommand.RaiseCanExecuteChanged();
+                    CancelInvoiceCommand.RaiseCanExecuteChanged();
                 }
             }
         }
+
+        public bool DetailVisible => ScreenState != InvoiceScreenState.Browsing;
 
         public RelayCommand OpenInvoiceCommand { get; }
         public RelayCommand CloseDetailCommand { get; }
@@ -116,12 +125,12 @@ namespace Facturon.App.ViewModels
                 _supplierDialogService,
                 this);
 
-            OpenInvoiceCommand = new RelayCommand(OpenSelected, CanOpenSelected);
-            CloseDetailCommand = new RelayCommand(CloseDetail, () => DetailVisible);
-            NewInvoiceCommand = new RelayCommand(NewInvoice);
-            DeleteInvoiceCommand = new RelayCommand(DeleteSelected, CanDeleteSelected);
-            SaveInvoiceCommand = new RelayCommand(SaveInvoice, () => DetailVisible);
-            CancelInvoiceCommand = new RelayCommand(CancelInvoice, () => DetailVisible);
+            OpenInvoiceCommand = new RelayCommand(OpenSelected, () => ScreenState == InvoiceScreenState.Browsing && CanOpenSelected());
+            CloseDetailCommand = new RelayCommand(CloseDetail, () => ScreenState != InvoiceScreenState.Browsing);
+            NewInvoiceCommand = new RelayCommand(NewInvoice, () => ScreenState == InvoiceScreenState.Browsing);
+            DeleteInvoiceCommand = new RelayCommand(DeleteSelected, () => ScreenState == InvoiceScreenState.Browsing && CanDeleteSelected());
+            SaveInvoiceCommand = new RelayCommand(SaveInvoice, () => ScreenState == InvoiceScreenState.Editing);
+            CancelInvoiceCommand = new RelayCommand(CancelInvoice, () => ScreenState == InvoiceScreenState.Editing);
             LoadedCommand = new RelayCommand(() => _navigationService.MoveFocus(FocusNavigationDirection.First));
             ExitCommand = new RelayCommand(ExecuteExitAsync);
         }
@@ -138,18 +147,14 @@ namespace Facturon.App.ViewModels
             if (InvoiceList.SelectedInvoice != null)
             {
                 InvoiceDetail.Invoice = InvoiceList.SelectedInvoice;
-                DetailVisible = true;
-                DeleteInvoiceCommand.RaiseCanExecuteChanged();
-                CloseDetailCommand.RaiseCanExecuteChanged();
+                ScreenState = InvoiceScreenState.Editing;
             }
         }
 
         private void CloseDetail()
         {
             InvoiceDetail.Invoice = null;
-            DetailVisible = false;
-            CloseDetailCommand.RaiseCanExecuteChanged();
-            DeleteInvoiceCommand.RaiseCanExecuteChanged();
+            ScreenState = InvoiceScreenState.Browsing;
         }
 
         private void NewInvoice()
@@ -171,9 +176,7 @@ namespace Facturon.App.ViewModels
                 }
             };
             InvoiceDetail.SupplierSelector.SelectedItem = InvoiceDetail.SupplierSelector.Items.FirstOrDefault();
-            DetailVisible = true;
-            CloseDetailCommand.RaiseCanExecuteChanged();
-            DeleteInvoiceCommand.RaiseCanExecuteChanged();
+            ScreenState = InvoiceScreenState.Editing;
         }
 
         private bool CanDeleteSelected() => InvoiceList.SelectedInvoice != null;
