@@ -22,9 +22,12 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<Product> _productDialogService;
         private readonly INewEntityDialogService<Unit> _unitDialogService;
         private readonly INewEntityDialogService<TaxRate> _taxDialogService;
+        private readonly ISupplierService _supplierService;
+        private readonly INewEntityDialogService<Supplier> _supplierDialogService;
         private readonly IInvoiceItemService _invoiceItemService;
         private readonly MainViewModel _mainViewModel;
 
+        public SupplierSelectorViewModel SupplierSelector { get; }
         public PaymentMethodSelectorViewModel PaymentMethodSelector { get; }
         public InvoiceItemInputViewModel InputRow { get; }
         public InvoiceItemViewModel? SelectedInvoiceItem
@@ -52,12 +55,14 @@ namespace Facturon.App.ViewModels
             IProductService productService,
             IUnitService unitService,
             ITaxRateService taxRateService,
+            ISupplierService supplierService,
             IInvoiceItemService invoiceItemService,
             IConfirmationDialogService confirmationService,
             INewEntityDialogService<PaymentMethod> paymentMethodDialogService,
             INewEntityDialogService<Product> productDialogService,
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxDialogService,
+            INewEntityDialogService<Supplier> supplierDialogService,
             MainViewModel mainViewModel)
         {
             _invoiceService = invoiceService;
@@ -71,6 +76,8 @@ namespace Facturon.App.ViewModels
             _productDialogService = productDialogService;
             _unitDialogService = unitDialogService;
             _taxDialogService = taxDialogService;
+            _supplierService = supplierService;
+            _supplierDialogService = supplierDialogService;
             _mainViewModel = mainViewModel;
 
             PaymentMethodSelector = new PaymentMethodSelectorViewModel(
@@ -79,6 +86,13 @@ namespace Facturon.App.ViewModels
                 _paymentMethodDialogService);
             PaymentMethodSelector.InitializeAsync().GetAwaiter().GetResult();
             PaymentMethodSelector.PropertyChanged += PaymentMethodSelectorOnPropertyChanged;
+
+            SupplierSelector = new SupplierSelectorViewModel(
+                _supplierService,
+                _confirmationService,
+                _supplierDialogService);
+            SupplierSelector.InitializeAsync().GetAwaiter().GetResult();
+            SupplierSelector.PropertyChanged += SupplierSelectorOnPropertyChanged;
 
             InputRow = new InvoiceItemInputViewModel(
                 _productService,
@@ -111,6 +125,7 @@ namespace Facturon.App.ViewModels
                     OnPropertyChanged(nameof(InvoiceItems));
                     OnPropertyChanged(nameof(IsGrossBased));
                     PaymentMethodSelector.SelectedItem = _invoice?.PaymentMethod;
+                    SupplierSelector.SelectedItem = _invoice?.Supplier;
                 }
             }
         }
@@ -195,6 +210,7 @@ namespace Facturon.App.ViewModels
             var full = await _invoiceService.GetByIdAsync(_mainViewModel.SelectedInvoice.Id);
             Invoice = full;
             PaymentMethodSelector.SelectedItem = full?.PaymentMethod;
+            SupplierSelector.SelectedItem = full?.Supplier;
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>(
                 full?.Items.Select(i => new InvoiceItemViewModel(i)) ?? new List<InvoiceItemViewModel>());
             foreach (var item in InvoiceItems)
@@ -256,6 +272,15 @@ namespace Facturon.App.ViewModels
             {
                 Invoice.PaymentMethod = PaymentMethodSelector.SelectedItem;
                 Invoice.PaymentMethodId = PaymentMethodSelector.SelectedItem.Id;
+            }
+        }
+
+        private void SupplierSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SupplierSelector.SelectedItem) && Invoice != null && SupplierSelector.SelectedItem != null)
+            {
+                Invoice.Supplier = SupplierSelector.SelectedItem;
+                Invoice.SupplierId = SupplierSelector.SelectedItem.Id;
             }
         }
 
