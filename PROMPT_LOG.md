@@ -281,3 +281,7 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 - Added LoadedCommand in InvoiceListViewModel to select the first invoice and set focus via INavigationService.
 - Bound InvoiceListView's Loaded event using LoadedBehavior.
 - Removed UserControl_Loaded method from code-behind.
+
+## [ui_agent] Add AddNewCommand for editable combos
+- Introduced AddNewCommand in EditableComboWithAddViewModel to directly open the entity creation dialog.
+- Bound the Add button in EditableComboWithAdd.xaml to this command.
