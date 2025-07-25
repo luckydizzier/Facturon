@@ -1,7 +1,9 @@
 using Facturon.Services;
+using Facturon.Domain.Entities;
+
 namespace Facturon.App.ViewModels
 {
-    public class EntityCreateDialogViewModel<T> : BaseViewModel
+    public class EntityCreateDialogViewModel<T> : BaseViewModel where T : BaseEntity
     {
         private readonly IEntityService<T> _service;
 
