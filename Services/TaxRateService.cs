@@ -10,11 +10,13 @@ namespace Facturon.Services
     {
         private readonly ITaxRateRepository _taxRateRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ISelectionHistoryService _historyService;
 
-        public TaxRateService(ITaxRateRepository taxRateRepository, IProductRepository productRepository)
+        public TaxRateService(ITaxRateRepository taxRateRepository, IProductRepository productRepository, ISelectionHistoryService historyService)
         {
             _taxRateRepository = taxRateRepository;
             _productRepository = productRepository;
+            _historyService = historyService;
         }
 
         public async Task<TaxRate?> GetByIdAsync(int id)
@@ -25,6 +27,19 @@ namespace Facturon.Services
         public async Task<List<TaxRate>> GetAllAsync()
         {
             return await _taxRateRepository.GetAllAsync();
+        }
+
+        public async Task<List<TaxRate>> GetMostRecentAsync(int count)
+        {
+            var ids = await _historyService.GetRecentIdsAsync(nameof(TaxRate), count);
+            var list = new List<TaxRate>();
+            foreach (var id in ids)
+            {
+                var item = await _taxRateRepository.GetByIdAsync(id);
+                if (item != null && item.Active)
+                    list.Add(item);
+            }
+            return list;
         }
 
         public async Task<List<TaxRate>> GetActiveForDateAsync(DateTime date)

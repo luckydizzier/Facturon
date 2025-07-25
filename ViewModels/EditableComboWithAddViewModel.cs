@@ -5,14 +5,16 @@ using System.Windows.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Facturon.Services;
+using Facturon.Domain.Entities;
 
 namespace Facturon.App.ViewModels
 {
-    public class EditableComboWithAddViewModel<T> : BaseViewModel
+    public class EditableComboWithAddViewModel<T> : BaseViewModel where T : BaseEntity
     {
         private readonly IEntityService<T> _service;
         private readonly IConfirmationDialogService _confirmationService;
         private readonly INewEntityDialogService<T> _dialogService;
+        private readonly ISelectionHistoryService _historyService;
 
         public event Action? FocusRequested;
 
@@ -32,6 +34,8 @@ namespace Facturon.App.ViewModels
                 {
                     _selectedItem = value;
                     OnPropertyChanged();
+                    if (value != null)
+                        _ = _historyService.RecordSelectionAsync(typeof(T).Name, value.Id);
                 }
             }
         }
@@ -54,11 +58,13 @@ namespace Facturon.App.ViewModels
         public EditableComboWithAddViewModel(
             IEntityService<T> service,
             IConfirmationDialogService confirmationService,
-            INewEntityDialogService<T> dialogService)
+            INewEntityDialogService<T> dialogService,
+            ISelectionHistoryService historyService)
         {
             _service = service;
             _confirmationService = confirmationService;
             _dialogService = dialogService;
+            _historyService = historyService;
             ConfirmInputCommand = new RelayCommand(ExecuteConfirmInputAsync);
             AddNewCommand = new RelayCommand(ExecuteAddNewAsync);
             FilteredItems = CollectionViewSource.GetDefaultView(Items);
@@ -83,9 +89,12 @@ namespace Facturon.App.ViewModels
 
         public async Task InitializeAsync()
         {
-            var items = await _service.GetAllAsync();
             Items.Clear();
-            foreach (var item in items)
+            var recent = await _service.GetMostRecentAsync(5);
+            foreach (var item in recent)
+                Items.Add(item);
+            var all = await _service.GetAllAsync();
+            foreach (var item in all.Where(a => Items.All(i => i.Id != a.Id)))
                 Items.Add(item);
             FilteredItems.Refresh();
         }

@@ -10,11 +10,13 @@ namespace Facturon.Services
     {
         private readonly IPaymentMethodRepository _paymentMethodRepository;
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly ISelectionHistoryService _historyService;
 
-        public PaymentMethodService(IPaymentMethodRepository paymentMethodRepository, IInvoiceRepository invoiceRepository)
+        public PaymentMethodService(IPaymentMethodRepository paymentMethodRepository, IInvoiceRepository invoiceRepository, ISelectionHistoryService historyService)
         {
             _paymentMethodRepository = paymentMethodRepository;
             _invoiceRepository = invoiceRepository;
+            _historyService = historyService;
         }
 
         public async Task<PaymentMethod?> GetByIdAsync(int id)
@@ -25,6 +27,19 @@ namespace Facturon.Services
         public async Task<List<PaymentMethod>> GetAllAsync()
         {
             return await _paymentMethodRepository.GetAllAsync();
+        }
+
+        public async Task<List<PaymentMethod>> GetMostRecentAsync(int count)
+        {
+            var ids = await _historyService.GetRecentIdsAsync(nameof(PaymentMethod), count);
+            var list = new List<PaymentMethod>();
+            foreach (var id in ids)
+            {
+                var item = await _paymentMethodRepository.GetByIdAsync(id);
+                if (item != null && item.Active)
+                    list.Add(item);
+            }
+            return list;
         }
 
         public async Task<Result> CreateAsync(PaymentMethod method)

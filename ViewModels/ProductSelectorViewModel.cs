@@ -8,8 +8,9 @@ namespace Facturon.App.ViewModels
         public ProductSelectorViewModel(
             IProductService service,
             IConfirmationDialogService confirmationService,
-            INewEntityDialogService<Product> dialogService)
-            : base(service, confirmationService, dialogService)
+            INewEntityDialogService<Product> dialogService,
+            ISelectionHistoryService historyService)
+            : base(service, confirmationService, dialogService, historyService)
         {
         }
     }

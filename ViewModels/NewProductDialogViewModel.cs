@@ -66,7 +66,8 @@ namespace Facturon.App.ViewModels
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxRateDialogService,
             INewEntityDialogService<ProductGroup> productGroupDialogService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            ISelectionHistoryService historyService)
         {
             _unitService = unitService;
             _taxRateService = taxRateService;
@@ -78,11 +79,11 @@ namespace Facturon.App.ViewModels
             _productGroupDialogService = productGroupDialogService;
             _navigationService = navigationService;
 
-            UnitSelector = new EditableComboWithAddViewModel<Unit>(_unitService, _confirmationService, _unitDialogService);
+            UnitSelector = new EditableComboWithAddViewModel<Unit>(_unitService, _confirmationService, _unitDialogService, historyService);
             UnitSelector.PropertyChanged += UnitSelectorOnPropertyChanged;
-            TaxRateSelector = new TaxRateSelectorViewModel(_taxRateService, _confirmationService, _taxRateDialogService);
+            TaxRateSelector = new TaxRateSelectorViewModel(_taxRateService, _confirmationService, _taxRateDialogService, historyService);
             TaxRateSelector.PropertyChanged += TaxRateSelectorOnPropertyChanged;
-            ProductGroupSelector = new ProductGroupSelectorViewModel(_productGroupService, _confirmationService, _productGroupDialogService);
+            ProductGroupSelector = new ProductGroupSelectorViewModel(_productGroupService, _confirmationService, _productGroupDialogService, historyService);
             ProductGroupSelector.PropertyChanged += ProductGroupSelectorOnPropertyChanged;
 
             SaveCommand = new RelayCommand(Save, CanSave);

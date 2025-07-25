@@ -27,6 +27,7 @@ namespace Facturon.App.ViewModels
         private readonly IInvoiceItemService _invoiceItemService;
         private readonly INavigationService _navigationService;
         private readonly MainViewModel _mainViewModel;
+        private readonly ISelectionHistoryService _historyService;
 
         public SupplierSelectorViewModel SupplierSelector { get; }
         public PaymentMethodSelectorViewModel PaymentMethodSelector { get; }
@@ -66,7 +67,8 @@ namespace Facturon.App.ViewModels
             INewEntityDialogService<TaxRate> taxDialogService,
             INewEntityDialogService<Supplier> supplierDialogService,
             INavigationService navigationService,
-            MainViewModel mainViewModel)
+            MainViewModel mainViewModel,
+            ISelectionHistoryService historyService)
         {
             _invoiceService = invoiceService;
             _paymentMethodService = paymentMethodService;
@@ -83,17 +85,20 @@ namespace Facturon.App.ViewModels
             _navigationService = navigationService;
             _supplierDialogService = supplierDialogService;
             _mainViewModel = mainViewModel;
+            _historyService = historyService;
 
             PaymentMethodSelector = new PaymentMethodSelectorViewModel(
                 _paymentMethodService,
                 _confirmationService,
-                _paymentMethodDialogService);
+                _paymentMethodDialogService,
+                historyService);
             PaymentMethodSelector.PropertyChanged += PaymentMethodSelectorOnPropertyChanged;
 
             SupplierSelector = new SupplierSelectorViewModel(
                 _supplierService,
                 _confirmationService,
-                _supplierDialogService);
+                _supplierDialogService,
+                historyService);
             SupplierSelector.PropertyChanged += SupplierSelectorOnPropertyChanged;
 
             InputRow = new InvoiceItemInputViewModel(
@@ -104,7 +109,8 @@ namespace Facturon.App.ViewModels
                 _productDialogService,
                 _unitDialogService,
                 _taxDialogService,
-                _navigationService);
+                _navigationService,
+                historyService);
             InputRow.ItemReadyToAdd += InputRowOnItemReadyToAdd;
 
             DeleteSelectedItemCommand = new RelayCommand(DeleteSelectedItem, CanDeleteSelectedItem);

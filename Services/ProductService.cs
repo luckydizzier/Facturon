@@ -14,19 +14,22 @@ namespace Facturon.Services
         private readonly IProductGroupRepository _productGroupRepository;
         private readonly ITaxRateRepository _taxRateRepository;
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly ISelectionHistoryService _historyService;
 
         public ProductService(
             IProductRepository productRepository,
             IUnitRepository unitRepository,
             IProductGroupRepository productGroupRepository,
             ITaxRateRepository taxRateRepository,
-            IInvoiceRepository invoiceRepository)
+            IInvoiceRepository invoiceRepository,
+            ISelectionHistoryService historyService)
         {
             _productRepository = productRepository;
             _unitRepository = unitRepository;
             _productGroupRepository = productGroupRepository;
             _taxRateRepository = taxRateRepository;
             _invoiceRepository = invoiceRepository;
+            _historyService = historyService;
         }
 
         public async Task<Product?> GetByIdAsync(int id)
@@ -37,6 +40,19 @@ namespace Facturon.Services
         public async Task<List<Product>> GetAllAsync()
         {
             return await _productRepository.GetAllAsync();
+        }
+
+        public async Task<List<Product>> GetMostRecentAsync(int count)
+        {
+            var ids = await _historyService.GetRecentIdsAsync(nameof(Product), count);
+            var list = new List<Product>();
+            foreach (var id in ids)
+            {
+                var item = await _productRepository.GetByIdAsync(id);
+                if (item != null && item.Active)
+                    list.Add(item);
+            }
+            return list;
         }
 
         public async Task<Result> CreateAsync(Product product)

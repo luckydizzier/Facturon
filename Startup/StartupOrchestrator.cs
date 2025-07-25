@@ -71,6 +71,7 @@ namespace Facturon.App
                     services.AddSingleton<INewEntityDialogService<PaymentMethod>, NewPaymentMethodDialogService>();
 
                     services.AddSingleton<INavigationService, NavigationService>();
+                    services.AddSingleton<ISelectionHistoryService, SelectionHistoryService>();
 
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<InvoiceListViewModel>();
@@ -90,7 +91,8 @@ namespace Facturon.App
                             sp.GetRequiredService<INewEntityDialogService<TaxRate>>(),
                             sp.GetRequiredService<INewEntityDialogService<Supplier>>(),
                             sp.GetRequiredService<INavigationService>(),
-                            sp.GetRequiredService<MainViewModel>()));
+                            sp.GetRequiredService<MainViewModel>(),
+                            sp.GetRequiredService<ISelectionHistoryService>()));
                     services.AddTransient<MainViewModel>();
                 });
 

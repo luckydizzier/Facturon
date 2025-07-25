@@ -16,6 +16,7 @@ namespace Facturon.App
         private readonly INewEntityDialogService<TaxRate> _taxRateDialogService;
         private readonly INewEntityDialogService<ProductGroup> _productGroupDialogService;
         private readonly INavigationService _navigationService;
+        private readonly ISelectionHistoryService _historyService;
 
         public NewProductDialogService(
             IUnitService unitService,
@@ -26,7 +27,8 @@ namespace Facturon.App
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxRateDialogService,
             INewEntityDialogService<ProductGroup> productGroupDialogService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            ISelectionHistoryService historyService)
         {
             _unitService = unitService;
             _taxRateService = taxRateService;
@@ -37,6 +39,7 @@ namespace Facturon.App
             _taxRateDialogService = taxRateDialogService;
             _productGroupDialogService = productGroupDialogService;
             _navigationService = navigationService;
+            _historyService = historyService;
         }
 
         public Product? ShowDialog()
@@ -51,7 +54,8 @@ namespace Facturon.App
                 _unitDialogService,
                 _taxRateDialogService,
                 _productGroupDialogService,
-                _navigationService);
+                _navigationService,
+                _historyService);
             dialog.DataContext = vm;
             vm.CloseRequested += p => dialog.DialogResult = p != null;
             var result = dialog.ShowDialog();

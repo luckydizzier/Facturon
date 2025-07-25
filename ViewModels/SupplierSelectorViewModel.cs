@@ -8,8 +8,9 @@ namespace Facturon.App.ViewModels
         public SupplierSelectorViewModel(
             ISupplierService service,
             IConfirmationDialogService confirmationService,
-            INewEntityDialogService<Supplier> dialogService)
-            : base(service, confirmationService, dialogService)
+            INewEntityDialogService<Supplier> dialogService,
+            ISelectionHistoryService historyService)
+            : base(service, confirmationService, dialogService, historyService)
         {
         }
     }

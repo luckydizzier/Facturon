@@ -8,8 +8,9 @@ namespace Facturon.App.ViewModels
         public PaymentMethodSelectorViewModel(
             IPaymentMethodService service,
             IConfirmationDialogService confirmationService,
-            INewEntityDialogService<PaymentMethod> dialogService)
-            : base(service, confirmationService, dialogService)
+            INewEntityDialogService<PaymentMethod> dialogService,
+            ISelectionHistoryService historyService)
+            : base(service, confirmationService, dialogService, historyService)
         {
         }
     }

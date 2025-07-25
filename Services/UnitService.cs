@@ -10,11 +10,13 @@ namespace Facturon.Services
     {
         private readonly IUnitRepository _unitRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ISelectionHistoryService _historyService;
 
-        public UnitService(IUnitRepository unitRepository, IProductRepository productRepository)
+        public UnitService(IUnitRepository unitRepository, IProductRepository productRepository, ISelectionHistoryService historyService)
         {
             _unitRepository = unitRepository;
             _productRepository = productRepository;
+            _historyService = historyService;
         }
 
         public async Task<Unit?> GetByIdAsync(int id)
@@ -25,6 +27,19 @@ namespace Facturon.Services
         public async Task<List<Unit>> GetAllAsync()
         {
             return await _unitRepository.GetAllAsync();
+        }
+
+        public async Task<List<Unit>> GetMostRecentAsync(int count)
+        {
+            var ids = await _historyService.GetRecentIdsAsync(nameof(Unit), count);
+            var list = new List<Unit>();
+            foreach (var id in ids)
+            {
+                var item = await _unitRepository.GetByIdAsync(id);
+                if (item != null && item.Active)
+                    list.Add(item);
+            }
+            return list;
         }
 
         public async Task<Result> CreateAsync(Unit unit)

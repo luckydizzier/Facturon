@@ -10,11 +10,13 @@ namespace Facturon.Services
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly ISelectionHistoryService _historyService;
 
-        public SupplierService(ISupplierRepository supplierRepository, IInvoiceRepository invoiceRepository)
+        public SupplierService(ISupplierRepository supplierRepository, IInvoiceRepository invoiceRepository, ISelectionHistoryService historyService)
         {
             _supplierRepository = supplierRepository;
             _invoiceRepository = invoiceRepository;
+            _historyService = historyService;
         }
 
         public async Task<Supplier?> GetByIdAsync(int id)
@@ -25,6 +27,19 @@ namespace Facturon.Services
         public async Task<List<Supplier>> GetAllAsync()
         {
             return await _supplierRepository.GetAllAsync();
+        }
+
+        public async Task<List<Supplier>> GetMostRecentAsync(int count)
+        {
+            var ids = await _historyService.GetRecentIdsAsync(nameof(Supplier), count);
+            var list = new List<Supplier>();
+            foreach (var id in ids)
+            {
+                var item = await _supplierRepository.GetByIdAsync(id);
+                if (item != null && item.Active)
+                    list.Add(item);
+            }
+            return list;
         }
 
         public async Task<Result> CreateAsync(Supplier supplier)
