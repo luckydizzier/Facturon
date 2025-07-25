@@ -321,3 +321,7 @@ IDataErrorInfo implementations.
 ## [ui_agent] Add status bar view
 - Introduced StatusBarViewModel with hint text properties.
 - Created StatusBarView bound to those hints and placed it in MainWindow.
+## [ui_agent] Fix behaviors namespace for XAML build errors
+Replaced `http://schemas.microsoft.com/xaml/behaviors` with Expression Blend
+namespaces in views and switched actions to the `ei` prefix to resolve
+`Interaction.Triggers` compile errors.
