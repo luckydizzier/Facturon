@@ -325,3 +325,5 @@ IDataErrorInfo implementations.
 Replaced `http://schemas.microsoft.com/xaml/behaviors` with Expression Blend
 namespaces in views and switched actions to the `ei` prefix to resolve
 `Interaction.Triggers` compile errors.
+## [ui_agent] Restore XAML behaviors namespace
+Reverted views to use `http://schemas.microsoft.com/xaml/behaviors` for all triggers and actions after build errors.

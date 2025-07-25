@@ -2,8 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:Facturon.App.Views"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="New Product"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight"
@@ -15,7 +14,7 @@
     </Window.InputBindings>
     <i:Interaction.Triggers>
         <EventTrigger EventName="Loaded">
-            <ei:InvokeCommandAction Command="{Binding LoadCommand}" />
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
         </EventTrigger>
     </i:Interaction.Triggers>
     <StackPanel Margin="10">
