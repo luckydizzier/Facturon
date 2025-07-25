@@ -332,3 +332,7 @@ Replaced `EventTrigger` tags with `i:EventTrigger` in view files to fix "EventNa
 
 ## [ui_agent] Constrain EntityCreateDialogViewModel
 Added BaseEntity generic constraint and using directive in EntityCreateDialogViewModel to satisfy IEntityService requirement.
+## [ui_agent] Fix build errors for selectors
+Corrected generic type reference in InvoiceItemInputViewModel.
+Added LINQ using directive in TaxRateSelectorViewModel.
+Injected ISelectionHistoryService into MainViewModel and forwarded to InvoiceDetailViewModel.

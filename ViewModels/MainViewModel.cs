@@ -23,6 +23,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<Supplier> _supplierDialogService;
         private readonly IInvoiceItemService _invoiceItemService;
         private readonly INavigationService _navigationService;
+        private readonly ISelectionHistoryService _historyService;
 
         public InvoiceListViewModel InvoiceList { get; }
         public InvoiceDetailViewModel InvoiceDetail { get; }
@@ -87,7 +88,8 @@ namespace Facturon.App.ViewModels
             INewEntityDialogService<Product> productDialogService,
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxDialogService,
-            INewEntityDialogService<Supplier> supplierDialogService)
+            INewEntityDialogService<Supplier> supplierDialogService,
+            ISelectionHistoryService historyService)
         {
             Debug.WriteLine("MainViewModel created");
             _invoiceService = invoiceService;
@@ -99,6 +101,7 @@ namespace Facturon.App.ViewModels
             _invoiceItemService = invoiceItemService;
             _confirmationService = confirmationService;
             _navigationService = navigationService;
+            _historyService = historyService;
             _paymentMethodDialogService = paymentMethodDialogService;
             _productDialogService = productDialogService;
             _unitDialogService = unitDialogService;
@@ -126,7 +129,8 @@ namespace Facturon.App.ViewModels
                 _taxDialogService,
                 _supplierDialogService,
                 _navigationService,
-                this);
+                this,
+                _historyService);
             StatusBar = new StatusBarViewModel();
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, () => ScreenState == InvoiceScreenState.Browsing && CanOpenSelected());
