@@ -26,6 +26,10 @@
         <KeyBinding Key="Escape" Command="{Binding ExitCommand}"/>
     </Window.InputBindings>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="3*" />
@@ -34,5 +38,6 @@
         <views:InvoiceDetailView Grid.Column="1"
                                 DataContext="{Binding InvoiceDetail}"
                                 Visibility="{Binding DataContext.DetailVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
+        <views:StatusBarView Grid.Row="1" Grid.ColumnSpan="2" DataContext="{Binding StatusBar}" />
     </Grid>
 </Window>
