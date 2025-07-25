@@ -9,9 +9,9 @@
         Width="800"
         >
     <i:Interaction.Triggers>
-        <EventTrigger EventName="Loaded">
+        <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
-        </EventTrigger>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

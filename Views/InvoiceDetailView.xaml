@@ -7,9 +7,9 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d">
     <i:Interaction.Triggers>
-        <EventTrigger EventName="Loaded">
+        <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
-        </EventTrigger>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Margin="10">
         <Grid.RowDefinitions>

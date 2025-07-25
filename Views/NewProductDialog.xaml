@@ -13,9 +13,9 @@
         <KeyBinding Modifiers="Shift" Key="Enter" Command="{Binding MovePreviousCommand}" />
     </Window.InputBindings>
     <i:Interaction.Triggers>
-        <EventTrigger EventName="Loaded">
+        <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
-        </EventTrigger>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <StackPanel Margin="10">
         <TextBlock Text="Name:"/>
