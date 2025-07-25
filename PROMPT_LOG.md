@@ -329,3 +329,6 @@ namespaces in views and switched actions to the `ei` prefix to resolve
 Reverted views to use `http://schemas.microsoft.com/xaml/behaviors` for all triggers and actions after build errors.
 ## [ui_agent] Prefix EventTriggers
 Replaced `EventTrigger` tags with `i:EventTrigger` in view files to fix "EventName does not exist" build errors.
+
+## [ui_agent] Constrain EntityCreateDialogViewModel
+Added BaseEntity generic constraint and using directive in EntityCreateDialogViewModel to satisfy IEntityService requirement.
