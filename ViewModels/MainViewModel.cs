@@ -124,6 +124,7 @@ namespace Facturon.App.ViewModels
                 _unitDialogService,
                 _taxDialogService,
                 _supplierDialogService,
+                _navigationService,
                 this);
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, () => ScreenState == InvoiceScreenState.Browsing && CanOpenSelected());
