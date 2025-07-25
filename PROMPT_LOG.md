@@ -298,3 +298,7 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 
 ## [ui_agent] Fix missing Linq using
 - Added System.Linq import in MainViewModel for FirstOrDefault.
+
+## [ui_agent] Preselect payment method on new invoice
+- Set PaymentMethodSelector.SelectedItem to the first item after creating the invoice object in MainViewModel.NewInvoice.
+- Ensures default selection similar to SupplierSelector.
