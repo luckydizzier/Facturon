@@ -18,5 +18,10 @@ namespace Facturon.App.Views
         {
             InitializeComponent();
         }
+
+        public void FocusInput()
+        {
+            Combo.Focus();
+        }
     }
 }
