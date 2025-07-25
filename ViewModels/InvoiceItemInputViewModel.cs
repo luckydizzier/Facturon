@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Facturon.Domain.Entities;
 using Facturon.Services;
 
@@ -51,6 +52,7 @@ namespace Facturon.App.ViewModels
 
         public RelayCommand AddCommand { get; }
         public RelayCommand ClearCommand { get; }
+        public RelayCommand LoadCommand { get; }
 
         public event Action<InvoiceItem>? ItemReadyToAdd;
 
@@ -96,6 +98,7 @@ namespace Facturon.App.ViewModels
 
             AddCommand = new RelayCommand(Add, IsValid);
             ClearCommand = new RelayCommand(Clear);
+            LoadCommand = new RelayCommand(async () => await InitializeAsync());
         }
 
         private void ProductSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -112,11 +115,11 @@ namespace Facturon.App.ViewModels
                 AddCommand.RaiseCanExecuteChanged();
         }
 
-        public void Initialize()
+        public async Task InitializeAsync()
         {
-            ProductSelector.InitializeAsync().GetAwaiter().GetResult();
-            UnitSelector.InitializeAsync().GetAwaiter().GetResult();
-            TaxRateSelector.InitializeAsync(DateTime.Today).GetAwaiter().GetResult();
+            await ProductSelector.InitializeAsync();
+            await UnitSelector.InitializeAsync();
+            await TaxRateSelector.InitializeAsync(DateTime.Today);
         }
 
         private void Add()

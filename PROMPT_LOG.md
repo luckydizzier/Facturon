@@ -302,3 +302,8 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 ## [ui_agent] Preselect payment method on new invoice
 - Set PaymentMethodSelector.SelectedItem to the first item after creating the invoice object in MainViewModel.NewInvoice.
 - Ensures default selection similar to SupplierSelector.
+
+## [ui_agent] Async view model loading
+- Replaced synchronous initialization with InitializeAsync in InvoiceItemInputViewModel, NewProductDialogViewModel, and InvoiceDetailViewModel.
+- Added LoadCommand properties and bound them to Loaded events in corresponding views.
+- Updated NewProductDialogService to stop calling Initialize().

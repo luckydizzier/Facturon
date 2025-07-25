@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Facturon.Domain.Entities;
 using Facturon.Services;
 
@@ -49,6 +50,7 @@ namespace Facturon.App.ViewModels
 
         public RelayCommand SaveCommand { get; }
         public RelayCommand CancelCommand { get; }
+        public RelayCommand LoadCommand { get; }
 
         public event Action<Product?>? CloseRequested;
 
@@ -80,6 +82,7 @@ namespace Facturon.App.ViewModels
 
             SaveCommand = new RelayCommand(Save, CanSave);
             CancelCommand = new RelayCommand(() => CloseRequested?.Invoke(null));
+            LoadCommand = new RelayCommand(async () => await InitializeAsync());
         }
 
         private void UnitSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -114,11 +117,11 @@ namespace Facturon.App.ViewModels
             }
         }
 
-        public void Initialize()
+        public async Task InitializeAsync()
         {
-            UnitSelector.InitializeAsync().GetAwaiter().GetResult();
-            TaxRateSelector.InitializeAsync(DateTime.Today).GetAwaiter().GetResult();
-            ProductGroupSelector.InitializeAsync().GetAwaiter().GetResult();
+            await UnitSelector.InitializeAsync();
+            await TaxRateSelector.InitializeAsync(DateTime.Today);
+            await ProductGroupSelector.InitializeAsync();
         }
 
         private bool CanSave()
