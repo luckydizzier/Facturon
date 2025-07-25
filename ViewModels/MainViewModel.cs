@@ -26,6 +26,7 @@ namespace Facturon.App.ViewModels
 
         public InvoiceListViewModel InvoiceList { get; }
         public InvoiceDetailViewModel InvoiceDetail { get; }
+        public StatusBarViewModel StatusBar { get; }
 
         public Invoice? SelectedInvoice
         {
@@ -126,6 +127,7 @@ namespace Facturon.App.ViewModels
                 _supplierDialogService,
                 _navigationService,
                 this);
+            StatusBar = new StatusBarViewModel();
 
             OpenInvoiceCommand = new RelayCommand(OpenSelected, () => ScreenState == InvoiceScreenState.Browsing && CanOpenSelected());
             CloseDetailCommand = new RelayCommand(CloseDetail, () => ScreenState != InvoiceScreenState.Browsing);

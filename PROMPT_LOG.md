@@ -318,3 +318,6 @@ use validation templates from LightTheme.
 ## [test_agent] Validate dialog view model errors
 Added unit tests covering required and duplicate name rules for the new
 IDataErrorInfo implementations.
+## [ui_agent] Add status bar view
+- Introduced StatusBarViewModel with hint text properties.
+- Created StatusBarView bound to those hints and placed it in MainWindow.
