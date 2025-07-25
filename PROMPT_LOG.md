@@ -327,3 +327,5 @@ namespaces in views and switched actions to the `ei` prefix to resolve
 `Interaction.Triggers` compile errors.
 ## [ui_agent] Restore XAML behaviors namespace
 Reverted views to use `http://schemas.microsoft.com/xaml/behaviors` for all triggers and actions after build errors.
+## [ui_agent] Prefix EventTriggers
+Replaced `EventTrigger` tags with `i:EventTrigger` in view files to fix "EventName does not exist" build errors.

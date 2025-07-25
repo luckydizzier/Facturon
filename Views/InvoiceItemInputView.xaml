@@ -4,9 +4,9 @@
              xmlns:views="clr-namespace:Facturon.App.Views"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <i:Interaction.Triggers>
-        <EventTrigger EventName="Loaded">
+        <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
-        </EventTrigger>
+        </i:EventTrigger>
         <i:EventTrigger SourceObject="{Binding}" EventName="FocusRequested">
             <i:CallMethodAction TargetObject="{Binding ElementName=ProductCombo}" MethodName="FocusInput" />
         </i:EventTrigger>

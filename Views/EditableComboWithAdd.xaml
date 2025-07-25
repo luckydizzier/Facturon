@@ -11,9 +11,9 @@
                   SelectedItem="{Binding SelectedItem}"
                     DisplayMemberPath="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=UserControl}}">
             <i:Interaction.Triggers>
-                <EventTrigger EventName="LostFocus">
+                <i:EventTrigger EventName="LostFocus">
                     <i:InvokeCommandAction Command="{Binding ConfirmInputCommand}" />
-                </EventTrigger>
+                </i:EventTrigger>
             </i:Interaction.Triggers>
             <ComboBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding ConfirmInputCommand}" />

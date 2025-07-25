@@ -8,9 +8,9 @@
              FocusManager.FocusedElement="{Binding ElementName=InvoiceList}"
              >
     <i:Interaction.Triggers>
-        <EventTrigger EventName="Loaded">
+        <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
-        </EventTrigger>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <ListBox x:Name="InvoiceList"
