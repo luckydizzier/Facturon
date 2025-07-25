@@ -59,7 +59,7 @@ namespace Facturon.App.ViewModels
         public RelayCommand MovePreviousCommand { get; }
 
         public event Action<InvoiceItem>? ItemReadyToAdd;
-        public event Action? FocusRequested;
+        public event EventHandler? FocusRequested;
 
         public InvoiceItemViewModel? EditingItem { get; private set; }
         private bool _isEditing;
@@ -160,7 +160,7 @@ namespace Facturon.App.ViewModels
 
             ItemReadyToAdd?.Invoke(item);
             Clear();
-            FocusRequested?.Invoke();
+            FocusRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void Clear()
@@ -235,7 +235,7 @@ namespace Facturon.App.ViewModels
             EditingItem = null;
             IsEditing = false;
             Clear();
-            FocusRequested?.Invoke();
+            FocusRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }

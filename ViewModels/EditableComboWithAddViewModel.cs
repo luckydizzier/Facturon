@@ -16,7 +16,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<T> _dialogService;
         private readonly ISelectionHistoryService _historyService;
 
-        public event Action? FocusRequested;
+        public event EventHandler? FocusRequested;
 
         public RelayCommand ConfirmInputCommand { get; }
         public RelayCommand AddNewCommand { get; }
@@ -114,14 +114,14 @@ namespace Facturon.App.ViewModels
             var confirm = await _confirmationService.ConfirmAsync("Új elem?", $"A(z) '{Input}' nem található. Létrehozza?");
             if (!confirm)
             {
-                FocusRequested?.Invoke();
+                FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
             var newEntity = _dialogService.ShowDialog();
             if (newEntity == null)
             {
-                FocusRequested?.Invoke();
+                FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace Facturon.App.ViewModels
             }
             else
             {
-                FocusRequested?.Invoke();
+                FocusRequested?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -143,7 +143,7 @@ namespace Facturon.App.ViewModels
             var newEntity = _dialogService.ShowDialog();
             if (newEntity == null)
             {
-                FocusRequested?.Invoke();
+                FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -156,7 +156,7 @@ namespace Facturon.App.ViewModels
             }
             else
             {
-                FocusRequested?.Invoke();
+                FocusRequested?.Invoke(this, EventArgs.Empty);
             }
         }
     }

@@ -42,7 +42,7 @@ namespace Facturon.Tests.ViewModels
             vm.NetUnitPrice = 10m;
 
             var raised = false;
-            vm.FocusRequested += () => raised = true;
+            vm.FocusRequested += (_, __) => raised = true;
             vm.AddCommand.Execute(null);
 
             Assert.True(raised);
