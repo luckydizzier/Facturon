@@ -16,6 +16,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<Unit> _unitDialogService;
         private readonly INewEntityDialogService<TaxRate> _taxDialogService;
         private readonly INavigationService _navigationService;
+        private readonly ISelectionHistoryService _historyService;
 
         public ProductSelectorViewModel ProductSelector { get; }
         public UnitSelectorViewModel UnitSelector { get; }
@@ -84,7 +85,8 @@ namespace Facturon.App.ViewModels
             INewEntityDialogService<Product> productDialogService,
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxDialogService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            ISelectionHistoryService historyService)
         {
             _productService = productService;
             _unitService = unitService;
@@ -94,12 +96,13 @@ namespace Facturon.App.ViewModels
             _unitDialogService = unitDialogService;
             _taxDialogService = taxDialogService;
             _navigationService = navigationService;
+            _historyService = historyService;
 
-            ProductSelector = new ProductSelectorViewModel(_productService, _confirmationService, _productDialogService);
+            ProductSelector = new ProductSelectorViewModel(_productService, _confirmationService, _productDialogService, historyService);
             ProductSelector.PropertyChanged += ProductSelectorOnPropertyChanged;
-            UnitSelector = new UnitSelectorViewModel(_unitService, _confirmationService, _unitDialogService);
+            UnitSelector = new UnitSelectorViewModel(_unitService, _confirmationService, _unitDialogService, historyService);
             UnitSelector.PropertyChanged += SelectorOnPropertyChanged;
-            TaxRateSelector = new TaxRateSelectorViewModel(_taxRateService, _confirmationService, _taxDialogService);
+            TaxRateSelector = new TaxRateSelectorViewModel(_taxRateService, _confirmationService, _taxDialogService, historyService);
             TaxRateSelector.PropertyChanged += SelectorOnPropertyChanged;
 
             AddCommand = new RelayCommand(Add, IsValid);

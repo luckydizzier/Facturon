@@ -18,6 +18,7 @@ namespace Facturon.Tests.ViewModels
             var unitDialog = new Mock<INewEntityDialogService<Unit>>();
             var taxDialog = new Mock<INewEntityDialogService<TaxRate>>();
             var nav = new Mock<INavigationService>();
+            var history = new Mock<ISelectionHistoryService>();
             return new InvoiceItemInputViewModel(
                 productService.Object,
                 unitService.Object,
@@ -26,7 +27,8 @@ namespace Facturon.Tests.ViewModels
                 productDialog.Object,
                 unitDialog.Object,
                 taxDialog.Object,
-                nav.Object);
+                nav.Object,
+                history.Object);
         }
 
         [Fact]
