@@ -177,6 +177,7 @@ namespace Facturon.App.ViewModels
                 }
             };
             InvoiceDetail.SupplierSelector.SelectedItem = InvoiceDetail.SupplierSelector.Items.FirstOrDefault();
+            InvoiceDetail.PaymentMethodSelector.SelectedItem = InvoiceDetail.PaymentMethodSelector.Items.FirstOrDefault();
             ScreenState = InvoiceScreenState.Editing;
         }
 
