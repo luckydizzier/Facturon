@@ -48,6 +48,7 @@ namespace Facturon.App.ViewModels
         private InvoiceItemViewModel? _selectedInvoiceItem;
         public RelayCommand DeleteSelectedItemCommand { get; }
         public RelayCommand BeginEditItemCommand { get; }
+        public RelayCommand LoadCommand { get; }
 
         public InvoiceDetailViewModel(
             IInvoiceService invoiceService,
@@ -84,14 +85,12 @@ namespace Facturon.App.ViewModels
                 _paymentMethodService,
                 _confirmationService,
                 _paymentMethodDialogService);
-            PaymentMethodSelector.InitializeAsync().GetAwaiter().GetResult();
             PaymentMethodSelector.PropertyChanged += PaymentMethodSelectorOnPropertyChanged;
 
             SupplierSelector = new SupplierSelectorViewModel(
                 _supplierService,
                 _confirmationService,
                 _supplierDialogService);
-            SupplierSelector.InitializeAsync().GetAwaiter().GetResult();
             SupplierSelector.PropertyChanged += SupplierSelectorOnPropertyChanged;
 
             InputRow = new InvoiceItemInputViewModel(
@@ -102,14 +101,20 @@ namespace Facturon.App.ViewModels
                 _productDialogService,
                 _unitDialogService,
                 _taxDialogService);
-            InputRow.Initialize();
             InputRow.ItemReadyToAdd += InputRowOnItemReadyToAdd;
 
             DeleteSelectedItemCommand = new RelayCommand(DeleteSelectedItem, CanDeleteSelectedItem);
             BeginEditItemCommand = new RelayCommand(BeginEditItem, CanBeginEditItem);
+            LoadCommand = new RelayCommand(async () => await InitializeAsync());
 
             InvoiceItems = new ObservableCollection<InvoiceItemViewModel>();
             _mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
+        }
+
+        public async Task InitializeAsync()
+        {
+            await PaymentMethodSelector.InitializeAsync();
+            await SupplierSelector.InitializeAsync();
         }
 
         private Invoice? _invoice;

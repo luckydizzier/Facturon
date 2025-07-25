@@ -48,7 +48,6 @@ namespace Facturon.App
                 _unitDialogService,
                 _taxRateDialogService,
                 _productGroupDialogService);
-            vm.Initialize();
             dialog.DataContext = vm;
             vm.CloseRequested += p => dialog.DialogResult = p != null;
             var result = dialog.ShowDialog();
