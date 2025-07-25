@@ -8,9 +8,7 @@ namespace Facturon.App.Views
         public ConfirmExitWindow()
         {
             InitializeComponent();
-            var vm = new ConfirmExitViewModel();
-            DataContext = vm;
-            vm.CloseRequested += result => DialogResult = result;
+            DataContext = new ConfirmExitViewModel();
         }
     }
 }

@@ -4,15 +4,25 @@ namespace Facturon.App.ViewModels
 {
     public class ConfirmExitViewModel : BaseViewModel
     {
-        public RelayCommand YesCommand { get; }
-        public RelayCommand NoCommand { get; }
+        public RelayCommand<bool> CloseCommand { get; }
 
-        public event Action<bool>? CloseRequested;
+        private bool? _dialogResult;
+        public bool? DialogResult
+        {
+            get => _dialogResult;
+            private set
+            {
+                if (_dialogResult != value)
+                {
+                    _dialogResult = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public ConfirmExitViewModel()
         {
-            YesCommand = new RelayCommand(() => CloseRequested?.Invoke(true));
-            NoCommand = new RelayCommand(() => CloseRequested?.Invoke(false));
+            CloseCommand = new RelayCommand<bool>(result => DialogResult = result);
         }
     }
 }
