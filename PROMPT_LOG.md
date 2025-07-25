@@ -311,3 +311,10 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 - Added FilteredItems ICollectionView in EditableComboWithAddViewModel to filter Items as Input changes.
 - Updated EditableComboWithAdd view to bind ComboBox.ItemsSource to FilteredItems.
 
+## [ui_agent] Add IDataErrorInfo to unit and supplier dialogs
+Implemented property-level validation in NewSupplierDialogViewModel and
+NewUnitDialogViewModel with duplicate checks. Updated associated XAML to
+use validation templates from LightTheme.
+## [test_agent] Validate dialog view model errors
+Added unit tests covering required and duplicate name rules for the new
+IDataErrorInfo implementations.

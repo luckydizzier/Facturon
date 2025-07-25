@@ -8,11 +8,14 @@
         FocusManager.FocusedElement="{Binding ElementName=NameBox}">
     <StackPanel Margin="10">
         <TextBlock Text="Name:"/>
-        <TextBox x:Name="NameBox" Width="200" Text="{Binding Supplier.Name, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox x:Name="NameBox" Width="200"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         <TextBlock Text="Address:" Margin="0,5,0,0"/>
-        <TextBox Width="200" Text="{Binding Supplier.Address, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Width="200"
+                 Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         <TextBlock Text="Tax Number:" Margin="0,5,0,0"/>
-        <TextBox Width="200" Text="{Binding Supplier.TaxNumber, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Width="200"
+                 Text="{Binding TaxNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
             <Button Content="Save" Width="75" Margin="0,0,5,0" IsDefault="True" Command="{Binding SaveCommand}" />
             <Button Content="Cancel" Width="75" IsCancel="True" Command="{Binding CancelCommand}" />

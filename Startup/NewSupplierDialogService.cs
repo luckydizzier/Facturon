@@ -7,10 +7,17 @@ namespace Facturon.App
 {
     public class NewSupplierDialogService : INewEntityDialogService<Supplier>
     {
+        private readonly ISupplierService _service;
+
+        public NewSupplierDialogService(ISupplierService service)
+        {
+            _service = service;
+        }
+
         public Supplier? ShowDialog()
         {
             var dialog = new NewSupplierDialog();
-            var vm = new NewSupplierDialogViewModel();
+            var vm = new NewSupplierDialogViewModel(_service);
             dialog.DataContext = vm;
             vm.CloseRequested += result => dialog.DialogResult = result;
             var result = dialog.ShowDialog();
