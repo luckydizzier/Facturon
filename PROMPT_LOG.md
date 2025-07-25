@@ -307,3 +307,7 @@ Initialized _invoiceItems collection at declaration in InvoiceDetailViewModel to
 - Replaced synchronous initialization with InitializeAsync in InvoiceItemInputViewModel, NewProductDialogViewModel, and InvoiceDetailViewModel.
 - Added LoadCommand properties and bound them to Loaded events in corresponding views.
 - Updated NewProductDialogService to stop calling Initialize().
+## [ui_agent] Filter combo box items based on input
+- Added FilteredItems ICollectionView in EditableComboWithAddViewModel to filter Items as Input changes.
+- Updated EditableComboWithAdd view to bind ComboBox.ItemsSource to FilteredItems.
+
