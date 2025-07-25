@@ -6,7 +6,7 @@
         <ComboBox x:Name="Combo"
                   Width="200"
                   IsEditable="True"
-                  ItemsSource="{Binding Items}"
+                 ItemsSource="{Binding FilteredItems}"
                   Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedItem}"
                     DisplayMemberPath="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=UserControl}}">
