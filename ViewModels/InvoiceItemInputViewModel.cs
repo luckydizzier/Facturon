@@ -122,7 +122,7 @@ namespace Facturon.App.ViewModels
 
         private void SelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(EditableComboWithAddViewModel<object>.SelectedItem))
+            if (e.PropertyName == nameof(EditableComboWithAddViewModel<BaseEntity>.SelectedItem))
                 AddCommand.RaiseCanExecuteChanged();
         }
 
