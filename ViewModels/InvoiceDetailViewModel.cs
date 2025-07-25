@@ -25,6 +25,7 @@ namespace Facturon.App.ViewModels
         private readonly ISupplierService _supplierService;
         private readonly INewEntityDialogService<Supplier> _supplierDialogService;
         private readonly IInvoiceItemService _invoiceItemService;
+        private readonly INavigationService _navigationService;
         private readonly MainViewModel _mainViewModel;
 
         public SupplierSelectorViewModel SupplierSelector { get; }
@@ -64,6 +65,7 @@ namespace Facturon.App.ViewModels
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxDialogService,
             INewEntityDialogService<Supplier> supplierDialogService,
+            INavigationService navigationService,
             MainViewModel mainViewModel)
         {
             _invoiceService = invoiceService;
@@ -78,6 +80,7 @@ namespace Facturon.App.ViewModels
             _unitDialogService = unitDialogService;
             _taxDialogService = taxDialogService;
             _supplierService = supplierService;
+            _navigationService = navigationService;
             _supplierDialogService = supplierDialogService;
             _mainViewModel = mainViewModel;
 
@@ -100,7 +103,8 @@ namespace Facturon.App.ViewModels
                 _confirmationService,
                 _productDialogService,
                 _unitDialogService,
-                _taxDialogService);
+                _taxDialogService,
+                _navigationService);
             InputRow.ItemReadyToAdd += InputRowOnItemReadyToAdd;
 
             DeleteSelectedItemCommand = new RelayCommand(DeleteSelectedItem, CanDeleteSelectedItem);

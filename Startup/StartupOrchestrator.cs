@@ -89,6 +89,7 @@ namespace Facturon.App
                             sp.GetRequiredService<INewEntityDialogService<Unit>>(),
                             sp.GetRequiredService<INewEntityDialogService<TaxRate>>(),
                             sp.GetRequiredService<INewEntityDialogService<Supplier>>(),
+                            sp.GetRequiredService<INavigationService>(),
                             sp.GetRequiredService<MainViewModel>()));
                     services.AddTransient<MainViewModel>();
                 });

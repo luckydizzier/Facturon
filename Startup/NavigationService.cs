@@ -14,5 +14,15 @@ namespace Facturon.App
                         (System.Windows.Input.FocusNavigationDirection)direction));
             }
         }
+
+        public void MoveNext()
+        {
+            MoveFocus(FocusNavigationDirection.Next);
+        }
+
+        public void MovePrevious()
+        {
+            MoveFocus(FocusNavigationDirection.Previous);
+        }
     }
 }

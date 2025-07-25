@@ -17,6 +17,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<Unit> _unitDialogService;
         private readonly INewEntityDialogService<TaxRate> _taxRateDialogService;
         private readonly INewEntityDialogService<ProductGroup> _productGroupDialogService;
+        private readonly INavigationService _navigationService;
 
         public EditableComboWithAddViewModel<Unit> UnitSelector { get; }
         public TaxRateSelectorViewModel TaxRateSelector { get; }
@@ -51,6 +52,8 @@ namespace Facturon.App.ViewModels
         public RelayCommand SaveCommand { get; }
         public RelayCommand CancelCommand { get; }
         public RelayCommand LoadCommand { get; }
+        public RelayCommand MoveNextCommand { get; }
+        public RelayCommand MovePreviousCommand { get; }
 
         public event Action<Product?>? CloseRequested;
 
@@ -62,7 +65,8 @@ namespace Facturon.App.ViewModels
             IConfirmationDialogService confirmationService,
             INewEntityDialogService<Unit> unitDialogService,
             INewEntityDialogService<TaxRate> taxRateDialogService,
-            INewEntityDialogService<ProductGroup> productGroupDialogService)
+            INewEntityDialogService<ProductGroup> productGroupDialogService,
+            INavigationService navigationService)
         {
             _unitService = unitService;
             _taxRateService = taxRateService;
@@ -72,6 +76,7 @@ namespace Facturon.App.ViewModels
             _unitDialogService = unitDialogService;
             _taxRateDialogService = taxRateDialogService;
             _productGroupDialogService = productGroupDialogService;
+            _navigationService = navigationService;
 
             UnitSelector = new EditableComboWithAddViewModel<Unit>(_unitService, _confirmationService, _unitDialogService);
             UnitSelector.PropertyChanged += UnitSelectorOnPropertyChanged;
@@ -83,6 +88,8 @@ namespace Facturon.App.ViewModels
             SaveCommand = new RelayCommand(Save, CanSave);
             CancelCommand = new RelayCommand(() => CloseRequested?.Invoke(null));
             LoadCommand = new RelayCommand(async () => await InitializeAsync());
+            MoveNextCommand = new RelayCommand(() => _navigationService.MoveNext());
+            MovePreviousCommand = new RelayCommand(() => _navigationService.MovePrevious());
         }
 
         private void UnitSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)

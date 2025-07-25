@@ -15,6 +15,7 @@ namespace Facturon.App.ViewModels
         private readonly INewEntityDialogService<Product> _productDialogService;
         private readonly INewEntityDialogService<Unit> _unitDialogService;
         private readonly INewEntityDialogService<TaxRate> _taxDialogService;
+        private readonly INavigationService _navigationService;
 
         public ProductSelectorViewModel ProductSelector { get; }
         public UnitSelectorViewModel UnitSelector { get; }
@@ -53,6 +54,8 @@ namespace Facturon.App.ViewModels
         public RelayCommand AddCommand { get; }
         public RelayCommand ClearCommand { get; }
         public RelayCommand LoadCommand { get; }
+        public RelayCommand MoveNextCommand { get; }
+        public RelayCommand MovePreviousCommand { get; }
 
         public event Action<InvoiceItem>? ItemReadyToAdd;
 
@@ -79,7 +82,8 @@ namespace Facturon.App.ViewModels
             IConfirmationDialogService confirmationService,
             INewEntityDialogService<Product> productDialogService,
             INewEntityDialogService<Unit> unitDialogService,
-            INewEntityDialogService<TaxRate> taxDialogService)
+            INewEntityDialogService<TaxRate> taxDialogService,
+            INavigationService navigationService)
         {
             _productService = productService;
             _unitService = unitService;
@@ -88,6 +92,7 @@ namespace Facturon.App.ViewModels
             _productDialogService = productDialogService;
             _unitDialogService = unitDialogService;
             _taxDialogService = taxDialogService;
+            _navigationService = navigationService;
 
             ProductSelector = new ProductSelectorViewModel(_productService, _confirmationService, _productDialogService);
             ProductSelector.PropertyChanged += ProductSelectorOnPropertyChanged;
@@ -99,6 +104,8 @@ namespace Facturon.App.ViewModels
             AddCommand = new RelayCommand(Add, IsValid);
             ClearCommand = new RelayCommand(Clear);
             LoadCommand = new RelayCommand(async () => await InitializeAsync());
+            MoveNextCommand = new RelayCommand(() => _navigationService.MoveNext());
+            MovePreviousCommand = new RelayCommand(() => _navigationService.MovePrevious());
         }
 
         private void ProductSelectorOnPropertyChanged(object? sender, PropertyChangedEventArgs e)

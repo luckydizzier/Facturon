@@ -9,7 +9,8 @@
         </EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.InputBindings>
-        <KeyBinding Key="Enter" Command="{Binding AddCommand}" />
+        <KeyBinding Key="Enter" Command="{Binding MoveNextCommand}" />
+        <KeyBinding Modifiers="Shift" Key="Enter" Command="{Binding MovePreviousCommand}" />
         <KeyBinding Key="Escape" Command="{Binding ClearCommand}" />
     </UserControl.InputBindings>
     <StackPanel Orientation="Horizontal">
